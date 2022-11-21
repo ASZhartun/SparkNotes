@@ -4,5 +4,17 @@
     <string name="app_name">SparkNotes</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    
+    <string-array name="main_menu_points">
+        <item>Экспорт</item>
+        <item>Импорт</item>
+        <item>Корзина</item>
+        <item>Расширенный поиск</item>
+        <item>Внешний вид</item>
+        <item>ЧаВо</item>
+    </string-array>
+    
+    <string name="main_menu_open">Меню</string>
+    <string name="main_menu_close">Заметки</string>
 
 </resources>
