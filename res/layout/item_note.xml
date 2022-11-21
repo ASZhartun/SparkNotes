@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/note_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp" >
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="8dp"
+        android:text="Title of note"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/title"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="72dp"
+        android:text="Some content of notes. Some content of n..."
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#263238"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/init_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/content"
+        android:text="20.12.2012"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#263238"
+        android:textSize="12sp" />
+
+    <CheckBox
+        android:id="@+id/item_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="33dp" />
+
+</RelativeLayout>
