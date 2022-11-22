@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp" >
+
+    <EditText
+        android:id="@+id/input_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Часть строки" >
+
+        <requestFocus />
+    </EditText>
+
+    <RadioGroup
+        android:id="@+id/radio_group_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/radio_by_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="по заголовку" />
+
+        <RadioButton
+            android:id="@+id/radio_by_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="по тексту" />
+    </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/checkbox_notice_dates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="указать интервал" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/item_title_main_faq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Начало" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/begin_date_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:inputType="date" />
+
+            <ImageButton
+                android:id="@+id/pointer_begin_date_search"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/search_calendar_item" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Окончание" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/finish_date_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:inputType="date" />
+
+            <ImageButton
+                android:id="@+id/pointer_finish_date_search"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/search_calendar_item" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+        <Button
+            android:id="@+id/button_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#0E4DA4"
+            android:text="Искать"
+            android:textColor="#fff"
+            android:textSize="20sp" />
+
+</LinearLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp" >
+
+    <TextView
+        android:id="@+id/zip_location_import"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:text="Местоположение"
+        android:textColor="#0E4DA4" />
+
+    <Button
+        android:id="@+id/button_locate_import"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="18dp"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="17dp"
+        android:text="/пример/расположения"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/button_import"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Импорт"
+        android:textSize="20sp" />
+
+</LinearLayout>

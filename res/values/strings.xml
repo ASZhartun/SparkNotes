@@ -4,8 +4,9 @@
     <string name="app_name">SparkNotes</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    
+
     <string-array name="main_menu_points">
+        <item>Главная</item>
         <item>Экспорт</item>
         <item>Импорт</item>
         <item>Корзина</item>
@@ -13,8 +14,16 @@
         <item>Внешний вид</item>
         <item>ЧаВо</item>
     </string-array>
-    
+
     <string name="main_menu_open">Меню</string>
     <string name="main_menu_close">Заметки</string>
+    <string name="actionbar_search_button">Найти</string>
+    <string name="actionbar_share_button">Поделиться</string>
+    <string name="actionbar_attach_button">Прикрепить</string>
+    <string name="actionbar_confirm_button">Подтвердить</string>
+    <string name="actionbar_create_button">Создать</string>
+    <string name="actionbar_export_button">Экспорт</string>
+    <string name="actionbar_delete_button">Удалить</string>
+    <string name="actionbar_back_button">Назад</string>
 
 </resources>

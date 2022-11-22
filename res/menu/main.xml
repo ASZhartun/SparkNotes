@@ -3,9 +3,41 @@
     tools:context="com.example.sparknotes.MainActivity" >
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:id="@+id/action_bar_search_item"
+        android:icon="@drawable/actionbar_search"
+        android:showAsAction="ifRoom"
+        android:title="@string/actionbar_search_button"/>
+    <item
+        android:id="@+id/action_bar_share_item"
+        android:icon="@drawable/actionbar_share"
+        android:showAsAction="ifRoom"
+        android:title="@string/actionbar_share_button"/>
+    <item
+        android:id="@+id/action_bar_attach_item"
+        android:icon="@drawable/actionbar_attach"
+        android:showAsAction="ifRoom"
+        android:title="@string/actionbar_attach_button"/>
+    <item
+        android:id="@+id/action_bar_confirm_item"
+        android:icon="@drawable/actionbar_confirm"
+        android:showAsAction="ifRoom"
+        android:title="@string/actionbar_confirm_button"/>
+    <item
+        android:id="@+id/action_bar_create_item"
+        android:showAsAction="ifRoom"
+        android:title="@string/actionbar_create_button"/>
+    <item
+        android:id="@+id/action_bar_export_item"
+        android:showAsAction="ifRoom"
+        android:title="@string/actionbar_export_button"/>
+    <item
+        android:id="@+id/action_bar_delete_item"
+        android:showAsAction="ifRoom"
+        android:title="@string/actionbar_delete_button"/>
+    <item
+        android:id="@+id/action_bar_back_item"
+        android:icon="@drawable/actionbar_left_arrow"
+        android:showAsAction="ifRoom"
+        android:title="@string/actionbar_back_button"/>
 
 </menu>

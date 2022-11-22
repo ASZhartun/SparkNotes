@@ -1,34 +1,39 @@
 package com.example.sparknotes;
 
+import java.util.ArrayList;
+
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
+	
+	ArrayList<SparkNote> exportList = new ArrayList<SparkNote>();
 
 	DrawerLayout drawer;
+	ListView mainMenu;
 	ActionBarDrawerToggle menuToggler;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_main);
-
-		// Showing main note list
-		// BEGIN
-
-		// END
 
 		// Showing main note list
 		// BEGIN
@@ -42,10 +47,10 @@ public class MainActivity extends FragmentActivity {
 		// BEGIN
 		String[] menuPoints = getResources().getStringArray(R.array.main_menu_points);
 		drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-		ListView mainMenu = (ListView) findViewById(R.id.main_menu);
+		mainMenu = (ListView) findViewById(R.id.main_menu);
 		mainMenu.setAdapter(new ArrayAdapter<String>(this, R.layout.item_main_menu, menuPoints));
 
-		// Set back button to back on the one step in the stack
+		// Set `back` button to get back on the one step in the stack
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 
@@ -67,12 +72,42 @@ public class MainActivity extends FragmentActivity {
 		};
 		// set listeners for drawer node by single object
 		drawer.setDrawerListener(menuToggler);
+		getActionBar().setIcon(null);
+		// set listeners for points of drawer menu (ListView)
+		mainMenu.setOnItemClickListener(new SupportDrawerEventKeeper());
 		// END
 
-		// Showing main note list
+		// Section with something
 		// BEGIN
 
 		// END
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main, menu);
+//		menu.removeItem(R.id.action_bar_search_item);
+//		menu.removeItem(R.id.action_bar_share_item);
+//		menu.removeItem(R.id.action_bar_attach_item);
+//		menu.removeItem(R.id.action_bar_confirm_item);
+//		menu.removeItem(R.id.action_bar_create_item);
+//		menu.removeItem(R.id.action_bar_export_item);
+//		menu.removeItem(R.id.action_bar_delete_item);
+//		menu.removeItem(R.id.action_bar_back_item);
+		if ((getSupportFragmentManager().getFragments().get(0) instanceof NoteListFragment)
+				|| (getSupportFragmentManager().getFragments().get(0) instanceof RecycleBinFragment)) {
+			menu.removeItem(R.id.action_bar_confirm_item);
+			menu.removeItem(R.id.action_bar_attach_item);
+			menu.removeItem(R.id.action_bar_back_item);
+		} else if ((getSupportFragmentManager().getFragments().get(0) instanceof ExportFragment)
+				|| (getSupportFragmentManager().getFragments().get(0) instanceof ExportFragment)
+				|| (getSupportFragmentManager().getFragments().get(0) instanceof SearchFragment)
+				|| (getSupportFragmentManager().getFragments().get(0) instanceof AppearanceFragment)
+				|| (getSupportFragmentManager().getFragments().get(0) instanceof FAQFragment)) {
+			menu.clear();
+		}
+		return true;
 	}
 
 	@Override
@@ -81,6 +116,20 @@ public class MainActivity extends FragmentActivity {
 		// ActionBarDrawerToggle заботится об этом.
 		if (menuToggler.onOptionsItemSelected(item)) {
 			return true;
+		}
+
+		switch (item.getItemId()) {
+		case R.id.action_bar_search_item:
+			enterToDrawerMenuPointBy(4);
+			break;
+		case R.id.action_bar_export_item:
+			enterToDrawerMenuPointBy(1);
+			break;
+		case R.id.action_bar_create_item:
+			enterToDrawerMenuPointBy(7);
+			break;
+		default:
+			Toast.makeText(this, "Не назначено", Toast.LENGTH_SHORT).show();
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -103,4 +152,56 @@ public class MainActivity extends FragmentActivity {
 		menuToggler.onConfigurationChanged(newConfig);
 	}
 
+	private class SupportDrawerEventKeeper implements OnItemClickListener {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			enterToDrawerMenuPointBy(position);
+		}
+
+	}
+
+	private void enterToDrawerMenuPointBy(int position) {
+		Fragment fragment = new NoteListFragment();
+		switch (position) {
+		case 1:
+//			Toast.makeText(this, "position is 1", Toast.LENGTH_SHORT).show();
+			fragment = new ExportFragment();
+			break;
+		case 2:
+//			Toast.makeText(this, "position is 2", Toast.LENGTH_SHORT).show();
+			fragment = new ImportFragment();
+			break;
+		case 3:
+//			Toast.makeText(this, "position is 3", Toast.LENGTH_SHORT).show();
+			fragment = new RecycleBinFragment();
+			break;
+		case 4:
+//			Toast.makeText(this, "position is 4", Toast.LENGTH_SHORT).show();
+			fragment = new SearchFragment();
+			break;
+		case 5:
+//			Toast.makeText(this, "position is 5", Toast.LENGTH_SHORT).show();
+			fragment = new AppearanceFragment();
+			break;
+		case 6:
+//			Toast.makeText(this, "position is 6", Toast.LENGTH_SHORT).show();
+			fragment = new FAQFragment();
+			break;
+		case 7:
+//			Toast.makeText(this, "position is 7", Toast.LENGTH_SHORT).show();
+			fragment = new CreateFragment();
+			break;
+		default:
+//			Toast.makeText(this, "List of notes is opened", Toast.LENGTH_SHORT).show();
+			break;
+		}
+
+		// set new fragment
+		getSupportFragmentManager().beginTransaction().replace(R.id.work_frame, fragment).commit();
+		// refresh and close drawer menu
+		mainMenu.setItemChecked(position, true);
+		setTitle(getResources().getStringArray(R.array.main_menu_points)[position]);
+		drawer.closeDrawer(mainMenu);
+	}
 }
