@@ -15,8 +15,10 @@ public class NoteListFragment extends ListFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		setHasOptionsMenu(true);
 		adapter = new UserNoteAdapter(getActivity(), db.getNotes());
 		setListAdapter(adapter);
 		return (ListView) inflater.inflate(R.layout.fragment_main_list, null);
 	}
+	
 }

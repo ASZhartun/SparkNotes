@@ -38,6 +38,6 @@
         android:id="@+id/action_bar_back_item"
         android:icon="@drawable/actionbar_left_arrow"
         android:showAsAction="ifRoom"
-        android:title="@string/actionbar_back_button"/>
+        android:title="@string/actionbar_decline_button"/>
 
 </menu>

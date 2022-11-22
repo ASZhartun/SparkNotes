@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp" >
+
+    <EditText
+        android:id="@+id/create_title_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:ems="10"
+        android:hint="Title"
+        android:textColor="#0E4DA4"
+        android:textSize="16sp"
+        android:textStyle="bold" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/create_note_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:ems="10"
+        android:gravity="top|start"
+        android:hint="Some notices..."
+        android:lines="8"
+        android:maxLines="10"
+        android:minLines="6"
+        android:scrollbars="vertical"
+        android:textSize="14sp" >
+
+    </EditText>
+
+    <ListView
+        android:id="@+id/create_note_attaches"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
+</LinearLayout>

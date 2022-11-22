@@ -25,6 +25,7 @@ import android.widget.Toast;
 public class MainActivity extends FragmentActivity {
 	
 	ArrayList<SparkNote> exportList = new ArrayList<SparkNote>();
+	Boolean isSelected = false;
 
 	DrawerLayout drawer;
 	ListView mainMenu;
@@ -134,6 +135,7 @@ public class MainActivity extends FragmentActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	
 	/**
 	 * When using the ActionBarDrawerToggle, you must call it during onPostCreate()
 	 * and onConfigurationChanged()...
