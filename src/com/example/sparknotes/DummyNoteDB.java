@@ -48,5 +48,16 @@ public class DummyNoteDB {
 		dummies.add(new ReferencePosition("Кнопка `Расширенный поиск`", "Открывает окно поиска. Можно искать заметку по заголовку или по содержимому. Также можно указать интервал создания заметки."));
 		return dummies;
 	}
+	
+	public void updateNote(int position, String title, String content) {
+		try {
+			SparkNote sparkNote = dummies.get(position);
+			sparkNote.setTitle(title);
+			sparkNote.setContent(content);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+	}
 
 }

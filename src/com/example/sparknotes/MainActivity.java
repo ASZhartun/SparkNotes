@@ -2,6 +2,7 @@ package com.example.sparknotes;
 
 import java.util.ArrayList;
 
+import com.example.sparknotes.CreateFragment.EditNoteActionsListener;
 import com.example.sparknotes.NoteListFragment.OpenNoteItemListener;
 
 import android.app.SearchManager;
@@ -24,7 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity implements OpenNoteItemListener{
+public class MainActivity extends FragmentActivity implements OpenNoteItemListener, EditNoteActionsListener{
 	
 	DummyNoteDB db = new DummyNoteDB();
 
@@ -42,10 +43,10 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 
 		// Showing main note list
 		// BEGIN
-		FragmentManager fm = getSupportFragmentManager();
-		FragmentTransaction transaction = fm.beginTransaction();
-		transaction.add(R.id.work_frame, new NoteListFragment());
-		transaction.commit();
+//		FragmentManager fm = getSupportFragmentManager();
+//		FragmentTransaction transaction = fm.beginTransaction();
+//		transaction.add(R.id.work_frame, new NoteListFragment());
+//		transaction.commit();
 		// END
 
 		// Showing main note list
@@ -84,7 +85,7 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 
 		// Section with something
 		// BEGIN
-
+		enterToDrawerMenuPointBy(0);
 		// END
 	}
 
@@ -152,7 +153,7 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 	}
 
 	private void enterToDrawerMenuPointBy(int position) {
-		Fragment fragment = new NoteListFragment();
+		Fragment fragment;
 		switch (position) {
 		case 1:
 //			Toast.makeText(this, "position is 1", Toast.LENGTH_SHORT).show();
@@ -184,6 +185,9 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 			break;
 		default:
 //			Toast.makeText(this, "List of notes is opened", Toast.LENGTH_SHORT).show();
+			NoteListFragment noteListFragment = new NoteListFragment();
+			noteListFragment.setAdapter(new UserNoteAdapter(this, db.getNotes()));
+			fragment = noteListFragment;
 			break;
 		}
 
@@ -201,8 +205,16 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 		Bundle bundle = new Bundle();
 		bundle.putString("title", note.getTitle());
 		bundle.putString("content", note.getContent());
+		bundle.putInt("position", position);
 		CreateFragment fragment = new CreateFragment();
 		fragment.setArguments(bundle);
 		getSupportFragmentManager().beginTransaction().replace(R.id.work_frame, fragment).commit();
+	}
+
+	@Override
+	public void save(int position, String title, String content, ArrayList<AttachItem> attaches) {
+		Toast.makeText(this, "Doletelo v save activity", Toast.LENGTH_SHORT).show();
+		db.updateNote(position, title, content);	
+		enterToDrawerMenuPointBy(0);
 	}
 }
