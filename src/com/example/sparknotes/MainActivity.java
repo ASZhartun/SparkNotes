@@ -2,6 +2,8 @@ package com.example.sparknotes;
 
 import java.util.ArrayList;
 
+import com.example.sparknotes.NoteListFragment.OpenNoteItemListener;
+
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -22,8 +24,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements OpenNoteItemListener{
 	
+	DummyNoteDB db = new DummyNoteDB();
+
 	ArrayList<SparkNote> exportList = new ArrayList<SparkNote>();
 	Boolean isSelected = false;
 
@@ -88,26 +92,11 @@ public class MainActivity extends FragmentActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
-//		menu.removeItem(R.id.action_bar_search_item);
-//		menu.removeItem(R.id.action_bar_share_item);
-//		menu.removeItem(R.id.action_bar_attach_item);
-//		menu.removeItem(R.id.action_bar_confirm_item);
-//		menu.removeItem(R.id.action_bar_create_item);
-//		menu.removeItem(R.id.action_bar_export_item);
-//		menu.removeItem(R.id.action_bar_delete_item);
-//		menu.removeItem(R.id.action_bar_back_item);
-		if ((getSupportFragmentManager().getFragments().get(0) instanceof NoteListFragment)
-				|| (getSupportFragmentManager().getFragments().get(0) instanceof RecycleBinFragment)) {
-			menu.removeItem(R.id.action_bar_confirm_item);
-			menu.removeItem(R.id.action_bar_attach_item);
-			menu.removeItem(R.id.action_bar_back_item);
-		} else if ((getSupportFragmentManager().getFragments().get(0) instanceof ExportFragment)
-				|| (getSupportFragmentManager().getFragments().get(0) instanceof ExportFragment)
-				|| (getSupportFragmentManager().getFragments().get(0) instanceof SearchFragment)
-				|| (getSupportFragmentManager().getFragments().get(0) instanceof AppearanceFragment)
-				|| (getSupportFragmentManager().getFragments().get(0) instanceof FAQFragment)) {
-			menu.clear();
-		}
+
+		menu.removeItem(R.id.action_bar_confirm_item);
+		menu.removeItem(R.id.action_bar_attach_item);
+		menu.removeItem(R.id.action_bar_back_item);
+
 		return true;
 	}
 
@@ -135,7 +124,6 @@ public class MainActivity extends FragmentActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	
 	/**
 	 * When using the ActionBarDrawerToggle, you must call it during onPostCreate()
 	 * and onConfigurationChanged()...
@@ -205,5 +193,16 @@ public class MainActivity extends FragmentActivity {
 		mainMenu.setItemChecked(position, true);
 		setTitle(getResources().getStringArray(R.array.main_menu_points)[position]);
 		drawer.closeDrawer(mainMenu);
+	}
+
+	@Override
+	public void openNote(int position) {
+		SparkNote note = db.getNoteById(position);
+		Bundle bundle = new Bundle();
+		bundle.putString("title", note.getTitle());
+		bundle.putString("content", note.getContent());
+		CreateFragment fragment = new CreateFragment();
+		fragment.setArguments(bundle);
+		getSupportFragmentManager().beginTransaction().replace(R.id.work_frame, fragment).commit();
 	}
 }

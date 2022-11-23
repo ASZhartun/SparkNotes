@@ -13,8 +13,8 @@
         android:ems="10"
         android:hint="Title"
         android:textColor="#0E4DA4"
-        android:textSize="16sp"
-        android:textStyle="bold" >
+        android:textSize="20sp"
+        android:textStyle="normal" >
 
         <requestFocus />
     </EditText>
@@ -27,8 +27,6 @@
         android:ems="10"
         android:gravity="top|start"
         android:hint="Some notices..."
-        android:lines="8"
-        android:maxLines="10"
         android:minLines="6"
         android:scrollbars="vertical"
         android:textSize="14sp" >

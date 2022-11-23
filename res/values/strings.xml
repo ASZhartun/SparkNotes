@@ -27,5 +27,6 @@
     <string name="actionbar_delete_button">Удалить</string>
     <string name="actionbar_back_button">Назад</string>
     <string name="actionbar_decline_button">Отменить</string>
+    <string name="actionbar_restore_button">Восстановить</string>
 
 </resources>

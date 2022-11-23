@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_bar_search_item"
+        android:icon="@drawable/actionbar_search"
+        android:showAsAction="ifRoom"
+        android:title="@string/actionbar_search_button"/>
+    <item
+        android:id="@+id/action_bar_delete_item"
+        android:icon="@drawable/actionbar_delete"
+        android:showAsAction="ifRoom"
+        android:title="@string/actionbar_delete_button"/>
+    <item
+        android:id="@+id/action_bar_restore_item"
+        android:icon="@drawable/actionbar_restore"
+        android:showAsAction="ifRoom"
+        android:title="@string/actionbar_restore_button"/>
+
+</menu>

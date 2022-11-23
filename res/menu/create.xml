@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.sparknotes.MainActivity" >
+
+    <item
+        android:id="@+id/action_bar_attach_item"
+        android:icon="@drawable/actionbar_attach"
+        android:showAsAction="ifRoom"
+        android:title="@string/actionbar_attach_button"/>
+    <item
+        android:id="@+id/action_bar_confirm_item"
+        android:icon="@drawable/actionbar_confirm"
+        android:showAsAction="ifRoom"
+        android:title="@string/actionbar_confirm_button"/>
+    <item
+        android:id="@+id/action_bar_delete_item"
+        android:showAsAction="never"
+        android:title="@string/actionbar_delete_button"/>
+
+</menu>
