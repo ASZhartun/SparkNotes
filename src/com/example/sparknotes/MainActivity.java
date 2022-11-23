@@ -25,8 +25,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity implements OpenNoteItemListener, EditNoteActionsListener{
-	
+public class MainActivity extends FragmentActivity implements OpenNoteItemListener, EditNoteActionsListener {
+
 	DummyNoteDB db = new DummyNoteDB();
 
 	ArrayList<SparkNote> exportList = new ArrayList<SparkNote>();
@@ -125,6 +125,18 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 		return super.onOptionsItemSelected(item);
 	}
 
+
+
+	@Override
+	public void onBackPressed() {
+		if (NoteListFragment.isSelecting) {
+			enterToDrawerMenuPointBy(0);
+			NoteListFragment.isSelecting = false;
+		} else {
+			super.onBackPressed();			
+		}
+	}
+
 	/**
 	 * When using the ActionBarDrawerToggle, you must call it during onPostCreate()
 	 * and onConfigurationChanged()...
@@ -214,7 +226,7 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 	@Override
 	public void save(int position, String title, String content, ArrayList<AttachItem> attaches) {
 		Toast.makeText(this, "Doletelo v save activity", Toast.LENGTH_SHORT).show();
-		db.updateNote(position, title, content);	
+		db.updateNote(position, title, content);
 		enterToDrawerMenuPointBy(0);
 	}
 }

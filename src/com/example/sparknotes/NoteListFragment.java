@@ -15,7 +15,7 @@ public class NoteListFragment extends ListFragment {
 
 	OpenNoteItemListener ctx;
 
-	Boolean isSelecting = false;
+	public static Boolean isSelecting = false;
 //	DummyNoteDB db = new DummyNoteDB();
 	UserNoteAdapter adapter;
 
@@ -56,6 +56,8 @@ public class NoteListFragment extends ListFragment {
 		}
 
 	}
+	
+	
 
 	public UserNoteAdapter getAdapter() {
 		return adapter;
