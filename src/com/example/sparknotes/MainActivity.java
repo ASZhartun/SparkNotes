@@ -9,6 +9,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds.Note;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -35,6 +36,8 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 	DrawerLayout drawer;
 	ListView mainMenu;
 	ActionBarDrawerToggle menuToggler;
+	
+	Fragment current;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -129,7 +132,7 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 
 	@Override
 	public void onBackPressed() {
-		if (NoteListFragment.isSelecting) {
+		if (NoteListFragment.isSelecting || !(current instanceof NoteListFragment)) {
 			enterToDrawerMenuPointBy(0);
 			NoteListFragment.isSelecting = false;
 		} else {
@@ -205,6 +208,7 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 
 		// set new fragment
 		getSupportFragmentManager().beginTransaction().replace(R.id.work_frame, fragment).commit();
+		current = fragment;
 		// refresh and close drawer menu
 		mainMenu.setItemChecked(position, true);
 		setTitle(getResources().getStringArray(R.array.main_menu_points)[position]);
