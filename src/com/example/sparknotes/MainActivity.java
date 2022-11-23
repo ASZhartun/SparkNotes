@@ -132,7 +132,8 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 
 	@Override
 	public void onBackPressed() {
-		if (NoteListFragment.isSelecting || !(current instanceof NoteListFragment)) {
+		boolean isNoteListFragment = current instanceof NoteListFragment;
+		if (NoteListFragment.isSelecting || !(isNoteListFragment)) {
 			enterToDrawerMenuPointBy(0);
 			NoteListFragment.isSelecting = false;
 		} else {
@@ -225,6 +226,7 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 		CreateFragment fragment = new CreateFragment();
 		fragment.setArguments(bundle);
 		getSupportFragmentManager().beginTransaction().replace(R.id.work_frame, fragment).commit();
+		current = fragment;
 	}
 
 	@Override
