@@ -201,6 +201,9 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 		case 7:
 //			Toast.makeText(this, "position is 7", Toast.LENGTH_SHORT).show();
 			fragment = new CreateFragment();
+			Bundle bundle = new Bundle();
+			bundle.putBoolean("isOpen", false);
+			fragment.setArguments(bundle);
 			break;
 		default:
 //			Toast.makeText(this, "List of notes is opened", Toast.LENGTH_SHORT).show();
@@ -210,6 +213,7 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 			noteListFragment.setAdapter(new SparkNoteCursorAdapter(this, dbController.getSparkNotes()));
 
 			fragment = noteListFragment;
+			current = fragment;
 			break;
 		}
 
@@ -237,6 +241,7 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 			int count = cursor.getCount();
 			int columnCount = cursor.getColumnCount();
 
+			bundle.putBoolean("isOpen", true);
 			bundle.putLong("position", Long.parseLong(cursor.getString(0)));
 			bundle.putString("title", cursor.getString(1));
 			bundle.putString("content", cursor.getString(2));
@@ -253,9 +258,14 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 	}
 
 	@Override
-	public void save(int position, String title, String content, ArrayList<AttachItem> attaches) {
+	public void save(long position, String title, String content, String date, ArrayList<AttachItem> attaches) {
 		Toast.makeText(this, "Doletelo v save activity", Toast.LENGTH_SHORT).show();
-		db.updateNote(position, title, content);
+//		db.updateNote(position, title, content);
+		if (position > 0) {
+			dbController.updateNote(position, title, content, date, attaches);			
+		} else {
+			dbController.saveNote(title, content, date, attaches);
+		}
 		enterToDrawerMenuPointBy(0);
 	}
 }

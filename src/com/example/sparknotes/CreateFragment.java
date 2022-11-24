@@ -35,7 +35,7 @@ public class CreateFragment extends Fragment {
 		String content = "";
 		String date = "";
 		long position = 0;
-		if (getArguments() != null) {
+		if (getArguments() != null || getArguments().getBoolean("isOpen")) {
 			title = getArguments().getString("title");
 			content = getArguments().getString("content");
 			date = getArguments().getString("date");
@@ -66,13 +66,14 @@ public class CreateFragment extends Fragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_bar_confirm_item) {
-			ctx.save(position, titleInput.getText().toString(), contentInput.getText().toString(), attaches);
+			ctx.save(position, titleInput.getText().toString(), contentInput.getText().toString(),
+					dateHolder.getText().toString(), attaches);
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	interface EditNoteActionsListener {
-		void save(int position, String title, String content, ArrayList<AttachItem> attaches);
+		void save(long position, String title, String content, String date, ArrayList<AttachItem> attaches);
 	}
 
 }

@@ -92,4 +92,14 @@ public class SQLController {
 
 
 	}
+
+	public void updateNote(long position, String title, String content, String date, ArrayList<AttachItem> attaches) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void saveNote(String title, String content, String date, ArrayList<AttachItem> attaches) {
+		// TODO Auto-generated method stub
+		
+	}
 }
