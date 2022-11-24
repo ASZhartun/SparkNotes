@@ -17,7 +17,7 @@ public class NoteListFragment extends ListFragment {
 
 	public static Boolean isSelecting = false;
 //	DummyNoteDB db = new DummyNoteDB();
-	UserNoteAdapter adapter;
+	SparkNoteCursorAdapter adapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,23 +52,23 @@ public class NoteListFragment extends ListFragment {
 			checkNote.setChecked(true);
 		} else {
 			Toast.makeText(getActivity(), "Короткий клик на позиции" + position, Toast.LENGTH_SHORT).show();
-			ctx.openNote(position);
+			ctx.openNote(id);
 		}
 
 	}
 	
 	
 
-	public UserNoteAdapter getAdapter() {
+	public SparkNoteCursorAdapter getAdapter() {
 		return adapter;
 	}
 
-	public void setAdapter(UserNoteAdapter adapter) {
+	public void setAdapter(SparkNoteCursorAdapter adapter) {
 		this.adapter = adapter;
 	}
 
 	interface OpenNoteItemListener {
-		public void openNote(int position);
+		public void openNote(long position);
 	}
 
 }

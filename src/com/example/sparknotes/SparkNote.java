@@ -4,10 +4,29 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class SparkNote {
+	private int _id;
 	private String title;
 	private String content;
 	private Date initDate;
 	private ArrayList<String> enclosures;
+
+	public SparkNote(int _id, String title, String content, Date initDate, ArrayList<String> enclosures) {
+		super();
+		this._id = _id;
+		this.title = title;
+		this.content = content;
+		this.initDate = initDate;
+		this.enclosures = enclosures;
+	}
+	
+	public SparkNote(int _id, String title, String content, Date initDate) {
+		super();
+		this._id = _id;
+		this.title = title;
+		this.content = content;
+		this.initDate = initDate;
+		this.enclosures = new ArrayList<String>();;
+	}
 
 	public SparkNote(String title, String content, ArrayList<String> enclosures) {
 		super();
@@ -31,6 +50,16 @@ public class SparkNote {
 		this.content = "";
 		this.initDate = new Date();
 		this.enclosures = new ArrayList<String>();
+	}
+	
+	
+
+	public int getId() {
+		return _id;
+	}
+
+	public void setId(int _id) {
+		this._id = _id;
 	}
 
 	public String getTitle() {

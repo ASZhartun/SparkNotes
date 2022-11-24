@@ -5,6 +5,27 @@
     android:orientation="vertical"
     android:padding="20dp" >
 
+    <LinearLayout
+        android:id="@+id/data_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right|center_vertical" >
+
+        <TextView
+            android:id="@+id/create_date_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="01.01.1970" />
+
+        <TextView
+            android:id="@+id/spark_note_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
     <EditText
         android:id="@+id/create_title_note"
         android:layout_width="match_parent"

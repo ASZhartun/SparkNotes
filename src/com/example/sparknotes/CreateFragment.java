@@ -12,12 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class CreateFragment extends Fragment {
 
 	EditNoteActionsListener ctx;
 
 	int position;
+	TextView dateHolder;
+	TextView idHolder;
 	EditText titleInput;
 	EditText contentInput;
 	ArrayList<AttachItem> attaches = new ArrayList<AttachItem>();
@@ -30,14 +33,21 @@ public class CreateFragment extends Fragment {
 
 		String title = "";
 		String content = "";
+		String date = "";
+		long position = 0;
 		if (getArguments() != null) {
 			title = getArguments().getString("title");
 			content = getArguments().getString("content");
-			position = getArguments().getInt("position");
+			date = getArguments().getString("date");
+			position = getArguments().getLong("position");
 		}
 		View v = inflater.inflate(R.layout.fragment_create, null);
+		dateHolder = (TextView) v.findViewById(R.id.create_date_holder);
+		idHolder = (TextView) v.findViewById(R.id.spark_note_id);
 		titleInput = (EditText) v.findViewById(R.id.create_title_note);
 		contentInput = (EditText) v.findViewById(R.id.create_note_content);
+		dateHolder.setText(date);
+		idHolder.setText(String.valueOf(position));
 		titleInput.setText(title);
 		contentInput.setText(content);
 

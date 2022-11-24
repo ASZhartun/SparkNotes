@@ -57,7 +57,7 @@ public class DummyNoteDB {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		
+
 	}
 
 }

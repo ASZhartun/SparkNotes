@@ -1,5 +1,6 @@
 package com.example.sparknotes;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import com.example.sparknotes.CreateFragment.EditNoteActionsListener;
@@ -8,6 +9,7 @@ import com.example.sparknotes.NoteListFragment.OpenNoteItemListener;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Note;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -28,6 +30,7 @@ import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements OpenNoteItemListener, EditNoteActionsListener {
 
+	SQLController dbController;
 	DummyNoteDB db = new DummyNoteDB();
 
 	ArrayList<SparkNote> exportList = new ArrayList<SparkNote>();
@@ -36,20 +39,22 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 	DrawerLayout drawer;
 	ListView mainMenu;
 	ActionBarDrawerToggle menuToggler;
-	
+
 	Fragment current;
+	SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM.yyyy");
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_main);
 
-		// Showing main note list
+		// Initiate DB
 		// BEGIN
-//		FragmentManager fm = getSupportFragmentManager();
-//		FragmentTransaction transaction = fm.beginTransaction();
-//		transaction.add(R.id.work_frame, new NoteListFragment());
-//		transaction.commit();
+		dbController = new SQLController(this);
+		dbController.open();
+		dbController.clear();
+		dbController.addAll(db.getNotes());
+
 		// END
 
 		// Showing main note list
@@ -128,8 +133,6 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 		return super.onOptionsItemSelected(item);
 	}
 
-
-
 	@Override
 	public void onBackPressed() {
 		boolean isNoteListFragment = current instanceof NoteListFragment;
@@ -137,7 +140,7 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 			enterToDrawerMenuPointBy(0);
 			NoteListFragment.isSelecting = false;
 		} else {
-			super.onBackPressed();			
+			super.onBackPressed();
 		}
 	}
 
@@ -202,7 +205,10 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 		default:
 //			Toast.makeText(this, "List of notes is opened", Toast.LENGTH_SHORT).show();
 			NoteListFragment noteListFragment = new NoteListFragment();
-			noteListFragment.setAdapter(new UserNoteAdapter(this, db.getNotes()));
+//			noteListFragment.setAdapter(new UserNoteAdapter(this, db.getNotes()));
+
+			noteListFragment.setAdapter(new SparkNoteCursorAdapter(this, dbController.getSparkNotes()));
+
 			fragment = noteListFragment;
 			break;
 		}
@@ -217,16 +223,33 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 	}
 
 	@Override
-	public void openNote(int position) {
-		SparkNote note = db.getNoteById(position);
-		Bundle bundle = new Bundle();
-		bundle.putString("title", note.getTitle());
-		bundle.putString("content", note.getContent());
-		bundle.putInt("position", position);
-		CreateFragment fragment = new CreateFragment();
-		fragment.setArguments(bundle);
-		getSupportFragmentManager().beginTransaction().replace(R.id.work_frame, fragment).commit();
-		current = fragment;
+	public void openNote(long position) {
+		Toast.makeText(this, "position is " + position, Toast.LENGTH_SHORT).show();
+//		SparkNote note = db.getNoteById(position);
+//		Bundle bundle = new Bundle();
+//		bundle.putString("title", note.getTitle());
+//		bundle.putString("content", note.getContent());
+//		bundle.putString("date", sdf.format(note.getInitDate()));
+//		bundle.putInt("position", position);
+		Cursor cursor = dbController.getNoteById(position);
+		if (cursor != null) {
+			Bundle bundle = new Bundle();
+			int count = cursor.getCount();
+			int columnCount = cursor.getColumnCount();
+
+			bundle.putLong("position", Long.parseLong(cursor.getString(0)));
+			bundle.putString("title", cursor.getString(1));
+			bundle.putString("content", cursor.getString(2));
+			bundle.putString("date", cursor.getString(3));
+
+			
+			CreateFragment fragment = new CreateFragment();
+			fragment.setArguments(bundle);
+			getSupportFragmentManager().beginTransaction().replace(R.id.work_frame, fragment).commit();
+			current = fragment;
+		} else return;
+
+		
 	}
 
 	@Override
