@@ -87,6 +87,7 @@ public class SQLController {
 //					null, null, null, null);
 //			int count = cursor.getCount();
 		cursor.moveToFirst();
+		database.setTransactionSuccessful();
 		database.endTransaction();
 		return cursor;
 
@@ -116,8 +117,11 @@ public class SQLController {
 		database.endTransaction();
 	}
 
-	public void deleteNote(String title, String content, String date, ArrayList<AttachItem> attaches) {
-		// TODO Auto-generated method stub
+	public void deleteNote(Long id) {
+		database.beginTransaction();
+		database.delete(DBHelper.TABLE_SPARK_NOTES, "_id=?", new String[] { String.valueOf(id) });
+		database.setTransactionSuccessful();
+		database.endTransaction();
 
 	}
 }

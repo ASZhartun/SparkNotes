@@ -19,9 +19,9 @@ import android.widget.Toast;
 
 public class NoteListFragment extends ListFragment {
 
-	OpenNoteItemListener ctx;
+	ActionNoteItemListener ctx;
 	ListView lv;
-	
+
 	public static ArrayList<Long> selectingItemIDs = new ArrayList<Long>();
 
 	public static Boolean isSelecting = false;
@@ -30,7 +30,7 @@ public class NoteListFragment extends ListFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		ctx = (OpenNoteItemListener) getActivity();
+		ctx = (ActionNoteItemListener) getActivity();
 		setHasOptionsMenu(true);
 //		adapter = new UserNoteAdapter(getActivity(), db.getNotes());
 		setListAdapter(adapter);
@@ -44,7 +44,7 @@ public class NoteListFragment extends ListFragment {
 				CheckBox checkNote = (CheckBox) view.findViewById(R.id.item_selector);
 				checkNote.setVisibility(View.VISIBLE);
 				checkNote.setChecked(true);
-				
+
 				selectingItemIDs.add(id);
 				return false;
 			}
@@ -58,11 +58,11 @@ public class NoteListFragment extends ListFragment {
 		inflater.inflate(R.menu.main, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_bar_delete_item) {
-			
+			ctx.deleteNotes(selectingItemIDs);
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -76,7 +76,7 @@ public class NoteListFragment extends ListFragment {
 			CheckBox checkNote = (CheckBox) v.findViewById(R.id.item_selector);
 			checkNote.setVisibility(View.VISIBLE);
 			checkNote.setChecked(true);
-			
+
 			selectingItemIDs.add(id);
 		} else {
 			Toast.makeText(getActivity(), "Короткий клик на позиции" + id, Toast.LENGTH_SHORT).show();
@@ -92,9 +92,4 @@ public class NoteListFragment extends ListFragment {
 	public void setAdapter(SparkNoteCursorAdapter adapter) {
 		this.adapter = adapter;
 	}
-
-	interface OpenNoteItemListener {
-		public void openNote(long position);
-	}
-
 }

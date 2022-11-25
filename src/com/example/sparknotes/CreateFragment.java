@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 public class CreateFragment extends Fragment {
 
-	EditNoteActionsListener ctx;
+	ActionNoteItemListener ctx;
 
 	long position;
 	TextView dateHolder;
@@ -27,7 +27,7 @@ public class CreateFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		ctx = (EditNoteActionsListener) getActivity();
+		ctx = (ActionNoteItemListener) getActivity();
 
 		setHasOptionsMenu(true);
 
@@ -66,14 +66,10 @@ public class CreateFragment extends Fragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_bar_confirm_item) {
-			ctx.save(Long.parseLong(idHolder.getText().toString()), titleInput.getText().toString(), contentInput.getText().toString(),
-					dateHolder.getText().toString(), attaches);
+			ctx.save(Long.parseLong(idHolder.getText().toString()), titleInput.getText().toString(),
+					contentInput.getText().toString(), dateHolder.getText().toString(), attaches);
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	interface EditNoteActionsListener {
-		void save(long position, String title, String content, String date, ArrayList<AttachItem> attaches);
 	}
 
 }

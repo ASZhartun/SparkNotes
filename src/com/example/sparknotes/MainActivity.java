@@ -3,23 +3,14 @@ package com.example.sparknotes;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import com.example.sparknotes.CreateFragment.EditNoteActionsListener;
-import com.example.sparknotes.NoteListFragment.OpenNoteItemListener;
 
-import android.app.SearchManager;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.ContactsContract.CommonDataKinds.Note;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,7 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity implements OpenNoteItemListener, EditNoteActionsListener {
+public class MainActivity extends FragmentActivity implements ActionNoteItemListener {
 
 	SQLController dbController;
 	DummyNoteDB db = new DummyNoteDB();
@@ -266,6 +257,20 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 		} else {
 			dbController.saveNote(title, content, date, attaches);
 		}
+		enterToDrawerMenuPointBy(0);
+	}
+
+	@Override
+	public void deleteNotes(ArrayList<Long> positions) {
+		for (int i = 0; i < positions.size(); i++) {
+			dbController.deleteNote(positions.get(i));
+		}
+		enterToDrawerMenuPointBy(0);
+	}
+
+	@Override
+	public void deleteNote(Long id) {
+		dbController.deleteNote(id);
 		enterToDrawerMenuPointBy(0);
 	}
 }
