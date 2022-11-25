@@ -19,7 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity implements ActionNoteItemListener {
+public class MainActivity extends FragmentActivity implements ActionNoteItemListener, SupportFragmentHandlerListener {
 
 	SQLController dbController;
 	DummyNoteDB db = new DummyNoteDB();
@@ -43,8 +43,8 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		// BEGIN
 		dbController = new SQLController(this);
 		dbController.open();
-		dbController.clear();
-		dbController.addAll(db.getNotes());
+//		dbController.clear();
+//		dbController.addAll(db.getNotes());
 
 		// END
 
@@ -265,6 +265,8 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		for (int i = 0; i < positions.size(); i++) {
 			dbController.deleteNote(positions.get(i));
 		}
+		NoteListFragment.selectingItemIDs.clear();
+		NoteListFragment.isSelecting = false;
 		enterToDrawerMenuPointBy(0);
 	}
 
@@ -272,5 +274,13 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	public void deleteNote(Long id) {
 		dbController.deleteNote(id);
 		enterToDrawerMenuPointBy(0);
+	}
+
+	@Override
+	public void refreshZeroSelectedListViewItems() {
+		if (NoteListFragment.selectingItemIDs.size() == 0) {
+			NoteListFragment.isSelecting = false;
+			enterToDrawerMenuPointBy(0);
+			};
 	}
 }

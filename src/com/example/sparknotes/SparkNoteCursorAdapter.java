@@ -15,6 +15,7 @@ import android.widget.Toast;
 public class SparkNoteCursorAdapter extends CursorAdapter{
 	Context ctx;
 	SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM.yyyy");
+	long currentID = 0;
 
 	public SparkNoteCursorAdapter(Context context, Cursor c) {
 		super(context, c);
@@ -32,7 +33,7 @@ public class SparkNoteCursorAdapter extends CursorAdapter{
 		title.setText(cursor.getString(1));
 		content.setText(cursor.getString(2));
 		date.setText(cursor.getString(3));
-		
+//		checkNote.setText(cursor.getString(0));
 //		title.setText(cursor.getColumnIndexOrThrow(DBHelper.TABLE_SPARK_NOTES_TITLE));
 //		content.setText(cursor.getColumnIndexOrThrow(DBHelper.TABLE_SPARK_NOTES_CONTENT));
 //		date.setText(sdf.format(cursor.getColumnIndexOrThrow(DBHelper.TABLE_SPARK_NOTES_INIT_DATE)));
@@ -50,6 +51,7 @@ public class SparkNoteCursorAdapter extends CursorAdapter{
 					current.setVisibility(View.GONE);
 					Toast.makeText(ctx, "Current state of checkbox is " + current.isChecked(),
 							Toast.LENGTH_SHORT).show();
+					current.setChecked(false);
 				}
 			}
 		});

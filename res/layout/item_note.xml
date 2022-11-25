@@ -49,6 +49,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="33dp" />
+        android:layout_marginRight="33dp"
+        android:focusable="false" />
+
+    <TextView
+        android:id="@+id/item_id_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -39,13 +39,15 @@ public class NoteListFragment extends ListFragment {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				Toast.makeText(getActivity(), "Добавил позиции в статик эрэй" + position, Toast.LENGTH_SHORT).show();
+//				Toast.makeText(getActivity(), "Добавил позиции в статик эрэй" + position, Toast.LENGTH_SHORT).show();
 				isSelecting = true;
 				CheckBox checkNote = (CheckBox) view.findViewById(R.id.item_selector);
+
 				checkNote.setVisibility(View.VISIBLE);
 				checkNote.setChecked(true);
 
 				selectingItemIDs.add(id);
+
 				return false;
 			}
 		});
@@ -71,15 +73,16 @@ public class NoteListFragment extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 
+		CheckBox checkNote = (CheckBox) v.findViewById(R.id.item_selector);
+
 		if (isSelecting) {
-			Toast.makeText(getActivity(), "Добавил позиции в статик эрэй" + id, Toast.LENGTH_SHORT).show();
-			CheckBox checkNote = (CheckBox) v.findViewById(R.id.item_selector);
+			checkNote = (CheckBox) v.findViewById(R.id.item_selector);
 			checkNote.setVisibility(View.VISIBLE);
 			checkNote.setChecked(true);
 
 			selectingItemIDs.add(id);
+
 		} else {
-			Toast.makeText(getActivity(), "Короткий клик на позиции" + id, Toast.LENGTH_SHORT).show();
 			ctx.openNote(id);
 		}
 
