@@ -18,7 +18,7 @@ public class CreateFragment extends Fragment {
 
 	EditNoteActionsListener ctx;
 
-	int position;
+	long position;
 	TextView dateHolder;
 	TextView idHolder;
 	EditText titleInput;
@@ -66,7 +66,7 @@ public class CreateFragment extends Fragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_bar_confirm_item) {
-			ctx.save(position, titleInput.getText().toString(), contentInput.getText().toString(),
+			ctx.save(Long.parseLong(idHolder.getText().toString()), titleInput.getText().toString(), contentInput.getText().toString(),
 					dateHolder.getText().toString(), attaches);
 		}
 		return super.onOptionsItemSelected(item);

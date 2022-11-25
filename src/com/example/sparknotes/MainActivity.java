@@ -97,17 +97,17 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 		// END
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main, menu);
-
-		menu.removeItem(R.id.action_bar_confirm_item);
-		menu.removeItem(R.id.action_bar_attach_item);
-		menu.removeItem(R.id.action_bar_back_item);
-
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		MenuInflater inflater = getMenuInflater();
+//		inflater.inflate(R.menu.main, menu);
+//
+//		menu.removeItem(R.id.action_bar_confirm_item);
+//		menu.removeItem(R.id.action_bar_attach_item);
+//		menu.removeItem(R.id.action_bar_back_item);
+//
+//		return true;
+//	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -139,6 +139,8 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 		if (NoteListFragment.isSelecting || !(isNoteListFragment)) {
 			enterToDrawerMenuPointBy(0);
 			NoteListFragment.isSelecting = false;
+			NoteListFragment.selectingItemIDs.clear();
+			Toast.makeText(this, "Clean static array", Toast.LENGTH_SHORT).show();
 		} else {
 			super.onBackPressed();
 		}
@@ -247,14 +249,12 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 			bundle.putString("content", cursor.getString(2));
 			bundle.putString("date", cursor.getString(3));
 
-			
 			CreateFragment fragment = new CreateFragment();
 			fragment.setArguments(bundle);
 			getSupportFragmentManager().beginTransaction().replace(R.id.work_frame, fragment).commit();
 			current = fragment;
-		} else return;
-
-		
+		} else
+			return;
 	}
 
 	@Override
@@ -262,7 +262,7 @@ public class MainActivity extends FragmentActivity implements OpenNoteItemListen
 		Toast.makeText(this, "Doletelo v save activity", Toast.LENGTH_SHORT).show();
 //		db.updateNote(position, title, content);
 		if (position > 0) {
-			dbController.updateNote(position, title, content, date, attaches);			
+			dbController.updateNote(position, title, content, date, attaches);
 		} else {
 			dbController.saveNote(title, content, date, attaches);
 		}

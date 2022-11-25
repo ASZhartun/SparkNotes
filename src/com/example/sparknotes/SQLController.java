@@ -2,6 +2,7 @@ package com.example.sparknotes;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -34,7 +35,7 @@ public class SQLController {
 	public Cursor getSparkNotes() {
 		String[] allColumns = new String[] { db.TABLE_SPARK_NOTES_ID, db.TABLE_SPARK_NOTES_TITLE,
 				db.TABLE_SPARK_NOTES_CONTENT, db.TABLE_SPARK_NOTES_INIT_DATE };
-		Cursor c = database.query(db.TABLE_SPARK_NOTES, allColumns, null, null, null, null, null);
+		Cursor c = database.query(db.TABLE_SPARK_NOTES, allColumns, null, null, null, null, "_id DESC");
 		if (c != null) {
 			c.moveToFirst();
 		}
@@ -89,17 +90,34 @@ public class SQLController {
 		database.endTransaction();
 		return cursor;
 
-
-
 	}
 
 	public void updateNote(long position, String title, String content, String date, ArrayList<AttachItem> attaches) {
-		// TODO Auto-generated method stub
-		
+		database.beginTransaction();
+//		String[] selectionArgs = new String[] { title, content, date, String.valueOf(position) };
+//		String sql = "UPDATE spark_notes SET title = ?, content = ?, init_date = ? WHERE _id = ?";
+		ContentValues values = new ContentValues();
+		values.put("title", title);
+		values.put("content", content);
+		int update = database.update(DBHelper.TABLE_SPARK_NOTES, values, "_id = ?", new String[] { String.valueOf(position) });
+		database.setTransactionSuccessful();
+		database.endTransaction();
 	}
 
 	public void saveNote(String title, String content, String date, ArrayList<AttachItem> attaches) {
+		database.beginTransaction();
+//		String sql = "INSERT INTO spark_notes (title,content , init_date) VALUES ( ? , ? , ? )";
+		ContentValues values = new ContentValues();
+		values.put("title", title);
+		values.put("content", content);
+		values.put("init_date", sdf.format(new Date()));
+		long insert = database.insert(DBHelper.TABLE_SPARK_NOTES, null, values);
+		database.setTransactionSuccessful();
+		database.endTransaction();
+	}
+
+	public void deleteNote(String title, String content, String date, ArrayList<AttachItem> attaches) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
