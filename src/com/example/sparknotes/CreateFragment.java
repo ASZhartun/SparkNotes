@@ -68,6 +68,8 @@ public class CreateFragment extends Fragment {
 		if (item.getItemId() == R.id.action_bar_confirm_item) {
 			ctx.save(Long.parseLong(idHolder.getText().toString()), titleInput.getText().toString(),
 					contentInput.getText().toString(), dateHolder.getText().toString(), attaches);
+		} else if (item.getItemId() == R.id.action_bar_delete_item) {
+			ctx.deleteNote(Long.parseLong(idHolder.getText().toString()));
 		}
 		return super.onOptionsItemSelected(item);
 	}
