@@ -3,7 +3,7 @@ package com.example.sparknotes;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -61,18 +61,18 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 		// Create object with Listener for button of actionBar which open or close
 		// drawer menu
-		menuToggler = new ActionBarDrawerToggle(this, // родительская Activity
-				drawer, // объект DrawerLayout
-				R.drawable.actionbar_burger_item, // иконка панели для замены 'Up'
-				R.string.main_menu_open, // описание "open drawer"
-				R.string.main_menu_close // описание "close drawer"
+		menuToggler = new ActionBarDrawerToggle(this, // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Activity
+				drawer, // пїЅпїЅпїЅпїЅпїЅпїЅ DrawerLayout
+				R.drawable.actionbar_burger_item, // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ 'Up'
+				R.string.main_menu_open, // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ "open drawer"
+				R.string.main_menu_close // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ "close drawer"
 		) {
 			public void onDrawerClosed(View view) {
-				invalidateOptionsMenu(); // вызов onPrepareOptionsMenu()
+				invalidateOptionsMenu(); // пїЅпїЅпїЅпїЅпїЅ onPrepareOptionsMenu()
 			}
 
 			public void onDrawerOpened(View drawerView) {
-				invalidateOptionsMenu(); // вызов onPrepareOptionsMenu()
+				invalidateOptionsMenu(); // пїЅпїЅпїЅпїЅпїЅ onPrepareOptionsMenu()
 			}
 		};
 		// set listeners for drawer node by single object
@@ -102,8 +102,8 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Кнопки home/up ActionBar’a открывают/закрывают панель.
-		// ActionBarDrawerToggle заботится об этом.
+		// пїЅпїЅпїЅпїЅпїЅпїЅ home/up ActionBarпїЅa пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
+		// ActionBarDrawerToggle пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ.
 		if (menuToggler.onOptionsItemSelected(item)) {
 			return true;
 		}
@@ -119,7 +119,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			enterToDrawerMenuPointBy(7);
 			break;
 		default:
-			Toast.makeText(this, "Не назначено", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", Toast.LENGTH_SHORT).show();
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -144,14 +144,14 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		// Синхронизируем состояние переключателя после onRestoreInstanceState
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ onRestoreInstanceState
 		menuToggler.syncState();
 	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		// Передаем конфигурацию в drawer toggls
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ drawer toggls
 		menuToggler.onConfigurationChanged(newConfig);
 	}
 
@@ -165,7 +165,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	}
 
 	private void enterToDrawerMenuPointBy(int position) {
-		Fragment fragment;
+		Fragment fragment = new NoteListFragment();
 		switch (position) {
 		case 1:
 //			Toast.makeText(this, "position is 1", Toast.LENGTH_SHORT).show();
@@ -193,10 +193,13 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			break;
 		case 7:
 //			Toast.makeText(this, "position is 7", Toast.LENGTH_SHORT).show();
-			fragment = new CreateFragment();
-			Bundle bundle = new Bundle();
-			bundle.putBoolean("isOpen", false);
-			fragment.setArguments(bundle);
+//			fragment = new CreateFragment();
+//			Bundle bundle = new Bundle();
+//			bundle.putBoolean("isOpen", false);
+//			fragment.setArguments(bundle);
+			
+			Intent intent = new Intent(this, CreateActivity.class);
+			startActivity(intent);
 			break;
 		default:
 //			Toast.makeText(this, "List of notes is opened", Toast.LENGTH_SHORT).show();

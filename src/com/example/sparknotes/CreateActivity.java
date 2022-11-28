@@ -31,8 +31,12 @@ public class CreateActivity extends FragmentActivity {
 		String content = "";
 		String date = "";
 		long position = 0;
-		
-		long currentID = arg0.getLong("noteID");
+		long currentID;
+		try {
+			currentID = arg0.getLong("noteID");			
+		} catch (Exception e) {
+			currentID = 0;
+		}
 		if (currentID > 0) {
 			Cursor currentNote = dbController.getNoteById(currentID);
 			title = currentNote.getString(1);
