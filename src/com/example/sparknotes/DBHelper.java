@@ -44,7 +44,16 @@ public class DBHelper extends SQLiteOpenHelper {
 //				"                           NOT NULL" + 
 //				");";
 
-	public DBHelper(Context context) {
+	private static DBHelper instance;
+	
+	public static DBHelper getInstance(Context context) {
+		if (instance == null) {
+			instance = new DBHelper(context);
+		}
+		return instance;
+	}
+	
+	private DBHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 		// TODO Auto-generated constructor stub
 	}

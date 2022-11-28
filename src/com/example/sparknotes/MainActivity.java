@@ -41,7 +41,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 		// Initiate DB
 		// BEGIN
-		dbController = new SQLController(this);
+		dbController = new SQLController(getApplicationContext());
 		dbController.open();
 //		dbController.clear();
 //		dbController.addAll(db.getNotes());
@@ -283,4 +283,13 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			enterToDrawerMenuPointBy(0);
 			};
 	}
+
+	@Override
+	protected void onStop() {
+		dbController.close();
+		super.onStop();
+	}
+	
+	
 }
+
