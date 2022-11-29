@@ -106,6 +106,8 @@ public class SQLController {
 	}
 
 	public void saveNote(String title, String content, String date, ArrayList<AttachItem> attaches) {
+		this.open();
+		database = db.getWritableDatabase();
 		database.beginTransaction();
 //		String sql = "INSERT INTO spark_notes (title,content , init_date) VALUES ( ? , ? , ? )";
 		ContentValues values = new ContentValues();
@@ -115,6 +117,7 @@ public class SQLController {
 		long insert = database.insert(DBHelper.TABLE_SPARK_NOTES, null, values);
 		database.setTransactionSuccessful();
 		database.endTransaction();
+		database.close();
 	}
 
 	public void deleteNote(Long id) {

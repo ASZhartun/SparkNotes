@@ -1,30 +1,39 @@
 package com.example.sparknotes;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CreateActivity extends FragmentActivity {
-	
+
 	SQLController dbController;
-	
+
 	long position;
 	TextView dateHolder;
 	TextView idHolder;
 	EditText titleInput;
 	EditText contentInput;
 	ArrayList<AttachItem> attaches = new ArrayList<AttachItem>();
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM.yyyy");
+
 	@Override
 	protected void onCreate(Bundle arg0) {
 		setContentView(R.layout.fragment_create);
-		
-		dbController = new SQLController(null);
+
+		dbController = new SQLController(this);
 		super.onCreate(arg0);
 
 		String title = "";
@@ -33,7 +42,7 @@ public class CreateActivity extends FragmentActivity {
 		long position = 0;
 		long currentID;
 		try {
-			currentID = arg0.getLong("noteID");			
+			currentID = arg0.getLong("noteID");
 		} catch (Exception e) {
 			currentID = 0;
 		}
@@ -58,5 +67,32 @@ public class CreateActivity extends FragmentActivity {
 
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.create, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_bar_confirm_item:
+			save(0, titleInput.getText().toString(), contentInput.getText().toString(), sdf.format(new Date()), attaches);
+			finish();
+			break;
+		case R.id.action_bar_delete_item:
+		default:
+			finish();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 	
+	public void save(long position, String title, String content, String date, ArrayList<AttachItem> attaches) {
+		Toast.makeText(this, "Doletelo v save activity", Toast.LENGTH_SHORT).show();
+		dbController.saveNote(title, content, date, attaches);
+		dbController.close();
+	}
+
 }

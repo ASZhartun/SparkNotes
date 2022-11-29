@@ -61,18 +61,18 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 		// Create object with Listener for button of actionBar which open or close
 		// drawer menu
-		menuToggler = new ActionBarDrawerToggle(this, // ������������ Activity
-				drawer, // ������ DrawerLayout
-				R.drawable.actionbar_burger_item, // ������ ������ ��� ������ 'Up'
-				R.string.main_menu_open, // �������� "open drawer"
-				R.string.main_menu_close // �������� "close drawer"
+		menuToggler = new ActionBarDrawerToggle(this, 
+				drawer, 
+				R.drawable.actionbar_burger_item, 
+				R.string.main_menu_open, 
+				R.string.main_menu_close 
 		) {
 			public void onDrawerClosed(View view) {
-				invalidateOptionsMenu(); // ����� onPrepareOptionsMenu()
+				invalidateOptionsMenu();
 			}
 
 			public void onDrawerOpened(View drawerView) {
-				invalidateOptionsMenu(); // ����� onPrepareOptionsMenu()
+				invalidateOptionsMenu();
 			}
 		};
 		// set listeners for drawer node by single object
@@ -88,22 +88,17 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		// END
 	}
 
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		MenuInflater inflater = getMenuInflater();
-//		inflater.inflate(R.menu.main, menu);
-//
-//		menu.removeItem(R.id.action_bar_confirm_item);
-//		menu.removeItem(R.id.action_bar_attach_item);
-//		menu.removeItem(R.id.action_bar_back_item);
-//
-//		return true;
-//	}
+	@Override
+	protected void onResume() {
+		dbController.open();
+		enterToDrawerMenuPointBy(0);
+		super.onResume();
+	}
+
+
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// ������ home/up ActionBar�a ���������/��������� ������.
-		// ActionBarDrawerToggle ��������� �� ����.
 		if (menuToggler.onOptionsItemSelected(item)) {
 			return true;
 		}
@@ -119,7 +114,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			enterToDrawerMenuPointBy(7);
 			break;
 		default:
-			Toast.makeText(this, "�� ���������", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", Toast.LENGTH_SHORT).show();
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -144,14 +139,12 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		// �������������� ��������� ������������� ����� onRestoreInstanceState
 		menuToggler.syncState();
 	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		// �������� ������������ � drawer toggls
 		menuToggler.onConfigurationChanged(newConfig);
 	}
 
