@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        
+    <string-array name="attach_file_type_points">
+        <item name="file">Существующий файл в системе</item>
+        <item name="photo">Сделать фотографию</item>
+        <item name="voice">Записать голос</item>
+    </string-array>
+    
+    <string-array name="values_attach_file_type_points">
+        <item >file</item>
+        <item >photo</item>
+        <item >voice</item>
+    </string-array>
+    
+</resources>

@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -26,7 +28,7 @@ public class CreateActivity extends FragmentActivity {
 	EditText titleInput;
 	EditText contentInput;
 	ArrayList<AttachItem> attaches = new ArrayList<AttachItem>();
-	
+
 	SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM.yyyy");
 
 	@Override
@@ -78,8 +80,12 @@ public class CreateActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_bar_confirm_item:
-			save(0, titleInput.getText().toString(), contentInput.getText().toString(), sdf.format(new Date()), attaches);
+			save(0, titleInput.getText().toString(), contentInput.getText().toString(), sdf.format(new Date()),
+					attaches);
 			finish();
+			break;
+		case R.id.action_bar_attach_item:
+			chooseTypeOfAttachingFile();
 			break;
 		case R.id.action_bar_delete_item:
 		default:
@@ -88,11 +94,33 @@ public class CreateActivity extends FragmentActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	public void save(long position, String title, String content, String date, ArrayList<AttachItem> attaches) {
 		Toast.makeText(this, "Doletelo v save activity", Toast.LENGTH_SHORT).show();
 		dbController.saveNote(title, content, date, attaches);
 		dbController.close();
 	}
 
+	public void chooseTypeOfAttachingFile() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		final String[] points = getResources().getStringArray(R.array.attach_file_type_points);
+		final String[] values = getResources().getStringArray(R.array.values_attach_file_type_points);
+		builder.setTitle("Выберите тип файла, который хотите прикрепить к заметке:").setItems(
+				points, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						Toast.makeText(getApplicationContext(), "position is " + values[which], Toast.LENGTH_SHORT).show();
+						dialog.cancel();
+					}
+				}).setNegativeButton("Decline", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Toast.makeText(getApplicationContext(), "Action was declined", Toast.LENGTH_SHORT).show();
+						dialog.cancel();
+					}
+				}).setCancelable(false).show();
+	}
 }
