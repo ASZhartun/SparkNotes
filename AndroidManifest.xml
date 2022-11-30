@@ -10,6 +10,8 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -26,6 +28,8 @@
             </intent-filter>
         </activity>
         <activity android:name="CreateActivity" >
+        </activity>
+        <activity android:name="BrowseActivity" >
         </activity>
     </application>
 

@@ -34,7 +34,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CreateActivity extends FragmentActivity {
+public class CreateActivity extends FragmentActivity implements AttachActionListener {
 
 	private static final int PICKFILE_RESULT_CODE = 0;
 
@@ -99,8 +99,9 @@ public class CreateActivity extends FragmentActivity {
 //		case PICKFILE_RESULT_CODE:
 //			String path = data.getData().getPath();
 		try {
+			String type = getTypeFrom(data);
 			File newFile = copy(data);
-			attaches.add(new AttachItem(newFile.getPath(), newFile));
+			attaches.add(new AttachItem(newFile.getPath(), newFile, type));
 			attachAdapter.notifyDataSetChanged();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -190,9 +191,8 @@ public class CreateActivity extends FragmentActivity {
 	}
 
 	private File copy(Intent data) throws FileNotFoundException, IOException {
-		String type = getContentResolver().getType(data.getData());
-		String extensionFromMimeType = MimeTypeMap.getSingleton().getExtensionFromMimeType(type);
-		File destination = createFile("." + extensionFromMimeType);
+		String extension = getExtensionFrom(data);
+		File destination = createFile("." + extension);
 
 		InputStream fis = getContentResolver().openInputStream(data.getData());
 		FileOutputStream out = new FileOutputStream(destination, false);
@@ -204,17 +204,45 @@ public class CreateActivity extends FragmentActivity {
 		return destination;
 	}
 
+	private String getExtensionFrom(Intent data) {
+		String extensionFromMimeType = MimeTypeMap.getSingleton().getExtensionFromMimeType(getTypeFrom(data));
+		return extensionFromMimeType;
+	}
+	
+	private String getTypeFrom(Intent data) {
+		String type = getContentResolver().getType(data.getData());
+		return type;
+	}
+
 	private File createFile(String suffix) {
 
 		File newAttach = new File(getFilesDir(), sdf.format(new Date()).trim() + suffix);
 		if (!newAttach.exists()) {
 			try {
-				boolean wasCreated = newAttach.createNewFile();
+				newAttach.createNewFile();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		return newAttach;
+	}
+
+	@Override
+	public void deleteAttach(int index) {
+		attaches.remove(index);
+		attachAdapter.notifyDataSetChanged();
+
+	}
+
+	@Override
+	public void browseAttach(int index) {
+		AttachItem attachItem = attaches.get(index);
+		String path = attachItem.getPath();
+		String type = attachItem.getType();
+		Intent intent = new Intent(this, BrowseActivity.class);
+		intent.putExtra("type", type);
+		intent.putExtra("path", path);
+		startActivity(intent);
 	}
 }
