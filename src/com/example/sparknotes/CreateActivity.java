@@ -1,10 +1,14 @@
 package com.example.sparknotes;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,13 +19,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.os.EnvironmentCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -44,7 +51,7 @@ public class CreateActivity extends FragmentActivity {
 	CreateNoteAttachAdapter attachAdapter;
 	ArrayList<AttachItem> attaches = new ArrayList<AttachItem>();
 
-	SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM.yyyy");
+	SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy_hh_mm ");
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -88,23 +95,23 @@ public class CreateActivity extends FragmentActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch (resultCode) {
-		case PICKFILE_RESULT_CODE:
-			String path = data.getData().getPath();
-			File sourceFile = new File(path);
-			File newAttach = new File(getFilesDir().getAbsolutePath() + "/attaches/" + sdf.format(new Date()));
-			try {
-				copy(sourceFile, newAttach);
-				attaches.add(new AttachItem(newAttach.getPath(), newAttach));
-				attachAdapter.notifyDataSetChanged();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
-		default:
-			Toast.makeText(this, "Weird result of CreateActivity", Toast.LENGTH_LONG).show();
+//		switch (requestCode) {
+//		case PICKFILE_RESULT_CODE:
+//			String path = data.getData().getPath();
+		try {
+			File newFile = copy(data);
+			attaches.add(new AttachItem(newFile.getPath(), newFile));
+			attachAdapter.notifyDataSetChanged();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+//			break;
+//		default:
+//			Toast.makeText(this, "Weird result of CreateActivity", Toast.LENGTH_LONG).show();
+//		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
@@ -141,6 +148,7 @@ public class CreateActivity extends FragmentActivity {
 	}
 
 	public void chooseTypeOfAttachingFile() {
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		final String[] points = getResources().getStringArray(R.array.attach_file_type_points);
 		final String[] values = getResources().getStringArray(R.array.values_attach_file_type_points);
@@ -181,20 +189,32 @@ public class CreateActivity extends FragmentActivity {
 		}
 	}
 
-	private void copy(File source, File destination) throws IOException {
+	private File copy(Intent data) throws FileNotFoundException, IOException {
+		String type = getContentResolver().getType(data.getData());
+		String extensionFromMimeType = MimeTypeMap.getSingleton().getExtensionFromMimeType(type);
+		File destination = createFile("." + extensionFromMimeType);
 
-		FileChannel in = new FileInputStream(source).getChannel();
-		FileChannel out = new FileOutputStream(destination).getChannel();
-
-		try {
-			in.transferTo(0, in.size(), out);
-		} catch (Exception e) {
-			// post to log
-		} finally {
-			if (in != null)
-				in.close();
-			if (out != null)
-				out.close();
+		InputStream fis = getContentResolver().openInputStream(data.getData());
+		FileOutputStream out = new FileOutputStream(destination, false);
+		int temp = 0;
+		while ((temp = fis.read()) != -1) {
+			out.write(temp);
 		}
+		out.close();
+		return destination;
+	}
+
+	private File createFile(String suffix) {
+
+		File newAttach = new File(getFilesDir(), sdf.format(new Date()).trim() + suffix);
+		if (!newAttach.exists()) {
+			try {
+				boolean wasCreated = newAttach.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return newAttach;
 	}
 }
