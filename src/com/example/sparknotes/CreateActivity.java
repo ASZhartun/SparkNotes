@@ -1,6 +1,7 @@
 package com.example.sparknotes;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,6 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -78,7 +80,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 			content = currentNote.getString(2);
 			date = currentNote.getString(3);
 			position = currentID;
-			
+
 			attaches = dbController.getAttachesByNoteId(currentID);
 		}
 		dateHolder = (TextView) findViewById(R.id.create_date_holder);
@@ -131,8 +133,8 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 		switch (item.getItemId()) {
 		case R.id.action_bar_confirm_item:
 			if (currentID > 0) {
-				update(currentID, titleInput.getText().toString(), contentInput.getText().toString(), dateHolder.getText().toString(),
-						attaches);
+				update(currentID, titleInput.getText().toString(), contentInput.getText().toString(),
+						dateHolder.getText().toString(), attaches);
 			} else {
 				save(titleInput.getText().toString(), contentInput.getText().toString(), sdf.format(new Date()),
 						attaches);
@@ -155,7 +157,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 		dbController.saveNote(title, content, date, attaches);
 		dbController.close();
 	}
-	
+
 	public void update(long position, String title, String content, String date, ArrayList<AttachItem> attaches) {
 		Toast.makeText(this, "Doletelo v save activity", Toast.LENGTH_SHORT).show();
 		dbController.updateNote(currentID, title, content, date, attaches);
@@ -204,7 +206,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 		}
 	}
 
-	private File copy(Intent data) throws FileNotFoundException, IOException {
+	private File copyAnotherWay(Intent data) throws FileNotFoundException, IOException {
 		String extension = getExtensionFrom(data);
 		File destination = createFile("." + extension);
 
@@ -218,11 +220,31 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 		return destination;
 	}
 
+	private File copy(Intent data) throws FileNotFoundException, IOException {
+		String extension = getExtensionFrom(data);
+		File destination = createFile("." + extension);
+		InputStream fis = getContentResolver().openInputStream(data.getData());
+		FileOutputStream out = new FileOutputStream(destination, false);
+		BufferedInputStream bufferedInputStream = new BufferedInputStream(fis, 8192);
+		BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(out, 8192);
+		byte[] bys = new byte[8192];
+		int len;
+		while ((len = bufferedInputStream.read(bys)) != -1){
+			bufferedOutputStream.write(bys);
+			bufferedOutputStream.flush();
+	        }
+	        fis.close();
+	        bufferedInputStream.close();
+	        out.close();
+	        bufferedOutputStream.close();
+		return destination;
+	}
+
 	private String getExtensionFrom(Intent data) {
 		String extensionFromMimeType = MimeTypeMap.getSingleton().getExtensionFromMimeType(getTypeFrom(data));
 		return extensionFromMimeType;
 	}
-	
+
 	private String getTypeFrom(Intent data) {
 		String type = getContentResolver().getType(data.getData());
 		return type;
@@ -249,7 +271,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 		dbController.deleteAttach(attachID);
 		attaches.remove(index);
 		attachAdapter.notifyDataSetChanged();
-		
+
 	}
 
 	@Override
