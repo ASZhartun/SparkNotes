@@ -118,6 +118,27 @@ public class SQLController {
 		database.setTransactionSuccessful();
 		database.endTransaction();
 		database.close();
+		
+		saveNoteAttaches(insert, attaches);
+	}
+
+	private void saveNoteAttaches(long insert, ArrayList<AttachItem> attaches) {
+		database = db.getWritableDatabase();
+		database.beginTransaction();
+		for (int i = 0; i < attaches.size(); i++) {
+			attaches.get(i).setSparkNoteId(insert);;
+			
+			ContentValues values = new ContentValues();
+			values.put("path", attaches.get(i).getPath());
+			values.put("type", attaches.get(i).getType());
+			values.put("spark_notes_id", attaches.get(i).getSparkNoteId());
+			
+			database.insert(DBHelper.TABLE_ATTACHES, null, values);
+		}
+		database.setTransactionSuccessful();
+		database.endTransaction();
+		database.close();
+		return;
 	}
 
 	public void deleteNote(Long id) {

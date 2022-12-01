@@ -20,6 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	static final String TABLE_ATTACHES = "attaches";
 	static final String TABLE_ATTACHES_ID = "_id";
 	static final String TABLE_ATTACHES_PATH = "path";
+	static final String TABLE_ATTACHES_TYPE = "type";
 	static final String TABLE_ATTACHES_SPARK_NOTES_ID = "spark_notes_id";
 
 	// SPARK NOTE TABLE CREATION STATEMENT
@@ -30,7 +31,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	// SPARK NOTE ATTACHES TABLE CREATION STATEMENT
 	private static final String CREATE_ATTACHES = "create table " + TABLE_ATTACHES + "(" + TABLE_ATTACHES_ID
 			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + TABLE_ATTACHES_PATH + " TEXT NOT NULL, "
-			+ TABLE_ATTACHES_SPARK_NOTES_ID
+			+ TABLE_ATTACHES_TYPE + " TEXT NOT NULL, " + TABLE_ATTACHES_SPARK_NOTES_ID
 			+ " INTEGER REFERENCES spark_notes (_id) ON DELETE CASCADE ON UPDATE CASCADE MATCH SIMPLE NOT NULL);";
 
 //		private static final String CREATE_ATTACHES_SAMPLE = "CREATE TABLE attaches (" + 

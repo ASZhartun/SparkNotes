@@ -101,7 +101,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 		try {
 			String type = getTypeFrom(data);
 			File newFile = copy(data);
-			attaches.add(new AttachItem(newFile.getPath(), newFile, type));
+			attaches.add(new AttachItem(0, newFile.getPath(), newFile, type));
 			attachAdapter.notifyDataSetChanged();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
