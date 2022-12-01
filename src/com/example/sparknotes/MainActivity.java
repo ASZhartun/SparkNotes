@@ -61,12 +61,8 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 		// Create object with Listener for button of actionBar which open or close
 		// drawer menu
-		menuToggler = new ActionBarDrawerToggle(this, 
-				drawer, 
-				R.drawable.actionbar_burger_item, 
-				R.string.main_menu_open, 
-				R.string.main_menu_close 
-		) {
+		menuToggler = new ActionBarDrawerToggle(this, drawer, R.drawable.actionbar_burger_item, R.string.main_menu_open,
+				R.string.main_menu_close) {
 			public void onDrawerClosed(View view) {
 				invalidateOptionsMenu();
 			}
@@ -94,8 +90,6 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		enterToDrawerMenuPointBy(0);
 		super.onResume();
 	}
-
-
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -190,7 +184,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 //			Bundle bundle = new Bundle();
 //			bundle.putBoolean("isOpen", false);
 //			fragment.setArguments(bundle);
-			
+
 			Intent intent = new Intent(this, CreateActivity.class);
 			startActivity(intent);
 			break;
@@ -218,30 +212,16 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	@Override
 	public void openNote(long position) {
 		Toast.makeText(this, "position is " + position, Toast.LENGTH_SHORT).show();
-//		SparkNote note = db.getNoteById(position);
-//		Bundle bundle = new Bundle();
-//		bundle.putString("title", note.getTitle());
-//		bundle.putString("content", note.getContent());
-//		bundle.putString("date", sdf.format(note.getInitDate()));
-//		bundle.putInt("position", position);
-		Cursor cursor = dbController.getNoteById(position);
-		if (cursor != null) {
-			Bundle bundle = new Bundle();
-			int count = cursor.getCount();
-			int columnCount = cursor.getColumnCount();
 
-			bundle.putBoolean("isOpen", true);
-			bundle.putLong("position", Long.parseLong(cursor.getString(0)));
-			bundle.putString("title", cursor.getString(1));
-			bundle.putString("content", cursor.getString(2));
-			bundle.putString("date", cursor.getString(3));
+		Bundle bundle = new Bundle();
+		bundle.putLong("noteID", position);
 
-			CreateFragment fragment = new CreateFragment();
-			fragment.setArguments(bundle);
-			getSupportFragmentManager().beginTransaction().replace(R.id.work_frame, fragment).commit();
-			current = fragment;
-		} else
-			return;
+		Intent intent = new Intent(this, CreateActivity.class);
+		intent.putExtras(bundle);
+		startActivity(intent);
+
+		enterToDrawerMenuPointBy(0);
+		return;
 	}
 
 	@Override
@@ -277,7 +257,8 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		if (NoteListFragment.selectingItemIDs.size() == 0) {
 			NoteListFragment.isSelecting = false;
 			enterToDrawerMenuPointBy(0);
-			};
+		}
+		;
 	}
 
 	@Override
@@ -285,7 +266,5 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		dbController.close();
 		super.onStop();
 	}
-	
-	
-}
 
+}

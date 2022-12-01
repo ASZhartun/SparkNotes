@@ -92,6 +92,23 @@ public class SQLController {
 		return cursor;
 
 	}
+	
+	public Cursor getAttachesByNoteId(long position) {
+		database = db.getReadableDatabase();
+		database.beginTransaction();
+		
+		Cursor cursor;
+		String pos = String.valueOf(position);
+		String[] selectionArgs = new String[] { pos };
+		String sql = "SELECT * FROM attaches WHERE _id=?";
+		cursor = database.rawQuery(sql, selectionArgs);
+		cursor.moveToFirst();
+		
+		database.setTransactionSuccessful();
+		database.endTransaction();
+		
+		return cursor;
+	}
 
 	public void updateNote(long position, String title, String content, String date, ArrayList<AttachItem> attaches) {
 		database.beginTransaction();

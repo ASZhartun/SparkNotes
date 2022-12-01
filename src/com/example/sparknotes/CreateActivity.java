@@ -39,6 +39,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 	private static final int PICKFILE_RESULT_CODE = 0;
 
 	Context ctx;
+	long currentID;
 
 	SQLController dbController;
 
@@ -54,20 +55,20 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 	SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy_hh_mm ");
 
 	@Override
-	protected void onCreate(Bundle arg0) {
+	protected void onCreate(Bundle bundle) {
 		setContentView(R.layout.fragment_create);
 		ctx = this;
 
 		dbController = new SQLController(this);
-		super.onCreate(arg0);
+		dbController.open();
+		super.onCreate(bundle);
 
 		String title = "";
 		String content = "";
 		String date = "";
 		long position = 0;
-		long currentID;
 		try {
-			currentID = arg0.getLong("noteID");
+			currentID = getIntent().getExtras().getLong("noteID");
 		} catch (Exception e) {
 			currentID = 0;
 		}
@@ -77,6 +78,20 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 			content = currentNote.getString(2);
 			date = currentNote.getString(3);
 			position = currentID;
+			
+			Cursor attachesCursor = dbController.getAttachesByNoteId(currentID);
+			int quantity = attachesCursor.getCount();
+			if (quantity > 0) {
+				for (int i = 0; i < quantity; i++ ) {
+					AttachItem attachItem = new AttachItem(
+							attachesCursor.getLong(0), 
+							attachesCursor.getString(1), 
+							new File(attachesCursor.getString(1)), 
+							attachesCursor.getString(2), 
+							attachesCursor.getLong(3));
+					attaches.add(attachItem);
+				}
+			}
 		}
 		dateHolder = (TextView) findViewById(R.id.create_date_holder);
 		idHolder = (TextView) findViewById(R.id.spark_note_id);
@@ -101,7 +116,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 		try {
 			String type = getTypeFrom(data);
 			File newFile = copy(data);
-			attaches.add(new AttachItem(0, newFile.getPath(), newFile, type));
+			attaches.add(new AttachItem(0, newFile.getPath(), newFile, type, currentID));
 			attachAdapter.notifyDataSetChanged();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -127,8 +142,14 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_bar_confirm_item:
-			save(0, titleInput.getText().toString(), contentInput.getText().toString(), sdf.format(new Date()),
-					attaches);
+			if (currentID > 0) {
+				update(currentID, titleInput.getText().toString(), contentInput.getText().toString(), dateHolder.getText().toString(),
+						attaches);
+			} else {
+				save(titleInput.getText().toString(), contentInput.getText().toString(), sdf.format(new Date()),
+						attaches);
+			}
+
 			finish();
 			break;
 		case R.id.action_bar_attach_item:
@@ -142,9 +163,15 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void save(long position, String title, String content, String date, ArrayList<AttachItem> attaches) {
+	public void save(String title, String content, String date, ArrayList<AttachItem> attaches) {
 		Toast.makeText(this, "Doletelo v save activity", Toast.LENGTH_SHORT).show();
 		dbController.saveNote(title, content, date, attaches);
+		dbController.close();
+	}
+	
+	public void update(long position, String title, String content, String date, ArrayList<AttachItem> attaches) {
+		Toast.makeText(this, "Doletelo v save activity", Toast.LENGTH_SHORT).show();
+		dbController.updateNote(currentID, title, content, date, attaches);
 		dbController.close();
 	}
 
