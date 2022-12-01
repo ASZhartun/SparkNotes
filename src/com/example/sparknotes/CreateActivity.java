@@ -280,7 +280,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 		String path = attachItem.getPath();
 		String type = attachItem.getType();
 		Intent intent = new Intent(this, BrowseActivity.class);
-		intent.putExtra("type", type);
+		intent.putExtra("type", type.split("\\/")[0]);
 		intent.putExtra("path", path);
 		startActivity(intent);
 	}
