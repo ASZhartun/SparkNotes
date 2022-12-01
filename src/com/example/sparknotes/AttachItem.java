@@ -10,6 +10,7 @@ public class AttachItem {
 	long sparkNoteId;
 	public AttachItem(long id, String path, File content, String type, long sparkNoteId) {
 		super();
+		this.id = id;
 		this.path = path;
 		this.content = content;
 		this.type = type;

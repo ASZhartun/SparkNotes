@@ -79,19 +79,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 			date = currentNote.getString(3);
 			position = currentID;
 			
-			Cursor attachesCursor = dbController.getAttachesByNoteId(currentID);
-			int quantity = attachesCursor.getCount();
-			if (quantity > 0) {
-				for (int i = 0; i < quantity; i++ ) {
-					AttachItem attachItem = new AttachItem(
-							attachesCursor.getLong(0), 
-							attachesCursor.getString(1), 
-							new File(attachesCursor.getString(1)), 
-							attachesCursor.getString(2), 
-							attachesCursor.getLong(3));
-					attaches.add(attachItem);
-				}
-			}
+			attaches = dbController.getAttachesByNoteId(currentID);
 		}
 		dateHolder = (TextView) findViewById(R.id.create_date_holder);
 		idHolder = (TextView) findViewById(R.id.spark_note_id);
@@ -149,7 +137,6 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 				save(titleInput.getText().toString(), contentInput.getText().toString(), sdf.format(new Date()),
 						attaches);
 			}
-
 			finish();
 			break;
 		case R.id.action_bar_attach_item:
@@ -257,9 +244,12 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 
 	@Override
 	public void deleteAttach(int index) {
+		dbController.open();
+		long attachID = attaches.get(index).getId();
+		dbController.deleteAttach(attachID);
 		attaches.remove(index);
 		attachAdapter.notifyDataSetChanged();
-
+		
 	}
 
 	@Override
