@@ -20,10 +20,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.os.EnvironmentCompat;
 import android.view.Menu;
@@ -39,6 +41,7 @@ import android.widget.Toast;
 public class CreateActivity extends FragmentActivity implements AttachActionListener {
 
 	private static final int PICKFILE_RESULT_CODE = 0;
+	private static final int TAKE_PICTURE_REQUEST = 1;
 
 	Context ctx;
 	long currentID;
@@ -55,6 +58,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 	ArrayList<AttachItem> attaches = new ArrayList<AttachItem>();
 
 	SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy_hh_mm ");
+	Uri takePhotoURI;
 
 	@Override
 	protected void onCreate(Bundle bundle) {
@@ -100,24 +104,24 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//		switch (requestCode) {
-//		case PICKFILE_RESULT_CODE:
-//			String path = data.getData().getPath();
-		try {
-			String type = getTypeFrom(data);
-			File newFile = copy(data);
-			attaches.add(new AttachItem(0, newFile.getPath(), newFile, type, currentID));
+		if (requestCode == TAKE_PICTURE_REQUEST && resultCode == RESULT_OK) {
+			attaches.add(new AttachItem(0, takePhotoURI.getPath(), null, "image", currentID));
 			attachAdapter.notifyDataSetChanged();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		} else {
+			try {
+				String type = getTypeFrom(data);
+				File newFile = copy(data);
+				attaches.add(new AttachItem(0, newFile.getPath(), newFile, type, currentID));
+				attachAdapter.notifyDataSetChanged();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-//			break;
-//		default:
-//			Toast.makeText(this, "Weird result of CreateActivity", Toast.LENGTH_LONG).show();
-//		}
+
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
@@ -198,12 +202,28 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 			intent = Intent.createChooser(intent, "CHOOSE_FILE");
 			startActivityForResult(intent, PICKFILE_RESULT_CODE);
 		} else if (string.equals("photo")) {
-
+			PackageManager packageManager = getPackageManager();
+			boolean isCamera = packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
+			if (!isCamera)
+				Toast.makeText(this, "Your device hasn't camera! Try to choose other position.", Toast.LENGTH_LONG)
+						.show();
+			else {
+				saveFullImage();
+			}
 		} else if (string.equals("voice")) {
 
 		} else {
 			Toast.makeText(getApplicationContext(), "was choosen something unexpectable!", Toast.LENGTH_SHORT).show();
 		}
+	}
+
+	private void saveFullImage() {
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		File file = createFile(".jpeg");
+		takePhotoURI = Uri.fromFile(file);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, takePhotoURI);
+		startActivityForResult(intent, TAKE_PICTURE_REQUEST);
+
 	}
 
 	private File copyAnotherWay(Intent data) throws FileNotFoundException, IOException {
@@ -223,20 +243,25 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 	private File copy(Intent data) throws FileNotFoundException, IOException {
 		String extension = getExtensionFrom(data);
 		File destination = createFile("." + extension);
-		InputStream fis = getContentResolver().openInputStream(data.getData());
+		Uri tempUri = data.getData();
+		return copyFileByUri(destination, tempUri);
+	}
+
+	private File copyFileByUri(File destination, Uri tempUri) throws FileNotFoundException, IOException {
+		InputStream fis = getContentResolver().openInputStream(tempUri);
 		FileOutputStream out = new FileOutputStream(destination, false);
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(fis, 8192);
 		BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(out, 8192);
 		byte[] bys = new byte[8192];
 		int len;
-		while ((len = bufferedInputStream.read(bys)) != -1){
+		while ((len = bufferedInputStream.read(bys)) != -1) {
 			bufferedOutputStream.write(bys);
 			bufferedOutputStream.flush();
-	        }
-	        fis.close();
-	        bufferedInputStream.close();
-	        out.close();
-	        bufferedOutputStream.close();
+		}
+		fis.close();
+		bufferedInputStream.close();
+		out.close();
+		bufferedOutputStream.close();
 		return destination;
 	}
 
