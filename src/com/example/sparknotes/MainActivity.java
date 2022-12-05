@@ -2,10 +2,10 @@ package com.example.sparknotes;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -19,6 +19,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+
+@SuppressWarnings("deprecation")
 public class MainActivity extends FragmentActivity implements ActionNoteItemListener, SupportFragmentHandlerListener {
 
 	SQLController dbController;
@@ -29,38 +31,28 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 	DrawerLayout drawer;
 	ListView mainMenu;
+
 	ActionBarDrawerToggle menuToggler;
 
 	Fragment current;
-	SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM.yyyy");
+	SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM.yyyy", Locale.ROOT);
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_main);
 
-		// Initiate DB
-		// BEGIN
 		dbController = new SQLController(getApplicationContext());
 		dbController.open();
-//		dbController.clear();
-//		dbController.addAll(db.getNotes());
 
-		// END
-
-		// Showing main note list
-		// BEGIN
 		String[] menuPoints = getResources().getStringArray(R.array.main_menu_points);
 		drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mainMenu = (ListView) findViewById(R.id.main_menu);
 		mainMenu.setAdapter(new ArrayAdapter<String>(this, R.layout.item_main_menu, menuPoints));
 
-		// Set `back` button to get back on the one step in the stack
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 
-		// Create object with Listener for button of actionBar which open or close
-		// drawer menu
 		menuToggler = new ActionBarDrawerToggle(this, drawer, R.drawable.actionbar_burger_item, R.string.main_menu_open,
 				R.string.main_menu_close) {
 			public void onDrawerClosed(View view) {
@@ -71,17 +63,11 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 				invalidateOptionsMenu();
 			}
 		};
-		// set listeners for drawer node by single object
 		drawer.setDrawerListener(menuToggler);
 		getActionBar().setIcon(null);
-		// set listeners for points of drawer menu (ListView)
 		mainMenu.setOnItemClickListener(new SupportDrawerEventKeeper());
-		// END
 
-		// Section with something
-		// BEGIN
 		enterToDrawerMenuPointBy(0);
-		// END
 	}
 
 	@Override
@@ -108,7 +94,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			enterToDrawerMenuPointBy(7);
 			break;
 		default:
-			Toast.makeText(this, "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", Toast.LENGTH_SHORT).show();
+			// do nothing...
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -126,10 +112,6 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		}
 	}
 
-	/**
-	 * When using the ActionBarDrawerToggle, you must call it during onPostCreate()
-	 * and onConfigurationChanged()...
-	 */
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
@@ -155,55 +137,36 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		Fragment fragment = new NoteListFragment();
 		switch (position) {
 		case 1:
-//			Toast.makeText(this, "position is 1", Toast.LENGTH_SHORT).show();
 			fragment = new ExportFragment();
 			break;
 		case 2:
-//			Toast.makeText(this, "position is 2", Toast.LENGTH_SHORT).show();
 			fragment = new ImportFragment();
 			break;
 		case 3:
-//			Toast.makeText(this, "position is 3", Toast.LENGTH_SHORT).show();
 			fragment = new RecycleBinFragment();
 			break;
 		case 4:
-//			Toast.makeText(this, "position is 4", Toast.LENGTH_SHORT).show();
 			fragment = new SearchFragment();
 			break;
 		case 5:
-//			Toast.makeText(this, "position is 5", Toast.LENGTH_SHORT).show();
 			fragment = new AppearanceFragment();
 			break;
 		case 6:
-//			Toast.makeText(this, "position is 6", Toast.LENGTH_SHORT).show();
 			fragment = new FAQFragment();
 			break;
 		case 7:
-//			Toast.makeText(this, "position is 7", Toast.LENGTH_SHORT).show();
-//			fragment = new CreateFragment();
-//			Bundle bundle = new Bundle();
-//			bundle.putBoolean("isOpen", false);
-//			fragment.setArguments(bundle);
-
 			Intent intent = new Intent(this, CreateActivity.class);
 			startActivity(intent);
 			break;
 		default:
-//			Toast.makeText(this, "List of notes is opened", Toast.LENGTH_SHORT).show();
 			NoteListFragment noteListFragment = new NoteListFragment();
-//			noteListFragment.setAdapter(new UserNoteAdapter(this, db.getNotes()));
-
 			noteListFragment.setAdapter(new SparkNoteCursorAdapter(this, dbController.getSparkNotes()));
-
-			fragment = noteListFragment;
-			current = fragment;
+			current = noteListFragment;
 			break;
 		}
 
-		// set new fragment
 		getSupportFragmentManager().beginTransaction().replace(R.id.work_frame, fragment).commit();
 		current = fragment;
-		// refresh and close drawer menu
 		mainMenu.setItemChecked(position, true);
 		setTitle(getResources().getStringArray(R.array.main_menu_points)[position]);
 		drawer.closeDrawer(mainMenu);
@@ -227,7 +190,6 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	@Override
 	public void save(long position, String title, String content, String date, ArrayList<AttachItem> attaches) {
 		Toast.makeText(this, "Doletelo v save activity", Toast.LENGTH_SHORT).show();
-//		db.updateNote(position, title, content);
 		if (position > 0) {
 			dbController.updateNote(position, title, content, date, attaches);
 		} else {
