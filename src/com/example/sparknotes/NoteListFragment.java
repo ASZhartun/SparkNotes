@@ -1,11 +1,10 @@
 package com.example.sparknotes;
 
 import java.util.ArrayList;
-
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import android.support.v4.app.ListFragment;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.Toast;
 
+@SuppressLint("InflateParams")
 public class NoteListFragment extends ListFragment {
 
 	ActionNoteItemListener ctx;
@@ -25,21 +24,18 @@ public class NoteListFragment extends ListFragment {
 	public static ArrayList<Long> selectingItemIDs = new ArrayList<Long>();
 
 	public static Boolean isSelecting = false;
-//	DummyNoteDB db = new DummyNoteDB();
 	SparkNoteCursorAdapter adapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		ctx = (ActionNoteItemListener) getActivity();
 		setHasOptionsMenu(true);
-//		adapter = new UserNoteAdapter(getActivity(), db.getNotes());
 		setListAdapter(adapter);
 		lv = (ListView) inflater.inflate(R.layout.fragment_main_list, null);
 		lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//				Toast.makeText(getActivity(), "Добавил позиции в статик эрэй" + position, Toast.LENGTH_SHORT).show();
 				isSelecting = true;
 				CheckBox checkNote = (CheckBox) view.findViewById(R.id.item_selector);
 
@@ -47,7 +43,6 @@ public class NoteListFragment extends ListFragment {
 				checkNote.setChecked(true);
 
 				selectingItemIDs.add(id);
-
 				return false;
 			}
 		});

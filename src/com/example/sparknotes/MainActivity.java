@@ -1,8 +1,12 @@
 package com.example.sparknotes;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+
+
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -18,7 +22,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends FragmentActivity implements ActionNoteItemListener, SupportFragmentHandlerListener {
@@ -36,6 +39,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 	Fragment current;
 	SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM.yyyy", Locale.ROOT);
+	public final static int GET_EXPORT_DIRECTORY = 101;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -68,6 +72,29 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		mainMenu.setOnItemClickListener(new SupportDrawerEventKeeper());
 
 		enterToDrawerMenuPointBy(0);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK) {
+
+			if (data.hasExtra(FilePickerActivity.EXTRA_FILE_PATH)) {
+				//Get the file path
+				@SuppressWarnings("unchecked")
+				List<File> files = (List<File>) data.getSerializableExtra(FilePickerActivity.EXTRA_FILE_PATH);
+				Toast.makeText(this, files.get(0).getAbsolutePath(), Toast.LENGTH_LONG).show();
+
+			}
+		}
+
+		String path = data.getStringExtra("pathExportDirectory");
+		String archiveName = data.getStringExtra("archiveName");
+		ExportFragment export = (ExportFragment) current;
+		export.setArchiveName(archiveName);
+		export.setLocation(path);
+
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override
@@ -161,7 +188,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		default:
 			NoteListFragment noteListFragment = new NoteListFragment();
 			noteListFragment.setAdapter(new SparkNoteCursorAdapter(this, dbController.getSparkNotes()));
-			current = noteListFragment;
+			fragment = noteListFragment;
 			break;
 		}
 
@@ -174,7 +201,6 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 	@Override
 	public void openNote(long position) {
-		Toast.makeText(this, "position is " + position, Toast.LENGTH_SHORT).show();
 
 		Bundle bundle = new Bundle();
 		bundle.putLong("noteID", position);
