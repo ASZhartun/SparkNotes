@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <item
+        android:id="@+id/action_bar_confirm_item"
+        android:icon="@drawable/actionbar_confirm"
+        android:showAsAction="ifRoom"
+        android:title="@string/actionbar_confirm_button"/>
+
+
+</menu>

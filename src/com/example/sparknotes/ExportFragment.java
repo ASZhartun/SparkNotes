@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-
 @SuppressLint("InflateParams")
 public class ExportFragment extends Fragment {
 	EditText archiveName;
@@ -31,9 +30,7 @@ public class ExportFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(), FilePickerActivity.class);
-//				intent.putExtra(FilePickerActivity.EXTRA_SELECT_DIRECTORIES_ONLY, true);
-				intent.putExtra("request_code", MainActivity.GET_EXPORT_DIRECTORY);
-				intent.putExtra("archive_name", archiveName.getText().toString());
+				intent.putExtra(FilePickerActivity.EXTRA_SELECT_DIRECTORIES_ONLY, true);
 				startActivityForResult(intent, MainActivity.GET_EXPORT_DIRECTORY);
 			}
 		});

@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
-
-import com.coderplus.filepicker.R;
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -32,6 +29,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class FilePickerActivity extends ListActivity {
+	/**
+	 * The current opened folder
+	 */
+	public final static String EXTRA_CURRENT_ROOT_DIRECTORY = "/";
 
 	/**
 	 * The file path
@@ -81,70 +82,78 @@ public class FilePickerActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_file_picker_list_holder);
+		setContentView(R.layout.activity_file_picker_list_holder); // main layout
 		// Set the view to be shown if the list is empty
-		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-		LayoutInflater inflator = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View emptyView = inflator.inflate(R.layout.activity_file_picker_empty_view, null);
-		((ViewGroup) getListView().getParent()).addView(emptyView);
-		getListView().setEmptyView(emptyView);
+		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE); // choice mode for base list
+		LayoutInflater inflator = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE); // get inflater
+		View emptyView = inflator.inflate(R.layout.activity_file_picker_empty_view, null); // create view by inflater
+																							// with layout
+		((ViewGroup) getListView().getParent()).addView(emptyView); // add empty as sibling for base list
+		getListView().setEmptyView(emptyView); // set empty as view when list is empty!
 
 		// Set initial directory
-		mDirectory = new File(DEFAULT_INITIAL_DIRECTORY);
+		mDirectory = new File(DEFAULT_INITIAL_DIRECTORY); // create root directory
 
 		// Initialize the ArrayList
-		mFiles = new ArrayList<File>();
+		mFiles = new ArrayList<File>(); // arraylist as source for base list
 
 		// Set the ListAdapter
-		mAdapter = new FilePickerListAdapter(this, mFiles);
-		setListAdapter(mAdapter);
+		mAdapter = new FilePickerListAdapter(this, mFiles); // create adapter for base list
+		setListAdapter(mAdapter); // set adapter which is above
 
 		// Initialize the extensions array to allow any file extensions
-		acceptedFileExtensions = new String[] {};
+		acceptedFileExtensions = new String[] {}; // list for extensions of any files
 
 		// Get intent extras
-		if (getIntent().hasExtra(EXTRA_FILE_PATH)) {
-			mDirectory = new File(getIntent().getStringExtra(EXTRA_FILE_PATH));
+		if (getIntent().hasExtra(EXTRA_FILE_PATH)) { // if intent has value of that key we make specific path
+			mDirectory = new File(getIntent().getStringExtra(EXTRA_FILE_PATH)); // set specific path
 		}
-		mShowHiddenFiles = getIntent().getBooleanExtra(EXTRA_SHOW_HIDDEN_FILES, false);
+		mShowHiddenFiles = getIntent().getBooleanExtra(EXTRA_SHOW_HIDDEN_FILES, false); // get permission for hidden
+																						// files
 
-		if (getIntent().hasExtra(EXTRA_ACCEPTED_FILE_EXTENSIONS)) {
+		if (getIntent().hasExtra(EXTRA_ACCEPTED_FILE_EXTENSIONS)) { // get specific extensions of needed files
 			ArrayList<String> collection = getIntent().getStringArrayListExtra(EXTRA_ACCEPTED_FILE_EXTENSIONS);
-			acceptedFileExtensions = (String[]) collection.toArray(new String[collection.size()]);
+			acceptedFileExtensions = (String[]) collection.toArray(new String[collection.size()]); // set array of
+																									// extensions
 		}
 
-		singleMode = !getIntent().getBooleanExtra(EXTRA_SELECT_MULTIPLE, false);
+		singleMode = !getIntent().getBooleanExtra(EXTRA_SELECT_MULTIPLE, false); // set choice mode, single is by
+																					// default!
 
-		if (getIntent().getBooleanExtra(EXTRA_SELECT_FILES_ONLY, false))
+		if (getIntent().getBooleanExtra(EXTRA_SELECT_FILES_ONLY, false)) // display only files without dirs
 			pickType = 1;
 
-		if (getIntent().getBooleanExtra(EXTRA_SELECT_DIRECTORIES_ONLY, false))
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! U need to notice it
+		if (getIntent().getBooleanExtra(EXTRA_SELECT_DIRECTORIES_ONLY, false)) // display only dirs without without
+																				// files
 			pickType = 2;
 
-		Button ok = (Button) findViewById(R.id.activity_file_picker_ok);
+		Button ok = (Button) findViewById(R.id.activity_file_picker_ok); // button for confirm
 		ok.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				returnResults();
+				returnResults(); // finallize method, return result to calling activity
 			}
 		});
-		if (singleMode)
-			ok.setVisibility(View.GONE);
+		if (singleMode) // if single mode
+			ok.setVisibility(View.GONE); // button is hide
 
-		this.getListView().setLongClickable(true);
-		this.getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+		this.getListView().setLongClickable(true);// enable long click on the item of base list
+		this.getListView().setOnItemLongClickListener(new OnItemLongClickListener() { // listener for it
 			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
-				File newFile = (File) parent.getItemAtPosition(position);
+				File newFile = (File) parent.getItemAtPosition(position); // get File from base list by position
 
 				if ((pickType == 0 || (pickType == 1 && newFile.isFile())
 						|| (pickType == 2 && newFile.isDirectory()))) {
-					mAdapter.toggleCheckBox(newFile);
-					if (singleMode) {
-						returnResults();
-					} else
-						mAdapter.notifyDataSetChanged();
-				} else if (pickType == 1 && newFile.isDirectory()) {
+					mAdapter.toggleCheckBox(newFile); // toggle item
 					mDirectory = newFile;
-					refreshFilesList();
+					if (singleMode) { // if single mode chosing
+						returnResults(); // return results
+					} else
+						mAdapter.notifyDataSetChanged(); // display list item with as selected with toggled checkbox
+				} else if (pickType == 1 && newFile.isDirectory()) { // if must be select only file and it was directory
+																		// then
+					mDirectory = newFile; // set root directory
+					refreshFilesList(); // refresh base list image
 				}
 
 				return true;
@@ -158,14 +167,16 @@ public class FilePickerActivity extends ListActivity {
 			return;
 		}
 		Intent extra = new Intent();
-		extra.putExtra(EXTRA_FILE_PATH, mAdapter.getFiles());
-		setResult(RESULT_OK, extra);
-		finish();
+		extra.putExtra(EXTRA_FILE_PATH, mAdapter.getFiles()); // put list of all files in the current root directory
+		extra.putExtra(EXTRA_CURRENT_ROOT_DIRECTORY, mDirectory.getAbsolutePath()); // put path of current root
+		setResult(MainActivity.GET_EXPORT_DIRECTORY, extra); // set specific key of result
+		Toast.makeText(this, "Path of chosen folder:\n" + mDirectory.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+		finish(); // close this activity
 	}
 
 	@Override
 	protected void onResume() {
-		refreshFilesList();
+		refreshFilesList(); // refresh base list image
 		super.onResume();
 	}
 
