@@ -162,9 +162,11 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 	private void enterToDrawerMenuPointBy(int position) {
 		Fragment fragment = new NoteListFragment();
+		Intent intent;
 		switch (position) {
 		case 1:
-			fragment = new ExportFragment();
+			intent = new Intent(this, ExportActivity.class);
+			startActivity(intent);
 			break;
 		case 2:
 			fragment = new ImportFragment();
@@ -182,7 +184,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			fragment = new FAQFragment();
 			break;
 		case 7:
-			Intent intent = new Intent(this, CreateActivity.class);
+			intent = new Intent(this, CreateActivity.class);
 			startActivity(intent);
 			break;
 		default:

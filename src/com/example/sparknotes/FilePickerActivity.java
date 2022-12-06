@@ -32,7 +32,7 @@ public class FilePickerActivity extends ListActivity {
 	/**
 	 * The current opened folder
 	 */
-	public final static String EXTRA_CURRENT_ROOT_DIRECTORY = "/";
+	public final static String EXTRA_CURRENT_ROOT_DIRECTORY = "base_path";
 
 	/**
 	 * The file path

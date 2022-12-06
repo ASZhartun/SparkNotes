@@ -32,6 +32,8 @@
         <activity android:name="BrowseActivity" >
         </activity>
         <activity android:name="FilePickerActivity" />
+        <activity android:name="ExportActivity" >
+        </activity>
     </application>
 
 </manifest>
