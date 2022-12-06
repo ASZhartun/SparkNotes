@@ -56,8 +56,8 @@ public class ExportActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				if (verify(input.getText().toString())) {
-					Toast.makeText(v.getContext(), "Create result archive!", Toast.LENGTH_LONG).show();
 					File file = new File(location.getText().toString(),input.getText().toString());
+					Toast.makeText(v.getContext(), "Creating directory is " + file.mkdir(), Toast.LENGTH_LONG).show();
 				} else {
 					Toast.makeText(v.getContext(), "Invalidate name! Please, choose another...", Toast.LENGTH_LONG).show();
 				}

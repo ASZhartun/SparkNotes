@@ -76,22 +76,6 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == RESULT_OK) {
-
-			if (data.hasExtra(FilePickerActivity.EXTRA_FILE_PATH)) {
-				//Get the file path
-				@SuppressWarnings("unchecked")
-				List<File> files = (List<File>) data.getSerializableExtra(FilePickerActivity.EXTRA_FILE_PATH);
-				Toast.makeText(this, files.get(0).getAbsolutePath(), Toast.LENGTH_LONG).show();
-
-			}
-		}
-
-		String path = data.getStringExtra("pathExportDirectory");
-		String archiveName = data.getStringExtra("archiveName");
-		ExportFragment export = (ExportFragment) current;
-		export.setArchiveName(archiveName);
-		export.setLocation(path);
 
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
