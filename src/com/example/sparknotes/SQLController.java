@@ -1,6 +1,7 @@
 package com.example.sparknotes;
 
 import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -94,6 +95,36 @@ public class SQLController {
 
 	}
 
+	public ArrayList<SparkNote> getNotes() {
+		Cursor cursor;
+		database.beginTransaction();
+
+		String sql = "SELECT * FROM spark_notes";
+		cursor = database.rawQuery(sql, null);
+		if (cursor != null) {
+			cursor.moveToFirst();
+		}
+
+		database.setTransactionSuccessful();
+		database.endTransaction();
+
+		return convertSparkCursorToList(cursor);
+	}
+
+	private ArrayList<SparkNote> convertSparkCursorToList(Cursor notes) {
+		ArrayList<SparkNote> results = new ArrayList<SparkNote>();
+		do {
+			try {
+				results.add(new SparkNote(notes.getInt(0), notes.getString(1), notes.getString(2),
+						sdf.parse(notes.getString(3))));
+			} catch (ParseException e) {
+				results.add(new SparkNote(notes.getInt(0), notes.getString(1), notes.getString(2), new Date()));
+				e.printStackTrace();
+			}
+		} while (notes.moveToNext());
+		return results;
+	}
+
 	public ArrayList<AttachItem> getAttachesByNoteId(long position) {
 		database = db.getReadableDatabase();
 		database.beginTransaction();
@@ -107,22 +138,44 @@ public class SQLController {
 
 		database.setTransactionSuccessful();
 		database.endTransaction();
-		
+
 		ArrayList<AttachItem> attaches = new ArrayList<AttachItem>();
 		int quantity = cursor.getCount();
 		if (quantity > 0) {
-			for (int i = 0; i < quantity; i++ ) {
-				AttachItem attachItem = new AttachItem(
-						cursor.getLong(0), 
-						cursor.getString(1), 
-						new File(cursor.getString(1)), 
-						cursor.getString(2), 
-						cursor.getLong(3));
+			for (int i = 0; i < quantity; i++) {
+				AttachItem attachItem = new AttachItem(cursor.getLong(0), cursor.getString(1),
+						new File(cursor.getString(1)), cursor.getString(2), cursor.getLong(3));
 				attaches.add(attachItem);
-				if (!cursor.moveToNext()) break;
+				if (!cursor.moveToNext())
+					break;
 			}
 		}
 		return attaches;
+	}
+
+	public ArrayList<AttachItem> getAttaches() {
+		Cursor cursor;
+		database.beginTransaction();
+
+		String sql = "SELECT * FROM attaches";
+		cursor = database.rawQuery(sql, null);
+		if (cursor != null) {
+			cursor.moveToFirst();
+		}
+
+		database.setTransactionSuccessful();
+		database.endTransaction();
+
+		return convertAttachCursorToList(cursor);
+	}
+
+	private ArrayList<AttachItem> convertAttachCursorToList(Cursor attaches) {
+		ArrayList<AttachItem> results = new ArrayList<AttachItem>();
+		do {
+			results.add(new AttachItem(attaches.getLong(0), attaches.getString(1), new File(attaches.getString(1)),
+					attaches.getString(2), attaches.getLong(3)));
+		} while (attaches.moveToNext());
+		return results;
 	}
 
 	public void updateNote(long position, String title, String content, String date, ArrayList<AttachItem> attaches) {
@@ -231,7 +284,7 @@ public class SQLController {
 		database.endTransaction();
 		database.close();
 	}
-	
+
 	public void deleteAttach(Long id) {
 		database = db.getWritableDatabase();
 		database.beginTransaction();

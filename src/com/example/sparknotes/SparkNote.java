@@ -8,9 +8,9 @@ public class SparkNote {
 	private String title;
 	private String content;
 	private Date initDate;
-	private ArrayList<String> enclosures;
+	private ArrayList<AttachItem> enclosures;
 
-	public SparkNote(int _id, String title, String content, Date initDate, ArrayList<String> enclosures) {
+	public SparkNote(int _id, String title, String content, Date initDate, ArrayList<AttachItem> enclosures) {
 		super();
 		this._id = _id;
 		this.title = title;
@@ -25,10 +25,10 @@ public class SparkNote {
 		this.title = title;
 		this.content = content;
 		this.initDate = initDate;
-		this.enclosures = new ArrayList<String>();;
+		this.enclosures = new ArrayList<AttachItem>();
 	}
 
-	public SparkNote(String title, String content, ArrayList<String> enclosures) {
+	public SparkNote(String title, String content, ArrayList<AttachItem> enclosures) {
 		super();
 		this.title = title;
 		this.content = content;
@@ -41,7 +41,7 @@ public class SparkNote {
 		this.title = title;
 		this.content = content;
 		this.initDate = new Date();
-		this.enclosures = new ArrayList<String>();
+		this.enclosures = new ArrayList<AttachItem>();
 	}
 
 	public SparkNote() {
@@ -49,7 +49,7 @@ public class SparkNote {
 		this.title = "";
 		this.content = "";
 		this.initDate = new Date();
-		this.enclosures = new ArrayList<String>();
+		this.enclosures = new ArrayList<AttachItem>();
 	}
 	
 	
@@ -86,11 +86,11 @@ public class SparkNote {
 		this.initDate = initDate;
 	}
 
-	public ArrayList<String> getEnclosures() {
+	public ArrayList<AttachItem> getEnclosures() {
 		return enclosures;
 	}
 
-	public void setEnclosures(ArrayList<String> enclosures) {
+	public void setEnclosures(ArrayList<AttachItem> enclosures) {
 		this.enclosures = enclosures;
 	}
 
