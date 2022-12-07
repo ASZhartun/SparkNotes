@@ -1,40 +1,29 @@
 package com.example.sparknotes;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.zip.ZipOutputStream;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+import net.lingala.zip4j.ZipFile;
 
 public class ExportActivity extends FragmentActivity {
 	SQLController dbController;
 
+	FragmentActivity ctx;
 	EditText input;
 	Button location;
 	Button export;
@@ -43,6 +32,7 @@ public class ExportActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle bundle) {
+		ctx = this;
 		dbController = new SQLController(this);
 		setContentView(R.layout.fragment_export);
 		input = (EditText) findViewById(R.id.input_zip_name_export);
@@ -69,8 +59,9 @@ public class ExportActivity extends FragmentActivity {
 					File file;
 					try {
 						file = createResultFolderFrom(notes);
-						Toast.makeText(v.getContext(), "Directory was created at\n" + file.mkdir(), Toast.LENGTH_LONG)
-								.show();
+						
+						Toast.makeText(v.getContext(), "Directory was created at\n" + file.getAbsolutePath(),
+								Toast.LENGTH_LONG).show();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -80,7 +71,7 @@ public class ExportActivity extends FragmentActivity {
 					Toast.makeText(v.getContext(), "Invalidate name! Please, choose another...", Toast.LENGTH_LONG)
 							.show();
 				}
-
+				ctx.finish();
 			}
 		});
 		location.setText(Environment.getExternalStorageDirectory().toString());
@@ -99,20 +90,29 @@ public class ExportActivity extends FragmentActivity {
 			boolean folderOfNoteExists = noteFolder.exists();
 			File noteContent = new File(noteFolder, sparkNote.getId() + ".txt");
 			if (!noteContent.exists()) {
-				noteContent.createNewFile(); // error idk y
+				noteContent.createNewFile();
 			}
+			AppUtil.writeToFileNoteContent(noteContent, sparkNote.getTitle(), sdf.format(sparkNote.getInitDate()),
+					sparkNote.getContent());
 			File attaches = new File(noteFolder, "attaches");
 			attaches.mkdir();
 			for (int j = 0; j < sparkNote.getEnclosures().size(); j++) {
 				AttachItem attachItem = sparkNote.getEnclosures().get(j);
-				String extension = attachItem.getType().split("\\/")[1];
+				String extension = "." + attachItem.getType().split("\\/")[1];
 				File attachFile = new File(attaches, attachItem.getId() + "_" + uniqName + extension);
+				AppUtil.writeToFileNoteAttach(attachFile, attachItem);
 				if (!attachFile.exists()) {
 					attachFile.createNewFile();
 				}
 			}
 		}
 
+		final FileOutputStream fos = new FileOutputStream(resultFolder.getAbsolutePath() + ".zip");
+        final ZipOutputStream zipOut = new ZipOutputStream(fos);
+		AppUtil.zipFile(resultFolder, "Spark-note-export", zipOut);
+
+		Toast.makeText(this, "Archive was created at\n" + location.getText().toString() + "\\/Spark-note-export",
+				Toast.LENGTH_LONG).show();
 		return resultFolder;
 	}
 
