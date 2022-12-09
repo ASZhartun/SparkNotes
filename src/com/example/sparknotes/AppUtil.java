@@ -33,7 +33,7 @@ public class AppUtil {
 		try {
 			FileOutputStream fos = new FileOutputStream(noteContent);
 			StringBuilder sb = new StringBuilder();
-			sb.append(title).append("\n").append(date).append("\n").append(content);
+			sb.append(title).append("\r\n").append(date).append("\r\n").append(content);
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			ByteArrayInputStream abis = new ByteArrayInputStream(sb.toString().getBytes());
 			BufferedInputStream bis = new BufferedInputStream(abis);
