@@ -1,13 +1,10 @@
 package com.example.sparknotes;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.zip.ZipOutputStream;
-
-import android.content.Context;
+import java.util.Locale;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import net.lingala.zip4j.ZipFile;
 
 public class ExportActivity extends FragmentActivity {
 	SQLController dbController;
@@ -28,7 +24,7 @@ public class ExportActivity extends FragmentActivity {
 	Button location;
 	Button export;
 
-	private SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM.yyyy");
+	private SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM.yyyy", Locale.ROOT);
 
 	@Override
 	protected void onCreate(Bundle bundle) {
@@ -59,7 +55,7 @@ public class ExportActivity extends FragmentActivity {
 					File file;
 					try {
 						file = createResultFolderFrom(notes);
-						
+
 						Toast.makeText(v.getContext(), "Directory was created at\n" + file.getAbsolutePath(),
 								Toast.LENGTH_LONG).show();
 					} catch (IOException e) {
@@ -81,13 +77,11 @@ public class ExportActivity extends FragmentActivity {
 	protected File createResultFolderFrom(ArrayList<SparkNote> notes) throws IOException {
 		File resultFolder = new File(location.getText().toString(), input.getText().toString());
 		resultFolder.mkdir();
-		boolean rootExists = resultFolder.exists();
 		for (int i = 0; i < notes.size(); i++) {
 			SparkNote sparkNote = notes.get(i);
 			String uniqName = sparkNote.getId() + "_" + sparkNote.getInitDate().getTime();
 			File noteFolder = new File(resultFolder, uniqName);
 			noteFolder.mkdir();
-			boolean folderOfNoteExists = noteFolder.exists();
 			File noteContent = new File(noteFolder, sparkNote.getId() + ".txt");
 			if (!noteContent.exists()) {
 				noteContent.createNewFile();
@@ -106,13 +100,14 @@ public class ExportActivity extends FragmentActivity {
 				}
 			}
 		}
+		
+//		This code produce corrupted zip file for any reasons
+//		File zip = new File(resultFolder.getAbsoluteFile() + ".zip");
+//		boolean zipWasCreated = zip.createNewFile();
+//		ZipOutputStream zos = ZipDoer.getZipOutputStream(zip);
+//		ZipDoer.pack(resultFolder, zos, null);
 
-		final FileOutputStream fos = new FileOutputStream(resultFolder.getAbsolutePath() + ".zip");
-        final ZipOutputStream zipOut = new ZipOutputStream(fos);
-		AppUtil.zipFile(resultFolder, "Spark-note-export", zipOut);
-
-		Toast.makeText(this, "Archive was created at\n" + location.getText().toString() + "\\/Spark-note-export",
-				Toast.LENGTH_LONG).show();
+		Toast.makeText(this, "Archive was created", Toast.LENGTH_LONG).show();
 		return resultFolder;
 	}
 
