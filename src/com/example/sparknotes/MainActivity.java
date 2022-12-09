@@ -40,6 +40,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	Fragment current;
 	SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM.yyyy", Locale.ROOT);
 	public final static int GET_EXPORT_DIRECTORY = 101;
+	public final static int GET_IMPORT_FILE = 102;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
