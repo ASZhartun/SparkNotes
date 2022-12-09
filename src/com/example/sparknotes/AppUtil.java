@@ -3,8 +3,10 @@ package com.example.sparknotes;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,15 +17,36 @@ import java.util.zip.ZipOutputStream;
 public class AppUtil {
 
 	public static void writeToFileNoteContent(File noteContent, String title, String date, String content) {
+//		try {
+//			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(noteContent, true));
+//			bufferedWriter.write(title);
+//			bufferedWriter.newLine();
+//			bufferedWriter.write(date);
+//			bufferedWriter.newLine();
+//			bufferedWriter.write(content);
+//			bufferedWriter.newLine();
+//			bufferedWriter.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} 
+		
 		try {
-			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(noteContent));
+			FileOutputStream fos = new FileOutputStream(noteContent);
 			StringBuilder sb = new StringBuilder();
 			sb.append(title).append("\n").append(date).append("\n").append(content);
-			bufferedWriter.write(sb.toString());
-			bufferedWriter.close();
+			BufferedOutputStream bos = new BufferedOutputStream(fos);
+			ByteArrayInputStream abis = new ByteArrayInputStream(sb.toString().getBytes());
+			BufferedInputStream bis = new BufferedInputStream(abis);
+			byte[] bys = new byte[8192];
+			int len;
+			while ((len = bis.read(bys)) != -1) {
+				bos.write(bys);
+				bos.flush();
+			}
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 		
 	}
 

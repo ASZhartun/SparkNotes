@@ -1,6 +1,8 @@
 package com.example.sparknotes;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import android.content.Intent;
@@ -53,6 +55,41 @@ public class ImportActivity extends FragmentActivity {
 	}
 	
 	private void importSparkNotesFromExternalFolder(String filepath) {
+		ArrayList<SparkNote> notes = new ArrayList<SparkNote>();
+		File target = new File(filepath);
+		if (target.isDirectory()) {
+			File[] noteFolders = target.listFiles();
+			for (int i = 0; i < noteFolders.length; i++) {
+				notes.add(createSparkByFolder(noteFolders[i]));
+			}
+		} else {
+			notes.add(createSparkByFolder(target));
+		}
+		
+		dbController.open();
+		dbController.addAll(notes);
+		dbController.close();
+	}
+
+	private SparkNote createSparkByFolder(File target) {
+		File[] innerFiles = target.listFiles();
+		SparkNote currentNote = new SparkNote();
+		for (int i = 0; i < innerFiles.length; i++) {
+			if (innerFiles[i].isFile()) {
+				fillNoteByTxtFile(currentNote, innerFiles[i]);
+			} else {
+				currentNote.setEnclosures(getAttachesFromFolder(innerFiles[i]));
+			}
+		}
+		return currentNote;
+	}
+
+	private ArrayList<AttachItem> getAttachesFromFolder(File file) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private void fillNoteByTxtFile(SparkNote currentNote, File file) {
 		// TODO Auto-generated method stub
 		
 	}
