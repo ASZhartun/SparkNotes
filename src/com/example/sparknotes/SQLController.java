@@ -288,12 +288,12 @@ public class SQLController {
 	}
 
 	public void deleteNote(Long id) {
-		database = db.getWritableDatabase();
+		open();
 		database.beginTransaction();
 		database.delete(DBHelper.TABLE_SPARK_NOTES, "_id=?", new String[] { String.valueOf(id) });
 		database.setTransactionSuccessful();
 		database.endTransaction();
-		database.close();
+		close();
 	}
 
 	public void deleteAttach(Long id) {

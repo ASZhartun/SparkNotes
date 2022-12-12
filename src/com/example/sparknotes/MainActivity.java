@@ -174,7 +174,9 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			break;
 		default:
 			NoteListFragment noteListFragment = new NoteListFragment();
+			dbController.open();
 			noteListFragment.setAdapter(new SparkNoteCursorAdapter(this, dbController.getSparkNotes()));
+			dbController.close();
 			fragment = noteListFragment;
 			break;
 		}
@@ -213,9 +215,11 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 	@Override
 	public void deleteNotes(ArrayList<Long> positions) {
+		dbController.open();
 		for (int i = 0; i < positions.size(); i++) {
 			dbController.deleteNote(positions.get(i));
 		}
+		dbController.close();
 		NoteListFragment.selectingItemIDs.clear();
 		NoteListFragment.isSelecting = false;
 		enterToDrawerMenuPointBy(0);
