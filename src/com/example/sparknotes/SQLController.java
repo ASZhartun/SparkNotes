@@ -50,11 +50,22 @@ public class SQLController {
 			ContentValues values = new ContentValues();
 			for (int i = 0; i < notes.size(); i++) {
 				SparkNote sparkNote = notes.get(i);
-//				values.put("_id", sparkNote.getId());
 				values.put("title", sparkNote.getTitle());
 				values.put("content", sparkNote.getContent());
 				values.put("init_date", sdf.format(sparkNote.getInitDate()));
-				database.insert(DBHelper.TABLE_SPARK_NOTES, null, values);
+				long currentNoteID = database.insert(DBHelper.TABLE_SPARK_NOTES, null, values);
+				ArrayList<AttachItem> enclosures = sparkNote.getEnclosures();
+				if (enclosures.size() > 0) {
+					for (int j = 0; j < enclosures.size(); j++) {
+						AttachItem attach = enclosures.get(j);
+						ContentValues attachValues = new ContentValues();
+						attachValues.put("path", attach.getPath());
+						attachValues.put("type", attach.getType());
+						attachValues.put("spark_notes_id", currentNoteID);
+						database.insert(DBHelper.TABLE_ATTACHES, null, attachValues);
+					}
+					
+				}
 			}
 			database.setTransactionSuccessful();
 		} finally {

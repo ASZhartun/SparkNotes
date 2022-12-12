@@ -1,6 +1,15 @@
 package com.example.sparknotes;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.FileNameMap;
+import java.net.URLConnection;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -85,12 +94,34 @@ public class ImportActivity extends FragmentActivity {
 	}
 
 	private ArrayList<AttachItem> getAttachesFromFolder(File file) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<AttachItem> attaches = new ArrayList<AttachItem>();
+		if (file.isDirectory()) {
+			File[] innerFiles = file.listFiles();
+			for (int i = 0; i < innerFiles.length; i++) {
+				FileNameMap fileNameMap = URLConnection.getFileNameMap();
+				String type = fileNameMap.getContentTypeFor(innerFiles[i].getAbsolutePath());
+				attaches.add(new AttachItem(0, innerFiles[i].getAbsolutePath(), null, type));
+			}
+		}
+		return attaches;
 	}
 
 	private void fillNoteByTxtFile(SparkNote currentNote, File file) {
-		// TODO Auto-generated method stub
+		try {		
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			currentNote.setTitle(reader.readLine());
+			currentNote.setInitDate(sdf.parse(reader.readLine()));
+			StringBuilder sb = new StringBuilder();
+			String temp;
+			while ((temp = reader.readLine()) != null) {
+				sb.append(temp);
+			}
+			currentNote.setContent(sb.toString());
+			reader.close();
+		} catch (IOException | ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
