@@ -169,7 +169,9 @@ public class FilePickerActivity extends ListActivity {
 		Intent extra = new Intent();
 		extra.putExtra(EXTRA_FILE_PATH, mAdapter.getFiles()); // put list of all files in the current root directory
 		extra.putExtra(EXTRA_CURRENT_ROOT_DIRECTORY, mDirectory.getAbsolutePath()); // put path of current root
+		Object obj = getIntent().getExtras().get("import");
 		setResult(MainActivity.GET_EXPORT_DIRECTORY, extra); // set specific key of result
+
 		Toast.makeText(this, "Path of chosen folder:\n" + mDirectory.getAbsolutePath(), Toast.LENGTH_SHORT).show();
 		finish(); // close this activity
 	}

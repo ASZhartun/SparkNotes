@@ -22,15 +22,16 @@ import android.widget.Toast;
 
 public class ImportActivity extends FragmentActivity {
 	SQLController dbController;
-	
+
 	Button locationButton;
+	Button importButton;
 	FragmentActivity ctx;
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM.yyyy", Locale.ROOT);
-	
-	
+
 	@Override
 	protected void onCreate(Bundle bundle) {
+		dbController = new SQLController(this);
 		ctx = this;
 		setContentView(R.layout.fragment_import);
 		locationButton = (Button) findViewById(R.id.button_locate_import);
@@ -40,26 +41,36 @@ public class ImportActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(v.getContext(), FilePickerActivity.class);
-				intent.putExtra(FilePickerActivity.EXTRA_SELECT_FILES_ONLY, true);
+				intent.putExtra("import", MainActivity.GET_IMPORT_FILE);
 				startActivityForResult(intent, MainActivity.GET_EXPORT_DIRECTORY);
+			}
+		});
+
+		importButton = (Button) findViewById(R.id.button_import);
+		importButton.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				String filepath = locationButton.getText().toString();
+				importSparkNotesFromExternalFolder(filepath);
+				finish();
 			}
 		});
 		super.onCreate(bundle);
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == MainActivity.GET_IMPORT_FILE) {
-			String filepath = data.getStringExtra("filepath");
-			importSparkNotesFromExternalFolder(filepath);
-			finish();
+		if (resultCode == MainActivity.GET_EXPORT_DIRECTORY) {
+			String filepath = data.getExtras().getString(FilePickerActivity.EXTRA_CURRENT_ROOT_DIRECTORY);
+			locationButton.setText(filepath);
 		} else {
 			Toast.makeText(this, "File was unhandled! Try once more", Toast.LENGTH_LONG).show();
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
+
 	private void importSparkNotesFromExternalFolder(String filepath) {
 		ArrayList<SparkNote> notes = new ArrayList<SparkNote>();
 		File target = new File(filepath);
@@ -71,7 +82,7 @@ public class ImportActivity extends FragmentActivity {
 		} else {
 			notes.add(createSparkByFolder(target));
 		}
-		
+
 		dbController.open();
 		dbController.addAll(notes);
 		dbController.close();
@@ -104,7 +115,7 @@ public class ImportActivity extends FragmentActivity {
 	}
 
 	private void fillNoteByTxtFile(SparkNote currentNote, File file) {
-		try {		
+		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			currentNote.setTitle(reader.readLine());
 			currentNote.setInitDate(sdf.parse(reader.readLine()));
@@ -119,7 +130,7 @@ public class ImportActivity extends FragmentActivity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Override

@@ -154,7 +154,8 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			startActivity(intent);
 			break;
 		case 2:
-			fragment = new ImportFragment();
+			intent = new Intent(this, ImportActivity.class);
+			startActivity(intent);
 			break;
 		case 3:
 			fragment = new RecycleBinFragment();

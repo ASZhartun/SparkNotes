@@ -34,6 +34,8 @@
         <activity android:name="FilePickerActivity" />
         <activity android:name="ExportActivity" >
         </activity>
+        <activity android:name="ImportActivity" >
+        </activity>
     </application>
 
 </manifest>
