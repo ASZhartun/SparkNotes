@@ -61,11 +61,13 @@ public class ImportActivity extends FragmentActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == MainActivity.GET_EXPORT_DIRECTORY) {
-			String filepath = data.getExtras().getString(FilePickerActivity.EXTRA_CURRENT_ROOT_DIRECTORY);
-			locationButton.setText(filepath);
-		} else {
-			Toast.makeText(this, "File was unhandled! Try once more", Toast.LENGTH_LONG).show();
+		if (data != null) {
+			if (resultCode == MainActivity.GET_EXPORT_DIRECTORY) {
+				String filepath = data.getExtras().getString(FilePickerActivity.EXTRA_CURRENT_ROOT_DIRECTORY);
+				locationButton.setText(filepath);
+			} else {
+				Toast.makeText(this, "File was unhandled! Try once more", Toast.LENGTH_LONG).show();
+			}
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);

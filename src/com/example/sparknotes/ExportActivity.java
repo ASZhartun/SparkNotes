@@ -160,11 +160,14 @@ public class ExportActivity extends FragmentActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == MainActivity.GET_EXPORT_DIRECTORY) {
-			location.setText(data.getExtras().getString(FilePickerActivity.EXTRA_CURRENT_ROOT_DIRECTORY, "/"));
-		} else {
-			location.setText(data.getExtras().getString("/"));
+		if (data != null) {
+			if (requestCode == MainActivity.GET_EXPORT_DIRECTORY) {
+				location.setText(data.getExtras().getString(FilePickerActivity.EXTRA_CURRENT_ROOT_DIRECTORY, "/"));
+			} else {
+				location.setText(data.getExtras().getString("/"));
+			}
 		}
+
 
 		super.onActivityResult(requestCode, resultCode, data);
 	}
