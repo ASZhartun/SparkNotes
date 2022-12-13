@@ -31,6 +31,8 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 	ArrayList<SparkNote> exportList = new ArrayList<SparkNote>();
 	Boolean isSelected = false;
+	
+	public static ArrayList<SparkNote> searchResults = new ArrayList<SparkNote>();
 
 	DrawerLayout drawer;
 	ListView mainMenu;
