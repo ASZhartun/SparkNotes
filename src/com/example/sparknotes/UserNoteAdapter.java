@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class UserNoteAdapter extends ArrayAdapter<SparkNote> {
-	SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM.yyyy");
+	SimpleDateFormat sdf = MainActivity.sdf;
 	Context ctx;
 
 	public UserNoteAdapter(Context context, List<SparkNote> objects) {
@@ -60,7 +60,7 @@ public class UserNoteAdapter extends ArrayAdapter<SparkNote> {
 			}
 		});
 
-//		convertView.setOnLongClickListener(new ListNoteItemListenerKeeper()); не дает работать листнеру выше по иерархии; лонгклик придется реализовать также выше
+//		convertView.setOnLongClickListener(new ListNoteItemListenerKeeper()); пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ; пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 
 		return convertView;
 	}

@@ -27,7 +27,7 @@ public class ImportActivity extends FragmentActivity {
 	Button importButton;
 	FragmentActivity ctx;
 
-	private SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM.yyyy", Locale.ROOT);
+	private SimpleDateFormat sdf = MainActivity.sdf;
 
 	@Override
 	protected void onCreate(Bundle bundle) {

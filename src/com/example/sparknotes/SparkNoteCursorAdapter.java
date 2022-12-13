@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class SparkNoteCursorAdapter extends CursorAdapter{
 	Context ctx;
-	SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM.yyyy");
+	SimpleDateFormat sdf = MainActivity.sdf;
 	long currentID = 0;
 
 	public SparkNoteCursorAdapter(Context context, Cursor c) {

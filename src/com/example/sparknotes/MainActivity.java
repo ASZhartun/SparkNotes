@@ -1,9 +1,7 @@
 package com.example.sparknotes;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 
@@ -40,7 +38,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	ActionBarDrawerToggle menuToggler;
 
 	Fragment current;
-	SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM.yyyy", Locale.ROOT);
+	public static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm", Locale.ROOT);
 	public final static int GET_EXPORT_DIRECTORY = 101;
 	public final static int GET_IMPORT_FILE = 102;
 
@@ -79,7 +77,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+		
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 	}

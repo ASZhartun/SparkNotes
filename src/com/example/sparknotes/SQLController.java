@@ -11,14 +11,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.Toast;
 
 public class SQLController {
 	private DBHelper db;
 	private Context ctx;
 	private SQLiteDatabase database;
 
-	private SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM.yyyy");
+	private SimpleDateFormat sdf = MainActivity.sdf;
 
 	public SQLController(Context c) {
 		ctx = c;

@@ -57,7 +57,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 	CreateNoteAttachAdapter attachAdapter;
 	ArrayList<AttachItem> attaches = new ArrayList<AttachItem>();
 
-	SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy_hh_mm ");
+	SimpleDateFormat sdf = MainActivity.sdf;
 	Uri takePhotoURI;
 
 	@Override
