@@ -1,6 +1,10 @@
 package com.example.sparknotes;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -15,8 +19,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 public class SearchActivity extends FragmentActivity {
-	SQLController SQLController;
-	MainActivity parent;
+	SQLController dbController;
 	
 	EditText userInput;
 	RadioGroup radioGroup;
@@ -28,11 +31,15 @@ public class SearchActivity extends FragmentActivity {
 	EditText beginDate;
 	EditText endDate;
 	Button search;
+	
+	public static String SAMPLE_KEY = "sample";
+	public static String SAMPLE_CRITERIA_KEY = "sampleCriteria";
+	public static String START_DATE_KEY = "startDate";
+	public static String END_DATE_KEY = "endDate";
 	@Override
 	protected void onCreate(Bundle arg0) {
 		setContentView(R.layout.fragment_search);
-		SQLController = new SQLController(this);
-		parent = (MainActivity) this.getParent();
+		dbController = new SQLController(this);
 
 		userInput = (EditText) findViewById(R.id.input_search);
 		radioGroup = (RadioGroup) findViewById(R.id.radio_group_category);
@@ -49,8 +56,25 @@ public class SearchActivity extends FragmentActivity {
 			
 			@Override
 			public void onClick(View v) {
+				String start = null;
+				String end = null;
 				
+				if (dateNoticer.isChecked()) {
+					start = beginDate.getText().toString();
+					end = endDate.getText().toString();
+				}
+
+				String sample = userInput.getText().toString();
+				String criteria = "content";
+				if (radioTitle.isChecked()) criteria = "title";
 				
+				Intent data = new Intent();
+				data.putExtra(SAMPLE_KEY, sample);
+				data.putExtra(SAMPLE_CRITERIA_KEY, criteria);
+				data.putExtra(START_DATE_KEY, start);
+				data.putExtra(END_DATE_KEY, end);
+				setResult(MainActivity.GET_SEARCH_RESULT, data);
+				finish();
 			}
 		});
 		super.onCreate(arg0);

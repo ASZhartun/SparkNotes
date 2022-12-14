@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.Toast;
 
 @SuppressLint("InflateParams")
 public class NoteListFragment extends ListFragment {
@@ -60,6 +61,9 @@ public class NoteListFragment extends ListFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_bar_delete_item) {
 			ctx.deleteNotes(selectingItemIDs);
+		} else if (item.getItemId() == R.id.action_bar_decline_item) {
+			Toast.makeText(getActivity(), "nazhal na action bar fragmenta", Toast.LENGTH_LONG).show();
+			ctx.clearSearchResult();
 		}
 		return super.onOptionsItemSelected(item);
 	}

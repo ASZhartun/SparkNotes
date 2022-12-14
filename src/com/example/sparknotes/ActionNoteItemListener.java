@@ -10,4 +10,6 @@ public interface ActionNoteItemListener {
 	public void openNote(long id);
 	
 	void save(long position, String title, String content, String date, ArrayList<AttachItem> attaches);
+	
+	void clearSearchResult();
 }

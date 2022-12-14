@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -30,7 +31,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	ArrayList<SparkNote> exportList = new ArrayList<SparkNote>();
 	Boolean isSelected = false;
 	
-	public static ArrayList<SparkNote> searchResults = new ArrayList<SparkNote>();
+	public Cursor searchResults = null;
 
 	DrawerLayout drawer;
 	ListView mainMenu;
@@ -41,6 +42,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	public static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm", Locale.ROOT);
 	public final static int GET_EXPORT_DIRECTORY = 101;
 	public final static int GET_IMPORT_FILE = 102;
+	public final static int GET_SEARCH_RESULT = 103;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -77,7 +79,15 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		
+		if (resultCode == GET_SEARCH_RESULT) {
+			String sample = data.getStringExtra(SearchActivity.SAMPLE_KEY);
+			String criteria = data.getStringExtra(SearchActivity.SAMPLE_CRITERIA_KEY);
+			String start = data.getStringExtra(SearchActivity.START_DATE_KEY);
+			String end = data.getStringExtra(SearchActivity.END_DATE_KEY);
+			searchResults = dbController.getNotesByDatesAndText(start, end, sample, criteria);
+			refreshNoteListAdapter();
+		}
+
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -161,7 +171,8 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			fragment = new RecycleBinFragment();
 			break;
 		case 4:
-			fragment = new SearchFragment();
+			intent = new Intent(this, SearchActivity.class);
+			startActivityForResult(intent, GET_SEARCH_RESULT);
 			break;
 		case 5:
 			fragment = new AppearanceFragment();
@@ -174,10 +185,9 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			startActivity(intent);
 			break;
 		default:
-			NoteListFragment noteListFragment = new NoteListFragment();
-			dbController.open();
-			noteListFragment.setAdapter(new SparkNoteCursorAdapter(this, dbController.getSparkNotes()));
-			dbController.close();
+//			clearSearchResult();
+			NoteListFragment noteListFragment = refreshNoteListAdapter();
+			noteListFragment.adapter.notifyDataSetChanged();
 			fragment = noteListFragment;
 			break;
 		}
@@ -187,6 +197,19 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		mainMenu.setItemChecked(position, true);
 		setTitle(getResources().getStringArray(R.array.main_menu_points)[position]);
 		drawer.closeDrawer(mainMenu);
+	}
+
+	private NoteListFragment refreshNoteListAdapter() {
+		NoteListFragment noteListFragment = new NoteListFragment();
+		dbController.open();
+		if (searchResults != null) {
+			noteListFragment.setAdapter(new SparkNoteCursorAdapter(this, searchResults));
+		} else {
+			noteListFragment.setAdapter(new SparkNoteCursorAdapter(this, dbController.getSparkNotes()));
+		}
+
+		dbController.close();
+		return noteListFragment;
 	}
 
 	@Override
@@ -245,6 +268,16 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	protected void onStop() {
 		dbController.close();
 		super.onStop();
+	}
+
+	@Override
+	public void clearSearchResult() {
+		searchResults = null;
+//		if (current instanceof NoteListFragment) {
+//			NoteListFragment frag = (NoteListFragment) current;
+//			frag.adapter = new SparkNoteCursorAdapter(this, dbController.getSparkNotes());
+//		}
+		enterToDrawerMenuPointBy(0);
 	}
 
 }

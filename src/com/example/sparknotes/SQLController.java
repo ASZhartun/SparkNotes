@@ -34,12 +34,14 @@ public class SQLController {
 	}
 
 	public Cursor getSparkNotes() {
+		this.open();
 		String[] allColumns = new String[] { db.TABLE_SPARK_NOTES_ID, db.TABLE_SPARK_NOTES_TITLE,
 				db.TABLE_SPARK_NOTES_CONTENT, db.TABLE_SPARK_NOTES_INIT_DATE };
 		Cursor c = database.query(db.TABLE_SPARK_NOTES, allColumns, null, null, null, null, "_id DESC");
 		if (c != null) {
 			c.moveToFirst();
 		}
+		this.close();
 		return c;
 	}
 
@@ -63,7 +65,7 @@ public class SQLController {
 						attachValues.put("spark_notes_id", currentNoteID);
 						database.insert(DBHelper.TABLE_ATTACHES, null, attachValues);
 					}
-					
+
 				}
 			}
 			database.setTransactionSuccessful();
@@ -119,6 +121,37 @@ public class SQLController {
 		database.endTransaction();
 
 		return convertSparkCursorToList(cursor);
+	}
+
+	public Cursor getNotesByDatesAndText(String start, String end, String sample, String sampleCriteria) {
+		Cursor cursor;
+		this.open();
+		database.beginTransaction();
+		if (start == null || start.equals("")) {
+			start = sdf.format(new Date(0));
+		}
+		if (end == null || end.equals("")) {
+			end = sdf.format(new Date());
+		}
+		String sql = "SELECT * FROM spark_notes ";
+		String sqlWhereDates = "WHERE init_date BETWEEN  '" + start + "' AND '" + end + "'";
+		String sqlFinal = sql + sqlWhereDates;
+		if (sample == null || sample.equals("")) {
+			cursor = database.rawQuery(sqlFinal, null);
+		} else {
+			String sqlWhereSampleIs = "WHERE " + sampleCriteria + " LIKE '%" + sample + "%'";
+			String sqlSpecifiedFinal = "SELECT * FROM (" + sqlFinal + ") " + sqlWhereSampleIs;
+			cursor = database.rawQuery(sqlSpecifiedFinal, null);
+		}
+
+		if (cursor != null) {
+			cursor.moveToFirst();
+		}
+
+		database.setTransactionSuccessful();
+		database.endTransaction();
+		this.close();
+		return cursor;
 	}
 
 	private ArrayList<SparkNote> convertSparkCursorToList(Cursor notes) {
