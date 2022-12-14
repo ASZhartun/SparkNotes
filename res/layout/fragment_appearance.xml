@@ -6,7 +6,7 @@
     android:padding="20dp" >
 
     <TextView
-        android:id="@+id/item_title_main_faq"
+        android:id="@+id/search_begin_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Шрифт"

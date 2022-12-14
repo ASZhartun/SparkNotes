@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 public class SearchActivity extends FragmentActivity {
 	SQLController dbController;
@@ -26,6 +27,8 @@ public class SearchActivity extends FragmentActivity {
 	RadioButton radioTitle;
 	RadioButton radioContent;
 	CheckBox dateNoticer;
+	TextView beginTitle;
+	TextView endTitle;
 	ImageButton beginPointer;
 	ImageButton endPointer;
 	EditText beginDate;
@@ -46,6 +49,8 @@ public class SearchActivity extends FragmentActivity {
 		radioTitle = (RadioButton) findViewById(R.id.radio_by_title);
 		radioContent = (RadioButton) findViewById(R.id.radio_by_content);
 		dateNoticer = (CheckBox) findViewById(R.id.checkbox_notice_dates);
+		beginTitle = (TextView) findViewById(R.id.search_begin_title);
+		endTitle = (TextView) findViewById(R.id.search_end_title);
 		beginDate = (EditText) findViewById(R.id.begin_date_search);
 		endDate = (EditText) findViewById(R.id.finish_date_search);
 		beginPointer = (ImageButton) findViewById(R.id.pointer_begin_date_search);
@@ -75,6 +80,31 @@ public class SearchActivity extends FragmentActivity {
 				data.putExtra(END_DATE_KEY, end);
 				setResult(MainActivity.GET_SEARCH_RESULT, data);
 				finish();
+			}
+		});
+		
+		dateNoticer.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				CheckBox noticer = (CheckBox) v;
+				if (!noticer.isChecked()) {
+					beginTitle.setVisibility(View.GONE);
+					endTitle.setVisibility(View.GONE);
+					beginDate.setVisibility(View.GONE);
+					endDate.setVisibility(View.GONE);
+					beginPointer.setVisibility(View.GONE);
+					endPointer.setVisibility(View.GONE);
+					beginDate.setText("");
+					endDate.setText("");
+				} else {
+					beginTitle.setVisibility(View.VISIBLE);
+					endTitle.setVisibility(View.VISIBLE);
+					beginDate.setVisibility(View.VISIBLE);
+					endDate.setVisibility(View.VISIBLE);
+					beginPointer.setVisibility(View.VISIBLE);
+					endPointer.setVisibility(View.VISIBLE);
+				}
 			}
 		});
 		super.onCreate(arg0);

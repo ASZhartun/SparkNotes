@@ -23,7 +23,7 @@ public class UserRefPositionAdapter extends ArrayAdapter<ReferencePosition> {
 			convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_faq, parent, false);
 		}
 
-		TextView title = (TextView) convertView.findViewById(R.id.item_title_main_faq);
+		TextView title = (TextView) convertView.findViewById(R.id.search_begin_title);
 		TextView content = (TextView) convertView.findViewById(R.id.item_description_faq);
 		ImageButton image = (ImageButton) convertView.findViewById(R.id.item_title_image_faq);
 
