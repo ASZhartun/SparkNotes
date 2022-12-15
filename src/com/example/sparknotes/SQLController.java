@@ -322,6 +322,7 @@ public class SQLController {
 	public void deleteNote(Long id) {
 		open();
 		database.beginTransaction();
+		saveDeletedNote(getNoteById(id));
 		database.delete(DBHelper.TABLE_SPARK_NOTES, "_id=?", new String[] { String.valueOf(id) });
 		database.setTransactionSuccessful();
 		database.endTransaction();
@@ -335,5 +336,33 @@ public class SQLController {
 		database.setTransactionSuccessful();
 		database.endTransaction();
 		database.close();
+	}
+
+	public Cursor getDeletedSparkNotes() {
+		this.open();
+		String[] allColumns = new String[] { db.TABLE_DELETED_SPARK_NOTES_ID, db.TABLE_DELETED_SPARK_NOTES_TITLE,
+				db.TABLE_DELETED_SPARK_NOTES_CONTENT, db.TABLE_DELETED_SPARK_NOTES_INIT_DATE };
+		Cursor c = database.query(db.TABLE_DELETED_SPARK_NOTES, allColumns, null, null, null, null, "_id DESC");
+		if (c != null) {
+			c.moveToFirst();
+		}
+		this.close();
+		return c;
+	}
+	
+	public void saveDeletedNote(Cursor cursor) {
+		String title = cursor.getString(1);
+		String content = cursor.getString(2);
+		String date = cursor.getString(3);
+		Integer prevID = cursor.getInt(0);
+		database.beginTransaction();
+		ContentValues values = new ContentValues();
+		values.put("title", title);
+		values.put("content", content);
+		values.put("init_date", date);
+		values.put("prev_id", prevID);
+		long insert = database.insert(DBHelper.TABLE_DELETED_SPARK_NOTES, null, values);
+		database.setTransactionSuccessful();
+		database.endTransaction();
 	}
 }

@@ -168,7 +168,11 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			startActivity(intent);
 			break;
 		case 3:
-			fragment = new RecycleBinFragment();
+			RecycleBinFragment recycleBinFragment = new RecycleBinFragment();
+			dbController.open();
+			recycleBinFragment.setAdapter(new SparkNoteCursorAdapter(this, dbController.getDeletedSparkNotes()));
+			fragment = recycleBinFragment;
+			dbController.close();
 			break;
 		case 4:
 			intent = new Intent(this, SearchActivity.class);
