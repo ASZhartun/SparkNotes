@@ -43,7 +43,7 @@ public class NoteListFragment extends ListFragment {
 				checkNote.setVisibility(View.VISIBLE);
 				checkNote.setChecked(true);
 
-				selectingItemIDs.add(id);
+//				selectingItemIDs.add(id);
 				return false;
 			}
 		});

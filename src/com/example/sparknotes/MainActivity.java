@@ -4,8 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-
-
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -30,7 +28,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 	ArrayList<SparkNote> exportList = new ArrayList<SparkNote>();
 	Boolean isSelected = false;
-	
+
 	public Cursor searchResults = null;
 
 	DrawerLayout drawer;
@@ -123,15 +121,23 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 	@Override
 	public void onBackPressed() {
-		boolean isNoteListFragment = current instanceof NoteListFragment;
-		if (NoteListFragment.isSelecting || !(isNoteListFragment)) {
-			enterToDrawerMenuPointBy(0);
-			NoteListFragment.isSelecting = false;
-			NoteListFragment.selectingItemIDs.clear();
-			Toast.makeText(this, "Clean static array", Toast.LENGTH_SHORT).show();
+		if (current instanceof NoteListFragment || current instanceof RecycleBinFragment) {
+			if (NoteListFragment.isSelecting && current instanceof NoteListFragment) {
+				enterToDrawerMenuPointBy(0);
+				NoteListFragment.isSelecting = false;
+				NoteListFragment.selectingItemIDs.clear();
+				Toast.makeText(this, "Clean static array", Toast.LENGTH_SHORT).show();
+			} else if (RecycleBinFragment.isSelecting && current instanceof RecycleBinFragment) {
+				RecycleBinFragment.isSelecting = false;
+				RecycleBinFragment.selectingItemIDs.clear();
+				enterToDrawerMenuPointBy(3);
+				Toast.makeText(this, "Clean recycle static array", Toast.LENGTH_SHORT).show();
+			}
 		} else {
+			enterToDrawerMenuPointBy(0);
 			super.onBackPressed();
 		}
+
 	}
 
 	@Override
@@ -282,6 +288,39 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 //			frag.adapter = new SparkNoteCursorAdapter(this, dbController.getSparkNotes());
 //		}
 		enterToDrawerMenuPointBy(0);
+	}
+
+	@Override
+	public void openDeletedNote(long id) {
+		Toast.makeText(this, "Alert box with actions", Toast.LENGTH_LONG).show();
+		return;
+
+	}
+
+	@Override
+	public void restoreNotes(ArrayList<Long> positions) {
+		dbController.open();
+		for (int i = 0; i < positions.size(); i++) {
+			dbController.restoreNote(positions.get(i));
+		}
+		dbController.close();
+		RecycleBinFragment.selectingItemIDs.clear();
+		RecycleBinFragment.isSelecting = false;
+		enterToDrawerMenuPointBy(0);
+
+	}
+
+	@Override
+	public void fullDeleteNotes(ArrayList<Long> positions) {
+		dbController.open();
+		for (int i = 0; i < positions.size(); i++) {
+			dbController.fullDeleteNote(positions.get(i));
+		}
+		dbController.close();
+		NoteListFragment.selectingItemIDs.clear();
+		NoteListFragment.isSelecting = false;
+		enterToDrawerMenuPointBy(0);
+		
 	}
 
 }

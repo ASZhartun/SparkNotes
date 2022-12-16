@@ -88,23 +88,16 @@ public class SQLController {
 	public Cursor getNoteById(long position) {
 		Cursor cursor;
 		database.beginTransaction();
-
-//		String[] allColumns = new String[] { DBHelper.TABLE_SPARK_NOTES_ID, DBHelper.TABLE_SPARK_NOTES_TITLE,
-//				DBHelper.TABLE_SPARK_NOTES_CONTENT, DBHelper.TABLE_SPARK_NOTES_INIT_DATE };
 		String pos = String.valueOf(position);
-//		String selection = "_id = " + pos;
+
 		String[] selectionArgs = new String[] { pos };
-//		cursor = database.query(DBHelper.TABLE_SPARK_NOTES, allColumns, selection, selectionArgs, null, null, null, null);
 		String sql = "SELECT * FROM spark_notes WHERE _id=?";
+
 		cursor = database.rawQuery(sql, selectionArgs);
-//			cursor = database.query(DBHelper.TABLE_SPARK_NOTES, null, null,
-//					null, null, null, null);
-//			int count = cursor.getCount();
 		cursor.moveToFirst();
 		database.setTransactionSuccessful();
 		database.endTransaction();
 		return cursor;
-
 	}
 
 	public ArrayList<SparkNote> getNotes() {
@@ -341,7 +334,8 @@ public class SQLController {
 	public Cursor getDeletedSparkNotes() {
 		this.open();
 		String[] allColumns = new String[] { db.TABLE_DELETED_SPARK_NOTES_ID, db.TABLE_DELETED_SPARK_NOTES_TITLE,
-				db.TABLE_DELETED_SPARK_NOTES_CONTENT, db.TABLE_DELETED_SPARK_NOTES_INIT_DATE };
+				db.TABLE_DELETED_SPARK_NOTES_CONTENT, db.TABLE_DELETED_SPARK_NOTES_INIT_DATE,
+				db.TABLE_DELETED_SPARK_NOTES_PREV_ID };
 		Cursor c = database.query(db.TABLE_DELETED_SPARK_NOTES, allColumns, null, null, null, null, "_id DESC");
 		if (c != null) {
 			c.moveToFirst();
@@ -349,7 +343,7 @@ public class SQLController {
 		this.close();
 		return c;
 	}
-	
+
 	public void saveDeletedNote(Cursor cursor) {
 		String title = cursor.getString(1);
 		String content = cursor.getString(2);
@@ -364,5 +358,47 @@ public class SQLController {
 		long insert = database.insert(DBHelper.TABLE_DELETED_SPARK_NOTES, null, values);
 		database.setTransactionSuccessful();
 		database.endTransaction();
+	}
+
+	public Cursor getDeletedNoteById(Long id) {
+		Cursor cursor;
+		database.beginTransaction();
+		String pos = String.valueOf(id);
+
+		String[] selectionArgs = new String[] { pos };
+		String sql = "SELECT * FROM deleted_spark_notes WHERE _id=?";
+
+		cursor = database.rawQuery(sql, selectionArgs);
+		cursor.moveToFirst();
+		database.setTransactionSuccessful();
+		database.endTransaction();
+		return cursor;
+	}
+
+	public void restoreNote(Long id) {
+		open();
+		database.beginTransaction();
+		Cursor deletedNoteById = getDeletedNoteById(id);
+
+		String title = deletedNoteById.getString(1);
+		String content = deletedNoteById.getString(2);
+		String date = deletedNoteById.getString(3);
+		Long prevID = deletedNoteById.getLong(4);
+		ArrayList<AttachItem> attachesByNoteId = getAttachesByNoteId(prevID);
+		saveNote(title, content, date, attachesByNoteId);
+		database.delete(DBHelper.TABLE_DELETED_SPARK_NOTES, "_id=?", new String[] { String.valueOf(id) });
+		database.setTransactionSuccessful();
+		database.endTransaction();
+		close();
+
+	}
+
+	public void fullDeleteNote(Long id) {
+		open();
+		database.beginTransaction();
+		database.delete(DBHelper.TABLE_DELETED_SPARK_NOTES, "_id=?", new String[] { String.valueOf(id) });
+		database.setTransactionSuccessful();
+		database.endTransaction();
+		close();
 	}
 }
