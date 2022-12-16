@@ -11,6 +11,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class SQLController {
 	private DBHelper db;
@@ -379,14 +380,32 @@ public class SQLController {
 		open();
 		database.beginTransaction();
 		Cursor deletedNoteById = getDeletedNoteById(id);
-
+		database.setTransactionSuccessful();
+		database.endTransaction();
+		close();
+		
 		String title = deletedNoteById.getString(1);
 		String content = deletedNoteById.getString(2);
 		String date = deletedNoteById.getString(3);
 		Long prevID = deletedNoteById.getLong(4);
+		
+		open();
+		database.beginTransaction();
 		ArrayList<AttachItem> attachesByNoteId = getAttachesByNoteId(prevID);
+		database.setTransactionSuccessful();
+		database.endTransaction();
+		close();
+		
 		saveNote(title, content, date, attachesByNoteId);
-		database.delete(DBHelper.TABLE_DELETED_SPARK_NOTES, "_id=?", new String[] { String.valueOf(id) });
+		
+		String[] whereArgs = new String[] { String.valueOf(id) };
+
+		
+		open();
+		database.beginTransaction();
+		int count = database.delete(DBHelper.TABLE_DELETED_SPARK_NOTES, "_id=?", whereArgs);
+//		database.rawQuery("DELETE FROM deleted_spark_notes WHERE _id=?", whereArgs);
+		Log.d(RecycleBinFragment.LOG_TAG, String.valueOf(count));
 		database.setTransactionSuccessful();
 		database.endTransaction();
 		close();

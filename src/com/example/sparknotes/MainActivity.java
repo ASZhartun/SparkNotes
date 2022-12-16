@@ -317,8 +317,8 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			dbController.fullDeleteNote(positions.get(i));
 		}
 		dbController.close();
-		NoteListFragment.selectingItemIDs.clear();
-		NoteListFragment.isSelecting = false;
+		RecycleBinFragment.selectingItemIDs.clear();
+		RecycleBinFragment.isSelecting = false;
 		enterToDrawerMenuPointBy(0);
 		
 	}
