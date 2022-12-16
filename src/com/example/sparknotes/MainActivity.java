@@ -122,16 +122,26 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	@Override
 	public void onBackPressed() {
 		if (current instanceof NoteListFragment || current instanceof RecycleBinFragment) {
-			if (NoteListFragment.isSelecting && current instanceof NoteListFragment) {
-				enterToDrawerMenuPointBy(0);
-				NoteListFragment.isSelecting = false;
-				NoteListFragment.selectingItemIDs.clear();
-				Toast.makeText(this, "Clean static array", Toast.LENGTH_SHORT).show();
-			} else if (RecycleBinFragment.isSelecting && current instanceof RecycleBinFragment) {
-				RecycleBinFragment.isSelecting = false;
-				RecycleBinFragment.selectingItemIDs.clear();
-				enterToDrawerMenuPointBy(3);
-				Toast.makeText(this, "Clean recycle static array", Toast.LENGTH_SHORT).show();
+			if (current instanceof NoteListFragment) {
+				if (!NoteListFragment.isSelecting) {
+					finish();
+				} else {
+					enterToDrawerMenuPointBy(0);
+					NoteListFragment.isSelecting = false;
+					NoteListFragment.selectingItemIDs.clear();
+					Toast.makeText(this, "Clean static array", Toast.LENGTH_SHORT).show();
+				}
+
+			} else if (current instanceof RecycleBinFragment) {
+				if (!RecycleBinFragment.isSelecting) {
+					enterToDrawerMenuPointBy(0);
+				} else {
+					RecycleBinFragment.isSelecting = false;
+					RecycleBinFragment.selectingItemIDs.clear();
+					enterToDrawerMenuPointBy(3);
+					Toast.makeText(this, "Clean recycle static array", Toast.LENGTH_SHORT).show();
+				}
+
 			}
 		} else {
 			enterToDrawerMenuPointBy(0);
@@ -320,7 +330,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		RecycleBinFragment.selectingItemIDs.clear();
 		RecycleBinFragment.isSelecting = false;
 		enterToDrawerMenuPointBy(0);
-		
+
 	}
 
 }
