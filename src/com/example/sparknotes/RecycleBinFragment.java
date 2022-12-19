@@ -34,20 +34,9 @@ public class RecycleBinFragment extends ListFragment {
 		ctx = (ActionNoteItemListener) getActivity();
 		setListAdapter(adapter);
 		lv = (ListView) inflater.inflate(R.layout.fragment_main_list, null);
-		lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				isSelecting = true;
-				CheckBox checkNote = (CheckBox) view.findViewById(R.id.item_selector);
-
-				checkNote.setVisibility(View.VISIBLE);
-				checkNote.setChecked(true);
-
-//				selectingItemIDs.add(id);
-				return false;
-			}
-		});
+		lv.setMultiChoiceModeListener(new MultiChoiceNoteListImpl(ctx, lv, getActivity() ,adapter));
+		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		return lv;
 	}
 
@@ -73,20 +62,7 @@ public class RecycleBinFragment extends ListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
 
-		CheckBox checkNote = (CheckBox) v.findViewById(R.id.item_selector);
-
-		if (isSelecting) {
-			checkNote = (CheckBox) v.findViewById(R.id.item_selector);
-			checkNote.setVisibility(View.VISIBLE);
-			checkNote.setChecked(true);
-
-			selectingItemIDs.add(id);
-
-		} else {
-
-		}
 		Log.d(LOG_TAG, "Recycle list item click happened");
 	}
 

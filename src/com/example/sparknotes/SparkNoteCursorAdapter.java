@@ -1,6 +1,7 @@
 package com.example.sparknotes;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SparkNoteCursorAdapter extends CursorAdapter{
+	private HashMap<Integer, Boolean> mSelection = new HashMap<Integer, Boolean>();
+	
 	Context ctx;
 	SimpleDateFormat sdf = MainActivity.sdf;
 	long currentID = 0;
@@ -55,12 +58,32 @@ public class SparkNoteCursorAdapter extends CursorAdapter{
 				}
 			}
 		});
+		
+		if (mSelection.get(cursor.getPosition()) != null) {
+			checkNote.setVisibility(View.VISIBLE);
+			checkNote.setChecked(true);
+		}
 	}
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		return LayoutInflater.from(context).inflate(R.layout.item_note, parent, false);
 
+	}
+	
+	public void setNewSelection(int position, boolean value) {
+		mSelection.put(position, value);
+		notifyDataSetChanged();
+	}
+	
+	public void removeSelection(int position) {
+		mSelection.remove(position);
+		notifyDataSetChanged();
+	}
+
+	public void clearSelection() {
+		mSelection = new HashMap<Integer, Boolean>();
+		notifyDataSetChanged();
 	}
 
 }
