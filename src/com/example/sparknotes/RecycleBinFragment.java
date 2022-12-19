@@ -85,7 +85,7 @@ public class RecycleBinFragment extends ListFragment {
 			selectingItemIDs.add(id);
 
 		} else {
-			ctx.openDeletedNote(id);
+
 		}
 		Log.d(LOG_TAG, "Recycle list item click happened");
 	}

@@ -148,7 +148,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 		case R.id.action_bar_attach_item:
 			chooseTypeOfAttachingFile();
 			break;
-		case R.id.action_bar_delete_item:
+		case R.id.action_bar_decline_item:
 		default:
 			finish();
 			break;

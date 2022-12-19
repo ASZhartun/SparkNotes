@@ -329,8 +329,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		dbController.close();
 		RecycleBinFragment.selectingItemIDs.clear();
 		RecycleBinFragment.isSelecting = false;
-		enterToDrawerMenuPointBy(0);
-
+		enterToDrawerMenuPointBy(3);
 	}
 
 }

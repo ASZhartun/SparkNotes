@@ -15,6 +15,13 @@
         <item>ЧаВо</item>
         <item>Создать</item>
     </string-array>
+    
+    <string-array name="recycle_alert_dialog_points">
+        <item>Восстановить</item>
+        <item>Удалить</item>
+        <item>Посмотреть</item>
+
+    </string-array>
 
     <string name="main_menu_open">Меню</string>
     <string name="main_menu_close">Заметки</string>

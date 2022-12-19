@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -177,6 +178,15 @@ public class ExportActivity extends FragmentActivity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.cancel_single, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.action_bar_decline_item) {
+			Toast.makeText(this, "nazhal na decline", Toast.LENGTH_LONG).show();
+			finish();
+		} 
+		return super.onOptionsItemSelected(item);
 	}
 
 }
