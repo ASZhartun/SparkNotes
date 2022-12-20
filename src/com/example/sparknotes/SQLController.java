@@ -87,6 +87,7 @@ public class SQLController {
 	}
 
 	public Cursor getNoteById(long position) {
+		open();
 		Cursor cursor;
 		database.beginTransaction();
 		String pos = String.valueOf(position);
@@ -102,6 +103,7 @@ public class SQLController {
 	}
 
 	public ArrayList<SparkNote> getNotes() {
+		open();
 		Cursor cursor;
 		database.beginTransaction();
 
@@ -113,7 +115,7 @@ public class SQLController {
 
 		database.setTransactionSuccessful();
 		database.endTransaction();
-
+		close();
 		return convertSparkCursorToList(cursor);
 	}
 
@@ -163,6 +165,7 @@ public class SQLController {
 	}
 
 	public ArrayList<AttachItem> getAttachesByNoteId(long position) {
+		open();
 		database = db.getReadableDatabase();
 		database.beginTransaction();
 
@@ -192,6 +195,7 @@ public class SQLController {
 
 	public ArrayList<AttachItem> getAttaches() {
 		Cursor cursor;
+		open();
 		database.beginTransaction();
 
 		String sql = "SELECT * FROM attaches";
@@ -202,7 +206,7 @@ public class SQLController {
 
 		database.setTransactionSuccessful();
 		database.endTransaction();
-
+		close();
 		return convertAttachCursorToList(cursor);
 	}
 
@@ -230,6 +234,7 @@ public class SQLController {
 		database.endTransaction();
 
 		updateNoteAttaches(position, attaches);
+		close();
 	}
 
 	public void saveNote(String title, String content, String date, ArrayList<AttachItem> attaches) {
@@ -247,10 +252,11 @@ public class SQLController {
 		database.close();
 
 		saveNoteAttaches(insert, attaches);
+		close();
 	}
 
 	private void saveNoteAttaches(long insert, ArrayList<AttachItem> attaches) {
-		database = db.getWritableDatabase();
+		open();
 		database.beginTransaction();
 		for (int i = 0; i < attaches.size(); i++) {
 			attaches.get(i).setSparkNoteId(insert);
@@ -266,6 +272,7 @@ public class SQLController {
 		database.setTransactionSuccessful();
 		database.endTransaction();
 		database.close();
+		close();
 		return;
 	}
 
@@ -298,7 +305,7 @@ public class SQLController {
 	}
 
 	private void saveExtraAttach(AttachItem attachItem) {
-		database = db.getWritableDatabase();
+		open();
 		database.beginTransaction();
 
 		ContentValues values = new ContentValues();
@@ -310,26 +317,26 @@ public class SQLController {
 
 		database.setTransactionSuccessful();
 		database.endTransaction();
+		close();
 		return;
 	}
 
 	public void deleteNote(Long id) {
-		open();
 		database.beginTransaction();
 		saveDeletedNote(getNoteById(id));
 		database.delete(DBHelper.TABLE_SPARK_NOTES, "_id=?", new String[] { String.valueOf(id) });
 		database.setTransactionSuccessful();
 		database.endTransaction();
-		close();
 	}
 
 	public void deleteAttach(Long id) {
-		database = db.getWritableDatabase();
+		open();
 		database.beginTransaction();
 		database.delete(DBHelper.TABLE_ATTACHES, "_id=?", new String[] { String.valueOf(id) });
 		database.setTransactionSuccessful();
 		database.endTransaction();
 		database.close();
+		close();
 	}
 
 	public Cursor getDeletedSparkNotes() {
@@ -382,25 +389,22 @@ public class SQLController {
 		Cursor deletedNoteById = getDeletedNoteById(id);
 		database.setTransactionSuccessful();
 		database.endTransaction();
-		close();
-		
+
 		String title = deletedNoteById.getString(1);
 		String content = deletedNoteById.getString(2);
 		String date = deletedNoteById.getString(3);
 		Long prevID = deletedNoteById.getLong(4);
-		
+
 		open();
 		database.beginTransaction();
 		ArrayList<AttachItem> attachesByNoteId = getAttachesByNoteId(prevID);
 		database.setTransactionSuccessful();
 		database.endTransaction();
-		close();
-		
+
 		saveNote(title, content, date, attachesByNoteId);
-		
+
 		String[] whereArgs = new String[] { String.valueOf(id) };
 
-		
 		open();
 		database.beginTransaction();
 		int count = database.delete(DBHelper.TABLE_DELETED_SPARK_NOTES, "_id=?", whereArgs);
@@ -408,7 +412,6 @@ public class SQLController {
 		Log.d(RecycleBinFragment.LOG_TAG, String.valueOf(count));
 		database.setTransactionSuccessful();
 		database.endTransaction();
-		close();
 
 	}
 

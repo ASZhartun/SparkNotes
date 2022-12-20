@@ -13,9 +13,9 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SparkNoteCursorAdapter extends CursorAdapter{
+public class SparkNoteCursorAdapter extends CursorAdapter {
 	private HashMap<Integer, Boolean> mSelection = new HashMap<Integer, Boolean>();
-	
+
 	Context ctx;
 	SimpleDateFormat sdf = MainActivity.sdf;
 	long currentID = 0;
@@ -27,7 +27,7 @@ public class SparkNoteCursorAdapter extends CursorAdapter{
 
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
-		
+
 		TextView title = (TextView) view.findViewById(R.id.title);
 		TextView content = (TextView) view.findViewById(R.id.content);
 		TextView date = (TextView) view.findViewById(R.id.init_date);
@@ -40,10 +40,10 @@ public class SparkNoteCursorAdapter extends CursorAdapter{
 //		title.setText(cursor.getColumnIndexOrThrow(DBHelper.TABLE_SPARK_NOTES_TITLE));
 //		content.setText(cursor.getColumnIndexOrThrow(DBHelper.TABLE_SPARK_NOTES_CONTENT));
 //		date.setText(sdf.format(cursor.getColumnIndexOrThrow(DBHelper.TABLE_SPARK_NOTES_INIT_DATE)));
-		
+
 		checkNote.setChecked(false);
 		checkNote.setVisibility(View.GONE);
-		
+
 		checkNote.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -52,13 +52,13 @@ public class SparkNoteCursorAdapter extends CursorAdapter{
 				if (!current.isChecked()) {
 					current.setChecked(false);
 					current.setVisibility(View.GONE);
-					Toast.makeText(ctx, "Current state of checkbox is " + current.isChecked(),
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(ctx, "Current state of checkbox is " + current.isChecked(), Toast.LENGTH_SHORT)
+							.show();
 					current.setChecked(false);
 				}
 			}
 		});
-		
+
 		if (mSelection.get(cursor.getPosition()) != null) {
 			checkNote.setVisibility(View.VISIBLE);
 			checkNote.setChecked(true);
@@ -70,12 +70,12 @@ public class SparkNoteCursorAdapter extends CursorAdapter{
 		return LayoutInflater.from(context).inflate(R.layout.item_note, parent, false);
 
 	}
-	
+
 	public void setNewSelection(int position, boolean value) {
 		mSelection.put(position, value);
 		notifyDataSetChanged();
 	}
-	
+
 	public void removeSelection(int position) {
 		mSelection.remove(position);
 		notifyDataSetChanged();
