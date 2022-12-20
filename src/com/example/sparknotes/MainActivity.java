@@ -132,17 +132,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 					Toast.makeText(this, "Clean static array", Toast.LENGTH_SHORT).show();
 				}
 
-			} else if (current instanceof RecycleBinFragment) {
-				if (!RecycleBinFragment.isSelecting) {
-					enterToDrawerMenuPointBy(0);
-				} else {
-					RecycleBinFragment.isSelecting = false;
-					RecycleBinFragment.selectingItemIDs.clear();
-					enterToDrawerMenuPointBy(3);
-					Toast.makeText(this, "Clean recycle static array", Toast.LENGTH_SHORT).show();
-				}
-
-			}
+			} 
 		} else {
 			enterToDrawerMenuPointBy(0);
 			super.onBackPressed();
@@ -315,7 +305,6 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		}
 		dbController.close();
 		RecycleBinFragment.selectingItemIDs.clear();
-		RecycleBinFragment.isSelecting = false;
 		enterToDrawerMenuPointBy(0);
 
 	}
@@ -328,7 +317,6 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		}
 		dbController.close();
 		RecycleBinFragment.selectingItemIDs.clear();
-		RecycleBinFragment.isSelecting = false;
 		enterToDrawerMenuPointBy(3);
 	}
 

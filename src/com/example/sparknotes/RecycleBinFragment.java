@@ -25,7 +25,6 @@ public class RecycleBinFragment extends ListFragment {
 
 	SparkNoteCursorAdapter adapter;
 
-	public static Boolean isSelecting = false;
 	public static ArrayList<Long> selectingItemIDs = new ArrayList<Long>();
 
 	@Override

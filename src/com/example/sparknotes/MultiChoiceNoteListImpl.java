@@ -53,7 +53,7 @@ public class MultiChoiceNoteListImpl implements AbsListView.MultiChoiceModeListe
 		if (item.getTitle() == ctx.getResources().getString(R.string.actionbar_restore_button)) {
 			activity.restoreNotes(getSelections());
 		} else if (item.getTitle() == ctx.getResources().getString(R.string.actionbar_delete_button)) {
-			activity.deleteNotes(getSelections());
+			activity.fullDeleteNotes(getSelections());
 		}
 		selectingItemIDs.clear();
 		Toast.makeText(ctx, item.getTitle(), Toast.LENGTH_LONG).show();
