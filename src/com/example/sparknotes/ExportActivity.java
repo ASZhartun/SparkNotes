@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 public class ExportActivity extends FragmentActivity {
 	SQLController dbController;
+	
+	public static ArrayList<SparkNote> shareNotes = null;
 
 	FragmentActivity ctx;
 	EditText input;
@@ -49,8 +51,12 @@ public class ExportActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				if (verify(input.getText().toString())) {
-
-					ArrayList<SparkNote> notes = getNotes();
+					ArrayList<SparkNote> notes;
+					if (shareNotes != null) {
+						notes = shareNotes;
+					} else {
+						notes = getNotes();
+					}
 					ArrayList<AttachItem> attaches = getAttaches();
 					merge(notes, attaches);
 					File file;
@@ -68,6 +74,7 @@ public class ExportActivity extends FragmentActivity {
 					Toast.makeText(v.getContext(), "Invalidate name! Please, choose another...", Toast.LENGTH_LONG)
 							.show();
 				}
+				shareNotes = null;
 				ctx.finish();
 			}
 		});

@@ -309,15 +309,19 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	}
 
 	@Override
-	public void shareSelectedActivities(ArrayList<Long> positions) {
+	public void shareSelectedNotesAsZip(ArrayList<Long> positions) {
+		ArrayList<SparkNote> list = getSparkNotesByPostions(positions);
+		ExportActivity.shareNotes = list;
+		enterToDrawerMenuPointBy(1);
+	}
+
+	private ArrayList<SparkNote> getSparkNotesByPostions(ArrayList<Long> positions) {
 		ArrayList<SparkNote> list = new ArrayList<SparkNote>();
 		for (int i = 0; i < positions.size(); i++) {
 			SparkNote spark = convert(positions.get(i), dbController.getNoteById(positions.get(i)));
 			list.add(spark);
 		}
-		
-		// has list with notes and need to share by some app
-		
+		return list;
 	}
 
 	private SparkNote convert(Long id, Cursor noteById) {
@@ -333,5 +337,12 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		
 		return new SparkNote(id, title, content, parseDate, dbController.getAttachesByNoteId(id));
 	}
+
+	@Override
+	public void shareSelectedNotesByApps(ArrayList<Long> positions) {
+		ArrayList<SparkNote> list = getSparkNotesByPostions(positions);
+		// send notes by some app on the phone
+	}
+
 
 }

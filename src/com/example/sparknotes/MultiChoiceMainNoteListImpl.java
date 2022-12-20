@@ -20,6 +20,7 @@ public class MultiChoiceMainNoteListImpl implements AbsListView.MultiChoiceModeL
 	private ActionNoteItemListener activity;
 
 	private static HashSet<Long> selectingItemIDs = new HashSet<Long>();
+	boolean shareAsZip = true;
 
 	public MultiChoiceMainNoteListImpl(ActionNoteItemListener activity, AbsListView listView, Context ctx,
 			SparkNoteCursorAdapter adapter) {
@@ -49,7 +50,12 @@ public class MultiChoiceMainNoteListImpl implements AbsListView.MultiChoiceModeL
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 		if (item.getTitle() == ctx.getResources().getString(R.string.actionbar_share_button)) {
 			Toast.makeText(ctx, ctx.getResources().getString(R.string.actionbar_share_button), Toast.LENGTH_SHORT).show();
-			activity.shareSelectedActivities(getSelections());
+			if (shareAsZip) {
+				activity.shareSelectedNotesAsZip(getSelections());
+			} else {
+				activity.shareSelectedNotesByApps(getSelections());
+			}
+
 		} else if (item.getTitle() == ctx.getResources().getString(R.string.actionbar_delete_button)) {
 			Toast.makeText(ctx, ctx.getResources().getString(R.string.actionbar_delete_button), Toast.LENGTH_SHORT).show();
 			activity.deleteNotes(getSelections());

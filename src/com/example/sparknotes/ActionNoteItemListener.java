@@ -3,8 +3,10 @@ package com.example.sparknotes;
 import java.util.ArrayList;
 
 public interface ActionNoteItemListener {
-	public void shareSelectedActivities(ArrayList<Long> positions);
+	public void shareSelectedNotesAsZip(ArrayList<Long> positions);
 	
+	public void shareSelectedNotesByApps(ArrayList<Long> selections);
+
 	public void deleteNotes(ArrayList<Long> positions);
 
 	public void deleteNote(Long positions);
@@ -20,4 +22,5 @@ public interface ActionNoteItemListener {
 	void clearSearchResult();
 
 	public void fullDeleteNotes(ArrayList<Long> selectingItemIDs);
+
 }
