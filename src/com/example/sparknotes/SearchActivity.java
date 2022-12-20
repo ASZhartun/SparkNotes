@@ -1,10 +1,6 @@
 package com.example.sparknotes;
 
-import java.util.ArrayList;
-
-import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -21,7 +17,7 @@ import android.widget.TextView;
 
 public class SearchActivity extends FragmentActivity {
 	SQLController dbController;
-	
+
 	EditText userInput;
 	RadioGroup radioGroup;
 	RadioButton radioTitle;
@@ -34,11 +30,12 @@ public class SearchActivity extends FragmentActivity {
 	EditText beginDate;
 	EditText endDate;
 	Button search;
-	
+
 	public static String SAMPLE_KEY = "sample";
 	public static String SAMPLE_CRITERIA_KEY = "sampleCriteria";
 	public static String START_DATE_KEY = "startDate";
 	public static String END_DATE_KEY = "endDate";
+
 	@Override
 	protected void onCreate(Bundle arg0) {
 		setContentView(R.layout.fragment_search);
@@ -56,14 +53,14 @@ public class SearchActivity extends FragmentActivity {
 		beginPointer = (ImageButton) findViewById(R.id.pointer_begin_date_search);
 		endPointer = (ImageButton) findViewById(R.id.pointer_finish_date_search);
 		search = (Button) findViewById(R.id.button_search);
-		
+
 		search.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				String start = null;
 				String end = null;
-				
+
 				if (dateNoticer.isChecked()) {
 					start = beginDate.getText().toString();
 					end = endDate.getText().toString();
@@ -71,20 +68,22 @@ public class SearchActivity extends FragmentActivity {
 
 				String sample = userInput.getText().toString();
 				String criteria = "content";
-				if (radioTitle.isChecked()) criteria = "title";
-				
+				if (radioTitle.isChecked())
+					criteria = "title";
+
 				Intent data = new Intent();
 				data.putExtra(SAMPLE_KEY, sample);
 				data.putExtra(SAMPLE_CRITERIA_KEY, criteria);
 				data.putExtra(START_DATE_KEY, start);
 				data.putExtra(END_DATE_KEY, end);
 				setResult(MainActivity.GET_SEARCH_RESULT, data);
+				MainActivity.SEARCH_FLAG = true;
 				finish();
 			}
 		});
-		
+
 		dateNoticer.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				CheckBox noticer = (CheckBox) v;
@@ -105,6 +104,24 @@ public class SearchActivity extends FragmentActivity {
 					beginPointer.setVisibility(View.VISIBLE);
 					endPointer.setVisibility(View.VISIBLE);
 				}
+			}
+		});
+
+		beginPointer.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				DateTimeFragment newFragment = new DateTimeFragment(beginDate);
+				newFragment.show(getFragmentManager(), "dtPicker");
+			}
+		});
+
+		endPointer.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				DateTimeFragment newFragment = new DateTimeFragment(endDate);
+				newFragment.show(getFragmentManager(), "dtPicker");
 			}
 		});
 		super.onCreate(arg0);

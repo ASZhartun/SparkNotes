@@ -32,6 +32,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	Boolean isSelected = false;
 
 	public Cursor searchResults = null;
+	public SparkNoteCursorAdapter noteListAdapter = null;
 
 	DrawerLayout drawer;
 	ListView mainMenu;
@@ -39,7 +40,8 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	ActionBarDrawerToggle menuToggler;
 
 	Fragment current;
-	public static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm", Locale.ROOT);
+	public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.ROOT);
+	public static boolean SEARCH_FLAG = false;
 	public final static int GET_EXPORT_DIRECTORY = 101;
 	public final static int GET_IMPORT_FILE = 102;
 	public final static int GET_SEARCH_RESULT = 103;
@@ -85,7 +87,6 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			String start = data.getStringExtra(SearchActivity.START_DATE_KEY);
 			String end = data.getStringExtra(SearchActivity.END_DATE_KEY);
 			searchResults = dbController.getNotesByDatesAndText(start, end, sample, criteria);
-			refreshNoteListAdapter();
 		}
 
 		// TODO Auto-generated method stub
@@ -123,8 +124,14 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 	@Override
 	public void onBackPressed() {
-		if (!(current instanceof NoteListFragment)) {
-			enterToDrawerMenuPointBy(0);
+		if (current instanceof NoteListFragment) {
+			if (SEARCH_FLAG) {
+				SEARCH_FLAG = false;
+				searchResults = null;
+				enterToDrawerMenuPointBy(0);
+			} else {
+				super.onBackPressed();
+			}
 		} else {
 			super.onBackPressed();
 		}
@@ -204,11 +211,12 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		NoteListFragment noteListFragment = new NoteListFragment();
 		dbController.open();
 		if (searchResults != null) {
-			noteListFragment.setAdapter(new SparkNoteCursorAdapter(this, searchResults));
+			noteListAdapter = new SparkNoteCursorAdapter(this, searchResults);
+			
 		} else {
-			noteListFragment.setAdapter(new SparkNoteCursorAdapter(this, dbController.getSparkNotes()));
+			noteListAdapter= new SparkNoteCursorAdapter(this, dbController.getSparkNotes());
 		}
-
+		noteListFragment.setAdapter(noteListAdapter);
 		dbController.close();
 		return noteListFragment;
 	}
