@@ -49,10 +49,10 @@ public class MultiChoiceMainNoteListImpl implements AbsListView.MultiChoiceModeL
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 		if (item.getTitle() == ctx.getResources().getString(R.string.actionbar_share_button)) {
 			Toast.makeText(ctx, ctx.getResources().getString(R.string.actionbar_share_button), Toast.LENGTH_SHORT).show();
-			
+			activity.shareSelectedActivities(getSelections());
 		} else if (item.getTitle() == ctx.getResources().getString(R.string.actionbar_delete_button)) {
 			Toast.makeText(ctx, ctx.getResources().getString(R.string.actionbar_delete_button), Toast.LENGTH_SHORT).show();
-			
+			activity.deleteNotes(getSelections());
 		}
 		selectingItemIDs.clear();
 		return false;

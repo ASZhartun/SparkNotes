@@ -1,7 +1,9 @@
 package com.example.sparknotes;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 import android.content.Intent;
@@ -296,6 +298,32 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		dbController.close();
 		RecycleBinFragment.selectingItemIDs.clear();
 		enterToDrawerMenuPointBy(3);
+	}
+
+	@Override
+	public void shareSelectedActivities(ArrayList<Long> positions) {
+		ArrayList<SparkNote> list = new ArrayList<SparkNote>();
+		for (int i = 0; i < positions.size(); i++) {
+			SparkNote spark = convert(positions.get(i), dbController.getNoteById(positions.get(i)));
+			list.add(spark);
+		}
+		
+		// has list with notes and need to share by some app
+		
+	}
+
+	private SparkNote convert(Long id, Cursor noteById) {
+		String title = noteById.getString(1);
+		String content = noteById.getString(2);
+		String date = noteById.getString(3);
+		Date parseDate;
+		try {
+			parseDate = sdf.parse(date);
+		} catch (ParseException e) {
+			parseDate = new Date();
+		}
+		
+		return new SparkNote(id, title, content, parseDate, dbController.getAttachesByNoteId(id));
 	}
 
 }

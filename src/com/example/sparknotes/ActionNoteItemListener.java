@@ -3,6 +3,8 @@ package com.example.sparknotes;
 import java.util.ArrayList;
 
 public interface ActionNoteItemListener {
+	public void shareSelectedActivities(ArrayList<Long> positions);
+	
 	public void deleteNotes(ArrayList<Long> positions);
 
 	public void deleteNote(Long positions);
