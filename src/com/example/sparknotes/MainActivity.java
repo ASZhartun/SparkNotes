@@ -21,7 +21,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
-public class MainActivity extends FragmentActivity implements ActionNoteItemListener, SupportFragmentHandlerListener {
+public class MainActivity extends FragmentActivity implements ActionNoteItemListener {
 
 	SQLController dbController;
 	DummyNoteDB db = new DummyNoteDB();
@@ -121,20 +121,9 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 
 	@Override
 	public void onBackPressed() {
-		if (current instanceof NoteListFragment || current instanceof RecycleBinFragment) {
-			if (current instanceof NoteListFragment) {
-				if (!NoteListFragment.isSelecting) {
-					finish();
-				} else {
-					enterToDrawerMenuPointBy(0);
-					NoteListFragment.isSelecting = false;
-					NoteListFragment.selectingItemIDs.clear();
-					Toast.makeText(this, "Clean static array", Toast.LENGTH_SHORT).show();
-				}
-
-			} 
-		} else {
+		if (!(current instanceof NoteListFragment)) {
 			enterToDrawerMenuPointBy(0);
+		} else {
 			super.onBackPressed();
 		}
 
@@ -254,8 +243,6 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			dbController.deleteNote(positions.get(i));
 		}
 		dbController.close();
-		NoteListFragment.selectingItemIDs.clear();
-		NoteListFragment.isSelecting = false;
 		enterToDrawerMenuPointBy(0);
 	}
 
@@ -263,15 +250,6 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	public void deleteNote(Long id) {
 		dbController.deleteNote(id);
 		enterToDrawerMenuPointBy(0);
-	}
-
-	@Override
-	public void refreshZeroSelectedListViewItems() {
-		if (NoteListFragment.selectingItemIDs.size() == 0) {
-			NoteListFragment.isSelecting = false;
-			enterToDrawerMenuPointBy(0);
-		}
-		;
 	}
 
 	@Override

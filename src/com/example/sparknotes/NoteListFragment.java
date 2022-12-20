@@ -1,6 +1,5 @@
 package com.example.sparknotes;
 
-import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
@@ -11,10 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.Toast;
 
 @SuppressLint("InflateParams")
 public class NoteListFragment extends ListFragment {
@@ -22,9 +18,6 @@ public class NoteListFragment extends ListFragment {
 	ActionNoteItemListener ctx;
 	ListView lv;
 
-	public static ArrayList<Long> selectingItemIDs = new ArrayList<Long>();
-
-	public static Boolean isSelecting = false;
 	SparkNoteCursorAdapter adapter;
 
 	@Override
@@ -33,22 +26,8 @@ public class NoteListFragment extends ListFragment {
 		setHasOptionsMenu(true);
 		setListAdapter(adapter);
 		lv = (ListView) inflater.inflate(R.layout.fragment_main_list, null);
-		lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				isSelecting = true;
-				CheckBox checkNote = (CheckBox) view.findViewById(R.id.item_selector);
-
-				checkNote.setVisibility(View.VISIBLE);
-				checkNote.setChecked(true);
-
-//				selectingItemIDs.add(id);
-				return false;
-			}
-		});
-		
-		lv.setMultiChoiceModeListener(new MultiChoiceMainNoteListImpl(ctx, lv, getActivity() ,adapter));
+		lv.setMultiChoiceModeListener(new MultiChoiceMainNoteListImpl(ctx, lv, getActivity(), adapter));
 		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		return lv;
 	}
@@ -62,32 +41,14 @@ public class NoteListFragment extends ListFragment {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.action_bar_delete_item) {
-			ctx.deleteNotes(selectingItemIDs);
-		} else if (item.getItemId() == R.id.action_bar_decline_item) {
-			Toast.makeText(getActivity(), "nazhal na action bar fragmenta", Toast.LENGTH_LONG).show();
-			ctx.clearSearchResult();
-		}
+
 		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-
-		CheckBox checkNote = (CheckBox) v.findViewById(R.id.item_selector);
-
-		if (isSelecting) {
-			checkNote = (CheckBox) v.findViewById(R.id.item_selector);
-			checkNote.setVisibility(View.VISIBLE);
-			checkNote.setChecked(true);
-
-			selectingItemIDs.add(id);
-
-		} else {
-			ctx.openNote(id);
-		}
-
+		ctx.openNote(id);
 	}
 
 	public SparkNoteCursorAdapter getAdapter() {
