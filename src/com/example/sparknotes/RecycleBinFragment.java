@@ -34,7 +34,7 @@ public class RecycleBinFragment extends ListFragment {
 		setListAdapter(adapter);
 		lv = (ListView) inflater.inflate(R.layout.fragment_main_list, null);
 
-		lv.setMultiChoiceModeListener(new MultiChoiceNoteListImpl(ctx, lv, getActivity() ,adapter));
+		lv.setMultiChoiceModeListener(new MultiChoiceRecycleNoteListImpl(ctx, lv, getActivity() ,adapter));
 		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		return lv;
 	}

@@ -6,17 +6,14 @@ import java.util.Iterator;
 
 import android.content.Context;
 import android.util.Log;
-
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.AbsListView;
-import android.widget.CheckBox;
 import android.widget.Toast;
 
-public class MultiChoiceNoteListImpl implements AbsListView.MultiChoiceModeListener {
+public class MultiChoiceMainNoteListImpl implements AbsListView.MultiChoiceModeListener {
 	private AbsListView listView;
 	private SparkNoteCursorAdapter adapter;
 	private Context ctx;
@@ -24,7 +21,7 @@ public class MultiChoiceNoteListImpl implements AbsListView.MultiChoiceModeListe
 
 	private static HashSet<Long> selectingItemIDs = new HashSet<Long>();
 
-	public MultiChoiceNoteListImpl(ActionNoteItemListener activity, AbsListView listView, Context ctx,
+	public MultiChoiceMainNoteListImpl(ActionNoteItemListener activity, AbsListView listView, Context ctx,
 			SparkNoteCursorAdapter adapter) {
 		this.activity = activity;
 		this.listView = listView;
@@ -38,7 +35,7 @@ public class MultiChoiceNoteListImpl implements AbsListView.MultiChoiceModeListe
 	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 		Log.d("MULTI_CHOICE_NOTE_LIST_RECYCLE_TAG", "onCreateActionMode");
 		MenuInflater inflater = mode.getMenuInflater();
-		inflater.inflate(R.menu.recycler_multi_choice_menu, menu);
+		inflater.inflate(R.menu.main_multi_choice_menu, menu);
 		return true;
 	}
 
@@ -50,13 +47,16 @@ public class MultiChoiceNoteListImpl implements AbsListView.MultiChoiceModeListe
 
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-		if (item.getTitle() == ctx.getResources().getString(R.string.actionbar_restore_button)) {
-			activity.restoreNotes(getSelections());
+		if (item.getTitle() == ctx.getResources().getString(R.string.actionbar_share_button)) {
+			Toast.makeText(ctx, ctx.getResources().getString(R.string.actionbar_share_button), Toast.LENGTH_SHORT).show();
 		} else if (item.getTitle() == ctx.getResources().getString(R.string.actionbar_delete_button)) {
-			activity.fullDeleteNotes(getSelections());
+			Toast.makeText(ctx, ctx.getResources().getString(R.string.actionbar_delete_button), Toast.LENGTH_SHORT).show();
+		} else if (item.getTitle() == ctx.getResources().getString(R.string.actionbar_export_button)) {
+			Toast.makeText(ctx, ctx.getResources().getString(R.string.actionbar_export_button), Toast.LENGTH_SHORT).show();
+		} else if (item.getTitle() == ctx.getResources().getString(R.string.actionbar_decline_button)) {
+			Toast.makeText(ctx, ctx.getResources().getString(R.string.actionbar_decline_button), Toast.LENGTH_SHORT).show();
 		}
 		selectingItemIDs.clear();
-		Toast.makeText(ctx, item.getTitle(), Toast.LENGTH_LONG).show();
 		return false;
 	}
 

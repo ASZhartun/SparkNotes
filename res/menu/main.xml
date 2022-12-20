@@ -3,32 +3,14 @@
     tools:context="com.example.sparknotes.MainActivity" >
 
     <item
+        android:id="@+id/action_bar_create_item"
+        android:icon="@drawable/actionbar_new"
+        android:showAsAction="ifRoom"
+        android:title="@string/actionbar_create_button"/>
+    <item
         android:id="@+id/action_bar_search_item"
         android:icon="@drawable/actionbar_search"
         android:showAsAction="ifRoom"
         android:title="@string/actionbar_search_button"/>
-    <item
-        android:id="@+id/action_bar_share_item"
-        android:icon="@drawable/actionbar_share"
-        android:showAsAction="ifRoom"
-        android:title="@string/actionbar_share_button"/>
-    <item
-        android:id="@+id/action_bar_create_item"
-        android:showAsAction="ifRoom"
-        android:title="@string/actionbar_create_button"/>
-    <item
-        android:id="@+id/action_bar_export_item"
-        android:showAsAction="ifRoom"
-        android:title="@string/actionbar_export_button"/>
-    <item
-        android:id="@+id/action_bar_decline_item"
-        android:icon="@drawable/actionbar_decline"
-        android:showAsAction="ifRoom"
-        android:title="@string/actionbar_decline_button"/>
-    <item
-        android:id="@+id/action_bar_delete_item"
-        android:icon="@drawable/actionbar_delete"
-        android:showAsAction="ifRoom"
-        android:title="@string/actionbar_delete_button"/>
 
 </menu>

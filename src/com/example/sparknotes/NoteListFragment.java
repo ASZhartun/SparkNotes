@@ -47,6 +47,9 @@ public class NoteListFragment extends ListFragment {
 				return false;
 			}
 		});
+		
+		lv.setMultiChoiceModeListener(new MultiChoiceMainNoteListImpl(ctx, lv, getActivity() ,adapter));
+		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		return lv;
 	}
 
