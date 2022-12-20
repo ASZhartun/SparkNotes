@@ -12,9 +12,5 @@
         android:icon="@drawable/actionbar_confirm"
         android:showAsAction="ifRoom"
         android:title="@string/actionbar_confirm_button"/>
-    <item
-        android:id="@+id/action_bar_decline_item"
-        android:showAsAction="never"
-        android:title="@string/actionbar_decline_button"/>
 
 </menu>

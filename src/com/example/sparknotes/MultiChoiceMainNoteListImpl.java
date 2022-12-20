@@ -53,12 +53,6 @@ public class MultiChoiceMainNoteListImpl implements AbsListView.MultiChoiceModeL
 		} else if (item.getTitle() == ctx.getResources().getString(R.string.actionbar_delete_button)) {
 			Toast.makeText(ctx, ctx.getResources().getString(R.string.actionbar_delete_button), Toast.LENGTH_SHORT).show();
 			
-		} else if (item.getTitle() == ctx.getResources().getString(R.string.actionbar_export_button)) {
-			Toast.makeText(ctx, ctx.getResources().getString(R.string.actionbar_export_button), Toast.LENGTH_SHORT).show();
-			
-		} else if (item.getTitle() == ctx.getResources().getString(R.string.actionbar_decline_button)) {
-			Toast.makeText(ctx, ctx.getResources().getString(R.string.actionbar_decline_button), Toast.LENGTH_SHORT).show();
-			
 		}
 		selectingItemIDs.clear();
 		return false;
