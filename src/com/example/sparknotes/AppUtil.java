@@ -17,18 +17,6 @@ import java.util.zip.ZipOutputStream;
 public class AppUtil {
 
 	public static void writeToFileNoteContent(File noteContent, String title, String date, String content) {
-//		try {
-//			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(noteContent, true));
-//			bufferedWriter.write(title);
-//			bufferedWriter.newLine();
-//			bufferedWriter.write(date);
-//			bufferedWriter.newLine();
-//			bufferedWriter.write(content);
-//			bufferedWriter.newLine();
-//			bufferedWriter.close();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} 
 		
 		try {
 			FileOutputStream fos = new FileOutputStream(noteContent);

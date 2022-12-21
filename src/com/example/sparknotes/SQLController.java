@@ -193,21 +193,17 @@ public class SQLController {
 		return attaches;
 	}
 
-	public ArrayList<AttachItem> getAttaches() {
+	public ArrayList<AttachItem> getAttaches(ArrayList<Long> indices) {
+		ArrayList<AttachItem> attaches = new ArrayList<AttachItem>();
 		Cursor cursor;
-		open();
-		database.beginTransaction();
 
-		String sql = "SELECT * FROM attaches";
-		cursor = database.rawQuery(sql, null);
-		if (cursor != null) {
-			cursor.moveToFirst();
+		for (int i = 0; i > indices.size(); i++) {
+			ArrayList<AttachItem> attachesByNoteId = getAttachesByNoteId(i);
+			attaches.addAll(attachesByNoteId);
 		}
 
-		database.setTransactionSuccessful();
-		database.endTransaction();
-		close();
-		return convertAttachCursorToList(cursor);
+		return attaches;
+
 	}
 
 	private ArrayList<AttachItem> convertAttachCursorToList(Cursor attaches) {

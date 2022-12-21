@@ -6,14 +6,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import com.example.sparknotes.ExportOptionsDialog.ExportOptionsDialogListener;
+
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,7 +27,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
-public class MainActivity extends FragmentActivity implements ActionNoteItemListener {
+public class MainActivity extends FragmentActivity implements ActionNoteItemListener, ExportOptionsDialogListener {
 
 	SQLController dbController;
 	DummyNoteDB db = new DummyNoteDB();
@@ -212,9 +216,9 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		dbController.open();
 		if (searchResults != null) {
 			noteListAdapter = new SparkNoteCursorAdapter(this, searchResults);
-			
+
 		} else {
-			noteListAdapter= new SparkNoteCursorAdapter(this, dbController.getSparkNotes());
+			noteListAdapter = new SparkNoteCursorAdapter(this, dbController.getSparkNotes());
 		}
 		noteListFragment.setAdapter(noteListAdapter);
 		dbController.close();
@@ -334,15 +338,47 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		} catch (ParseException e) {
 			parseDate = new Date();
 		}
-		
+
 		return new SparkNote(id, title, content, parseDate, dbController.getAttachesByNoteId(id));
 	}
 
 	@Override
 	public void shareSelectedNotesByApps(ArrayList<Long> positions) {
 		ArrayList<SparkNote> list = getSparkNotesByPostions(positions);
-		// send notes by some app on the phone
+		String result = packContent(list);
+		
+		Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+		intent.setType("text/plain");
+		intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject/Title");
+		intent.putExtra(android.content.Intent.EXTRA_TEXT, result);
+		startActivity(Intent.createChooser(intent, "Choose sharing method"));
 	}
 
+	private String packContent(ArrayList<SparkNote> list) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < list.size(); i++) {
+			SparkNote sparkNote = list.get(i);
+			sb.append(sparkNote.getTitle()).append("\r\n").append(sdf.format(sparkNote.getInitDate())).append("\r\n")
+					.append(sparkNote.getContent()).append("\r\n------\r\n");
+		}
+		return sb.toString();
+	}
+	
+	public void showExportDialog() {
+		DialogFragment dialog = new ExportOptionsDialog();
+        dialog.show(getSupportFragmentManager(), "ExportOptionsDialogFragment");
+	}
+
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog) {
+		shareSelectedNotesByApps(MultiChoiceMainNoteListImpl.selections);
+		Log.d("Dialog EXPORT", "Pressed YES - ZIP");
+	}
+
+	@Override
+	public void onDialogNegativeClick(DialogFragment dialog) {
+		shareSelectedNotesAsZip(MultiChoiceMainNoteListImpl.selections);
+		Log.d("Dialog EXPORT", "Pressed NO - MESSANGER");
+	}
 
 }

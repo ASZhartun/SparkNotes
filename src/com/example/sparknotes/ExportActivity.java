@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 public class ExportActivity extends FragmentActivity {
 	SQLController dbController;
-	
+
 	public static ArrayList<SparkNote> shareNotes = null;
 
 	FragmentActivity ctx;
@@ -57,7 +57,7 @@ public class ExportActivity extends FragmentActivity {
 					} else {
 						notes = getNotes();
 					}
-					ArrayList<AttachItem> attaches = getAttaches();
+					ArrayList<AttachItem> attaches = getAttaches(shareNotes);
 					merge(notes, attaches);
 					File file;
 					try {
@@ -108,7 +108,7 @@ public class ExportActivity extends FragmentActivity {
 				}
 			}
 		}
-		
+
 //		This code produce corrupted zip file for any reasons
 //		File zip = new File(resultFolder.getAbsoluteFile() + ".zip");
 //		boolean zipWasCreated = zip.createNewFile();
@@ -133,11 +133,20 @@ public class ExportActivity extends FragmentActivity {
 
 	}
 
-	protected ArrayList<AttachItem> getAttaches() {
+	protected ArrayList<AttachItem> getAttaches(ArrayList<SparkNote> exportingNotes) {
+		ArrayList<Long> indices = getIndices(exportingNotes);
 		dbController.open();
-		ArrayList<AttachItem> attaches = dbController.getAttaches();
+		ArrayList<AttachItem> attaches = dbController.getAttaches(indices);
 		dbController.close();
 		return attaches;
+	}
+
+	private ArrayList<Long> getIndices(ArrayList<SparkNote> exportingNotes) {
+		ArrayList<Long> indices = new ArrayList<Long>();
+		for (int i = 0; i < exportingNotes.size(); i++) {
+			indices.add(exportingNotes.get(i).getId());
+		}
+		return indices;
 	}
 
 	protected ArrayList<SparkNote> getNotes() {
@@ -176,7 +185,6 @@ public class ExportActivity extends FragmentActivity {
 			}
 		}
 
-
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
@@ -186,13 +194,13 @@ public class ExportActivity extends FragmentActivity {
 		inflater.inflate(R.menu.cancel_single, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_bar_decline_item) {
 			Toast.makeText(this, "nazhal na decline", Toast.LENGTH_LONG).show();
 			finish();
-		} 
+		}
 		return super.onOptionsItemSelected(item);
 	}
 

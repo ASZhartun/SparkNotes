@@ -22,5 +22,7 @@ public interface ActionNoteItemListener {
 	void clearSearchResult();
 
 	public void fullDeleteNotes(ArrayList<Long> selectingItemIDs);
+	
+	public void showExportDialog();
 
 }

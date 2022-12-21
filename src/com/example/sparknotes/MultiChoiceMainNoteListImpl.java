@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -20,6 +22,7 @@ public class MultiChoiceMainNoteListImpl implements AbsListView.MultiChoiceModeL
 	private ActionNoteItemListener activity;
 
 	private static HashSet<Long> selectingItemIDs = new HashSet<Long>();
+	public static ArrayList<Long> selections;
 	boolean shareAsZip = true;
 
 	public MultiChoiceMainNoteListImpl(ActionNoteItemListener activity, AbsListView listView, Context ctx,
@@ -48,25 +51,26 @@ public class MultiChoiceMainNoteListImpl implements AbsListView.MultiChoiceModeL
 
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+		selections = getSelections();
 		if (item.getTitle() == ctx.getResources().getString(R.string.actionbar_share_button)) {
-			Toast.makeText(ctx, ctx.getResources().getString(R.string.actionbar_share_button), Toast.LENGTH_SHORT).show();
-			if (shareAsZip) {
-				activity.shareSelectedNotesAsZip(getSelections());
-			} else {
-				activity.shareSelectedNotesByApps(getSelections());
-			}
-
+			Toast.makeText(ctx, ctx.getResources().getString(R.string.actionbar_share_button), Toast.LENGTH_SHORT)
+					.show();
+			activity.showExportDialog();
 		} else if (item.getTitle() == ctx.getResources().getString(R.string.actionbar_delete_button)) {
-			Toast.makeText(ctx, ctx.getResources().getString(R.string.actionbar_delete_button), Toast.LENGTH_SHORT).show();
-			activity.deleteNotes(getSelections());
+			Toast.makeText(ctx, ctx.getResources().getString(R.string.actionbar_delete_button), Toast.LENGTH_SHORT)
+					.show();
+			activity.deleteNotes(selections);
 		}
-		selectingItemIDs.clear();
+
 		return false;
 	}
 
 	@Override
 	public void onDestroyActionMode(ActionMode mode) {
 		adapter.clearSelection();
+		if (selections != null) {
+			selections.clear();
+		}
 	}
 
 	@Override
@@ -103,5 +107,4 @@ public class MultiChoiceMainNoteListImpl implements AbsListView.MultiChoiceModeL
 		}
 		return list;
 	}
-
 }
