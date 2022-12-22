@@ -24,5 +24,7 @@ public interface ActionNoteItemListener {
 	public void fullDeleteNotes(ArrayList<Long> selectingItemIDs);
 	
 	public void showExportDialog();
+	
+	public void showRecycleDialog(long id);
 
 }

@@ -10,9 +10,9 @@ import android.support.v4.app.DialogFragment;
 public class ExportOptionsDialog extends DialogFragment {
 
 	public interface ExportOptionsDialogListener {
-		public void onDialogPositiveClick(DialogFragment dialog);
+		public void onExportDialogPositiveClick(DialogFragment dialog);
 
-		public void onDialogNegativeClick(DialogFragment dialog);
+		public void onExportDialogNegativeClick(DialogFragment dialog);
 	}
 
 	ExportOptionsDialogListener listener;
@@ -39,14 +39,14 @@ public class ExportOptionsDialog extends DialogFragment {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						listener.onDialogPositiveClick(ExportOptionsDialog.this);
+						listener.onExportDialogPositiveClick(ExportOptionsDialog.this);
 
 					}
 				}).setNegativeButton("Zip", new DialogInterface.OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						listener.onDialogNegativeClick(ExportOptionsDialog.this);
+						listener.onExportDialogNegativeClick(ExportOptionsDialog.this);
 
 					}
 				}).setCancelable(false);

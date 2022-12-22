@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.example.sparknotes.ExportOptionsDialog.ExportOptionsDialogListener;
+import com.example.sparknotes.RecycleItemDialog.RecycleItemDialogListener;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -27,7 +28,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
-public class MainActivity extends FragmentActivity implements ActionNoteItemListener, ExportOptionsDialogListener {
+public class MainActivity extends FragmentActivity implements ActionNoteItemListener, ExportOptionsDialogListener, RecycleItemDialogListener {
 
 	SQLController dbController;
 	DummyNoteDB db = new DummyNoteDB();
@@ -49,6 +50,14 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	public final static int GET_EXPORT_DIRECTORY = 101;
 	public final static int GET_IMPORT_FILE = 102;
 	public final static int GET_SEARCH_RESULT = 103;
+
+	
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+	}
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -187,7 +196,8 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			startActivityForResult(intent, GET_SEARCH_RESULT);
 			break;
 		case 5:
-			fragment = new AppearanceFragment();
+			intent = new Intent(this, SettingsActivity.class);
+			startActivity(intent);
 			break;
 		case 6:
 			fragment = new FAQFragment();
@@ -370,15 +380,42 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	}
 
 	@Override
-	public void onDialogPositiveClick(DialogFragment dialog) {
+	public void onExportDialogPositiveClick(DialogFragment dialog) {
 		shareSelectedNotesByApps(MultiChoiceMainNoteListImpl.selections);
 		Log.d("Dialog EXPORT", "Pressed YES - ZIP");
 	}
 
 	@Override
-	public void onDialogNegativeClick(DialogFragment dialog) {
+	public void onExportDialogNegativeClick(DialogFragment dialog) {
 		shareSelectedNotesAsZip(MultiChoiceMainNoteListImpl.selections);
 		Log.d("Dialog EXPORT", "Pressed NO - MESSANGER");
+	}
+
+	@Override
+	public void showRecycleDialog(long id) {
+		DialogFragment dialog = new RecycleItemDialog(id);
+        dialog.show(getSupportFragmentManager(), "RecycleItemDialogFragment");
+	}
+	
+	@Override
+	public void onRecycleDialogPositiveClick(DialogFragment dialog, long id) {
+		dbController.restoreNote(id);
+		Log.d("Dialog RECYCLE", "Resotre note");
+		enterToDrawerMenuPointBy(3);
+	}
+
+	@Override
+	public void onRecycleDialogNegativeClick(DialogFragment dialog, long id) {
+		dbController.fullDeleteNote(id);
+		Log.d("Dialog RECYCLE", "Destroy note");
+		enterToDrawerMenuPointBy(3);
+	}
+
+	@Override
+	public void onRecycleDialogNeutralClick(DialogFragment dialog) {
+		Toast.makeText(this, "Operation was canceled", Toast.LENGTH_SHORT).show();
+		Log.d("Dialog RECYCLE", "Destroy note");
+		
 	}
 
 }

@@ -21,7 +21,7 @@ public class MultiChoiceMainNoteListImpl implements AbsListView.MultiChoiceModeL
 	private Context ctx;
 	private ActionNoteItemListener activity;
 
-	private static HashSet<Long> selectingItemIDs = new HashSet<Long>();
+	public static HashSet<Long> selectingItemIDs = new HashSet<Long>();
 	public static ArrayList<Long> selections;
 	boolean shareAsZip = true;
 
@@ -70,6 +70,9 @@ public class MultiChoiceMainNoteListImpl implements AbsListView.MultiChoiceModeL
 		adapter.clearSelection();
 		if (selections != null) {
 			selections.clear();
+		}
+		if (selectingItemIDs != null) {
+			selectingItemIDs.clear();
 		}
 	}
 

@@ -61,7 +61,7 @@ public class RecycleBinFragment extends ListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-
+		ctx.showRecycleDialog(id);
 		Log.d(LOG_TAG, "Recycle list item click happened");
 	}
 
