@@ -19,7 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="5"
         android:gravity="center"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textSize="@dimen/font_size_content" />
 
     <ImageButton
         android:id="@+id/attach_action_browse"

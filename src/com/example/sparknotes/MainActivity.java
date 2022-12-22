@@ -31,7 +31,6 @@ import android.widget.Toast;
 public class MainActivity extends FragmentActivity implements ActionNoteItemListener, ExportOptionsDialogListener, RecycleItemDialogListener {
 
 	SQLController dbController;
-	DummyNoteDB db = new DummyNoteDB();
 
 	ArrayList<SparkNote> exportList = new ArrayList<SparkNote>();
 	Boolean isSelected = false;
@@ -196,8 +195,13 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			startActivityForResult(intent, GET_SEARCH_RESULT);
 			break;
 		case 5:
-			intent = new Intent(this, SettingsActivity.class);
-			startActivity(intent);
+			Toast.makeText(this, "Settings will delivery later", Toast.LENGTH_SHORT).show();
+			NoteListFragment refreshNoteList = refreshNoteListAdapter();
+			refreshNoteList.adapter.notifyDataSetChanged();
+			fragment = refreshNoteList;
+			position = 0;
+//			intent = new Intent(this, SettingsActivity.class);
+//			startActivity(intent);
 			break;
 		case 6:
 			fragment = new FAQFragment();

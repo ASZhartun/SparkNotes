@@ -15,12 +15,34 @@
         <item>ЧаВо</item>
         <item>Создать</item>
     </string-array>
-    
     <string-array name="recycle_alert_dialog_points">
         <item>Восстановить</item>
         <item>Удалить</item>
         <item>Посмотреть</item>
-
+    </string-array>
+    <string-array name="faq_title_points">
+        <item>Кнопка `Экспорт`</item>
+        <item>Кнопка `Импорт`</item>
+        <item>Кнопка `Корзина`</item>
+        <item>Кнопка `Расширенный поиск`</item>
+        <item>Кнопка `Внешний вид`</item>
+        <item>Кнопка `ЧаВо`</item>
+        <item>Кнопка `Поделиться`</item>
+        <item>Кнопка `Поиск`</item>
+        <item>Кнопка `Меню`</item>
+        <item>Кнопка `Создать`</item>
+    </string-array>
+    <string-array name="faq_description_points">
+        <item>Служит для формирование архив-файла для последующей передачи куда-либо. </item>
+        <item>Позволяет создать заметку на базе выбранного каталога или архива.</item>
+        <item>Отображает ранее удаленные заметки. Можно восстановить заметки (поместить в основной список), либо окончательно удалить из памяти телефона.</item>
+        <item>Открывает окно поиска. \nМожно искать заметку по заголовку или по содержимому. Также можно указать интервал создания заметки.</item>
+        <item>Открывает окно настройки внешнего вида.\nМожно выбрать шрифт, его размер. \nМожно указать желаемый цвет приложения из предложенных.</item>
+        <item>Открывает окно с часто задаваемыми вопросами. Описывает разделы главного меню приложения.</item>
+        <item>Поделиться.\nПозволяет передать выделенную заметку в виде текста в выбранное приложение.</item>
+        <item>Искать.\nВызывает поле ввода в хэдере. \nИщет ввод пользователя в заголовке заметок. Выводит результаты списком. </item>
+        <item>Меню экрана.\nОтображает дополнительные действия для контента экрана приложения.</item>
+        <item>Создать.\nОткрывает экран создания новой заметки.</item>
     </string-array>
 
     <string name="main_menu_open">Меню</string>
@@ -31,9 +53,26 @@
     <string name="actionbar_confirm_button">Подтвердить</string>
     <string name="actionbar_create_button">Создать</string>
     <string name="actionbar_export_button">Экспорт</string>
+    <string name="actionbar_import_button">Импорт</string>
     <string name="actionbar_delete_button">Удалить</string>
     <string name="actionbar_back_button">Назад</string>
     <string name="actionbar_decline_button">Отменить</string>
     <string name="actionbar_restore_button">Восстановить</string>
+    <string name="empty">empty place</string>
+    <string name="search_place_holder">Часть строки</string>
+    <string name="search_category_by_title">по заголовку</string>
+    <string name="search_category_by_content">по тексту</string>
+    <string name="search_date_gap_noticer">указать интервал</string>
+    <string name="search_date_begin">Начало</string>
+    <string name="search_date_end">Окончание</string>
+    <string name="import_zip_location_title">Местоположение</string>
+    <string name="import_path_sample">/mnt/sdcard/</string>
+    <string name="export_zip_location_title">Местоположение</string>
+    <string name="export_zip_name_title">Имя zip-архива</string>
+    <string name="export_zip_name_placeholder">archive</string>
+    <string name="export_path_sample">/mnt/sdcard/</string>
+    <string name="create_content_placeholder">Some points</string>
+    <string name="create_title_placeholder">Some title</string>
+    <string name="create_date_sample">2022-01-01 07:59</string>
 
 </resources>

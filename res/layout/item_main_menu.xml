@@ -5,8 +5,8 @@
     android:background="?android:attr/activatedBackgroundIndicator"
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
+    android:paddingLeft="@dimen/menu_horizontal_margin"
+    android:paddingRight="@dimen/menu_horizontal_margin"
     android:textAppearance="?android:attr/textAppearanceListItemSmall"
-    android:textColor="#fff"
-    android:textSize="14sp" />
+    android:textColor="@color/white"
+    android:textSize="@dimen/font_size_content" />

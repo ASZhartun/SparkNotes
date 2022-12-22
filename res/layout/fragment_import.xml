@@ -3,31 +3,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp" >
+    android:padding="@dimen/activity_horizontal_padding" >
 
     <TextView
         android:id="@+id/zip_location_import"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="7dp"
-        android:text="Местоположение"
-        android:textColor="#0E4DA4" />
+        android:layout_marginLeft="@dimen/activity_horizontal_margin_extra"
+        android:text="@string/import_zip_location_title"
+        android:textColor="@color/blue" />
 
     <Button
         android:id="@+id/button_locate_import"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="18dp"
+        android:background="@color/light"
         android:gravity="left|center_vertical"
-        android:paddingLeft="17dp"
-        android:text="/пример/расположения"
-        android:textSize="16sp" />
+        android:paddingLeft="@dimen/activity_horizontal_padding"
+        android:text="@string/import_path_sample"
+        android:textColor="@color/dark"
+        android:textSize="@dimen/font_size_content" />
 
     <Button
         android:id="@+id/button_import"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Импорт"
-        android:textSize="20sp" />
+        android:background="@color/blue"
+        android:text="@string/actionbar_import_button"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size_button" />
 
 </LinearLayout>

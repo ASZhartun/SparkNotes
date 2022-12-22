@@ -3,6 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical|center_horizontal"
-    android:text="...empty"
-    android:textSize="28sp"
+    android:text="@string/empty"
+    android:textSize="@dimen/font_size_title"
     android:textStyle="italic" />

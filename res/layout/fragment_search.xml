@@ -9,7 +9,8 @@
         android:id="@+id/input_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Часть строки" >
+        android:hint="@string/search_place_holder"
+        android:textSize="@dimen/font_size_title" >
 
         <requestFocus />
     </EditText>
@@ -24,13 +25,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="по заголовку" />
+            android:text="@string/search_category_by_title"
+            android:textSize="@dimen/font_size_title" />
 
         <RadioButton
             android:id="@+id/radio_by_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="по тексту" />
+            android:text="@string/search_category_by_content"
+            android:textSize="@dimen/font_size_title" />
+
     </RadioGroup>
 
     <CheckBox
@@ -38,7 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="true"
-        android:text="указать интервал" />
+        android:text="@string/search_date_gap_noticer"
+        android:textSize="@dimen/font_size_title" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,7 +54,8 @@
             android:id="@+id/search_begin_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Начало" />
+            android:text="@string/search_date_begin"
+            android:textSize="@dimen/font_size_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,14 +65,17 @@
                 android:id="@+id/begin_date_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="10"
-                android:inputType="date" />
+                android:inputType="date"
+                android:textSize="@dimen/font_size_title" />
 
             <ImageButton
                 android:id="@+id/pointer_begin_date_search"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:background="@android:color/white"
                 android:scaleType="centerInside"
                 android:src="@drawable/search_calendar_item" />
 
@@ -76,24 +85,29 @@
             android:id="@+id/search_end_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Окончание" />
+            android:text="@string/search_date_end"
+            android:textSize="@dimen/font_size_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" >
 
             <EditText
                 android:id="@+id/finish_date_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="10"
-                android:inputType="date" />
+                android:inputType="date"
+                android:textSize="@dimen/font_size_title" />
 
             <ImageButton
                 android:id="@+id/pointer_finish_date_search"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:background="@android:color/white"
                 android:scaleType="centerInside"
                 android:src="@drawable/search_calendar_item" />
 
@@ -104,9 +118,9 @@
             android:id="@+id/button_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#0E4DA4"
-            android:text="Искать"
-            android:textColor="#fff"
-            android:textSize="20sp" />
+            android:background="@color/blue"
+            android:text="@string/actionbar_search_button"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_button" />
 
 </LinearLayout>
