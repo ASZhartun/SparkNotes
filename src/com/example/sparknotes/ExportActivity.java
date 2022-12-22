@@ -57,7 +57,7 @@ public class ExportActivity extends FragmentActivity {
 					} else {
 						notes = getNotes();
 					}
-					ArrayList<AttachItem> attaches = getAttaches(shareNotes);
+					ArrayList<AttachItem> attaches = getAttaches(notes);
 					merge(notes, attaches);
 					File file;
 					try {
