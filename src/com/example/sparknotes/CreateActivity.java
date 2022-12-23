@@ -28,6 +28,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.os.EnvironmentCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -58,7 +59,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 	ArrayList<AttachItem> attaches = new ArrayList<AttachItem>();
 
 	SimpleDateFormat sdf = MainActivity.sdf;
-	Uri takePhotoURI;
+	String takePhotoURI;
 
 	@Override
 	protected void onCreate(Bundle bundle) {
@@ -105,7 +106,15 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == TAKE_PICTURE_REQUEST && resultCode == RESULT_OK) {
-			attaches.add(new AttachItem(0, takePhotoURI.getPath(), null, "image", currentID));
+			File file = new File(takePhotoURI);
+			if (file.exists())
+				try {
+					file.createNewFile();
+				} catch (IOException e) {
+					Toast.makeText(this, "Cant create file by photo URI", Toast.LENGTH_LONG).show();
+					e.printStackTrace();
+				}
+			attaches.add(new AttachItem(0, takePhotoURI, file, "image", currentID));
 			attachAdapter.notifyDataSetChanged();
 
 		} else {
@@ -113,6 +122,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 				String type = getTypeFrom(data);
 				File newFile = copy(data);
 				attaches.add(new AttachItem(0, newFile.getPath(), newFile, type, currentID));
+				Toast.makeText(this, String.valueOf(newFile.exists()), Toast.LENGTH_SHORT).show();
 				attachAdapter.notifyDataSetChanged();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -195,7 +205,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 	}
 
 	protected void createAttachingFile(String string) {
-		Intent intent;
+		Intent intent = null;
 		if (string.equals("file")) {
 			intent = new Intent(Intent.ACTION_GET_CONTENT);
 			intent.setType("*/*");
@@ -219,31 +229,23 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 
 	private void saveFullImage() {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		File file = createFile(".jpeg");
-		takePhotoURI = Uri.fromFile(file);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, takePhotoURI);
-		startActivityForResult(intent, TAKE_PICTURE_REQUEST);
-
-	}
-
-	private File copyAnotherWay(Intent data) throws FileNotFoundException, IOException {
-		String extension = getExtensionFrom(data);
-		File destination = createFile("." + extension);
-
-		InputStream fis = getContentResolver().openInputStream(data.getData());
-		FileOutputStream out = new FileOutputStream(destination, false);
-		int temp = 0;
-		while ((temp = fis.read()) != -1) {
-			out.write(temp);
+		File file = null;
+		try {
+			file = createFile(".jpeg");
+		} catch (IOException e) {
+			Log.i("PHOTKA_bl", "Zalupa s sozdaniem faila dlya fotki!");
+			e.printStackTrace();
 		}
-		out.close();
-		return destination;
+		if (file != null) {
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+			startActivityForResult(intent, TAKE_PICTURE_REQUEST);
+		}
 	}
 
 	private File copy(Intent data) throws FileNotFoundException, IOException {
 		String extension = getExtensionFrom(data);
-		File destination = createFile("." + extension);
 		Uri tempUri = data.getData();
+		File destination = createFile("." + extension);
 		return copyFileByUri(destination, tempUri);
 	}
 
@@ -275,18 +277,21 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 		return type;
 	}
 
-	private File createFile(String suffix) {
-
-		File newAttach = new File(getFilesDir(), sdf.format(new Date()).trim() + suffix);
-		if (!newAttach.exists()) {
-			try {
-				newAttach.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return newAttach;
+	private File createFile(String suffix) throws IOException {
+		File storage = getFilesDir();
+		String filename = sdf.format(new Date()).trim();
+		File image = File.createTempFile(filename, suffix, storage);
+		takePhotoURI = "file:" + image.getAbsolutePath();
+		return image;
+//		if (!newAttach.exists()) {
+//			try {
+//				newAttach.createNewFile();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		return newAttach;
 	}
 
 	@Override
