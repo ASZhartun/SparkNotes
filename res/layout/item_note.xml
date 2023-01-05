@@ -27,9 +27,10 @@
         android:layout_below="@+id/title"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="72dp"
+        android:maxLines="3"
         android:text="Some content of notes. Some content of n..."
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#263238"
+        android:textColor="@color/dark"
         android:textSize="@dimen/font_size_content" />
 
     <TextView
