@@ -180,28 +180,29 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 
 	public void chooseTypeOfAttachingFile() {
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		final String[] points = getResources().getStringArray(R.array.attach_file_type_points);
-		final String[] values = getResources().getStringArray(R.array.values_attach_file_type_points);
-		builder.setTitle("Выберите тип файла, который хотите прикрепить к заметке:")
-				.setItems(points, new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						Toast.makeText(getApplicationContext(), "position is " + values[which], Toast.LENGTH_SHORT)
-								.show();
-						dialog.cancel();
-						((CreateActivity) ctx).createAttachingFile(values[which]);
-					}
-				}).setNegativeButton("Decline", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Toast.makeText(getApplicationContext(), "Action was declined", Toast.LENGTH_SHORT).show();
-						dialog.cancel();
-					}
-				}).setCancelable(false).show();
+//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//		final String[] points = getResources().getStringArray(R.array.attach_file_type_points);
+//		final String[] values = getResources().getStringArray(R.array.values_attach_file_type_points);
+//		builder.setTitle("Выберите тип файла, который хотите прикрепить к заметке:")
+//				.setItems(points, new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						// TODO Auto-generated method stub
+//						Toast.makeText(getApplicationContext(), "position is " + values[which], Toast.LENGTH_SHORT)
+//								.show();
+//						dialog.cancel();
+//						((CreateActivity) ctx).createAttachingFile(values[which]);
+//					}
+//				}).setNegativeButton("Decline", new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						Toast.makeText(getApplicationContext(), "Action was declined", Toast.LENGTH_SHORT).show();
+//						dialog.cancel();
+//					}
+//				}).setCancelable(false).show();
+		((CreateActivity) ctx).createAttachingFile("file");
 	}
 
 	protected void createAttachingFile(String string) {
