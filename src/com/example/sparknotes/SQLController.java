@@ -195,24 +195,15 @@ public class SQLController {
 
 	public ArrayList<AttachItem> getAttaches(ArrayList<Long> indices) {
 		ArrayList<AttachItem> attaches = new ArrayList<AttachItem>();
-		Cursor cursor;
-
-		for (int i = 0; i > indices.size(); i++) {
-			ArrayList<AttachItem> attachesByNoteId = getAttachesByNoteId(i);
+		int size = indices.size();
+		Log.d("SIZE_ATTACHES", "size of indices array is " + size);
+		for (int i = 0; i < size; i++) {
+			ArrayList<AttachItem> attachesByNoteId = getAttachesByNoteId(indices.get(i));
 			attaches.addAll(attachesByNoteId);
 		}
 
 		return attaches;
 
-	}
-
-	private ArrayList<AttachItem> convertAttachCursorToList(Cursor attaches) {
-		ArrayList<AttachItem> results = new ArrayList<AttachItem>();
-		do {
-			results.add(new AttachItem(attaches.getLong(0), attaches.getString(1), new File(attaches.getString(1)),
-					attaches.getString(2), attaches.getLong(3)));
-		} while (attaches.moveToNext());
-		return results;
 	}
 
 	public void updateNote(long position, String title, String content, String date, ArrayList<AttachItem> attaches) {

@@ -105,19 +105,19 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == TAKE_PICTURE_REQUEST && resultCode == RESULT_OK) {
-			File file = new File(takePhotoURI);
-			if (file.exists())
-				try {
-					file.createNewFile();
-				} catch (IOException e) {
-					Toast.makeText(this, "Cant create file by photo URI", Toast.LENGTH_LONG).show();
-					e.printStackTrace();
-				}
-			attaches.add(new AttachItem(0, takePhotoURI, file, "image", currentID));
-			attachAdapter.notifyDataSetChanged();
-
-		} else {
+//		if (requestCode == TAKE_PICTURE_REQUEST && resultCode == RESULT_OK) {
+//			File file = new File(takePhotoURI);
+//			if (file.exists())
+//				try {
+//					file.createNewFile();
+//				} catch (IOException e) {
+//					Toast.makeText(this, "Cant create file by photo URI", Toast.LENGTH_LONG).show();
+//					e.printStackTrace();
+//				}
+//			attaches.add(new AttachItem(0, takePhotoURI, file, "image", currentID));
+//			attachAdapter.notifyDataSetChanged();
+//
+//		} else {
 			try {
 				String type = getTypeFrom(data);
 				File newFile = copy(data);
@@ -130,7 +130,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+//		}
 
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -206,25 +206,25 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 
 	protected void createAttachingFile(String string) {
 		Intent intent = null;
-		if (string.equals("file")) {
+//		if (string.equals("file")) {
 			intent = new Intent(Intent.ACTION_GET_CONTENT);
 			intent.setType("*/*");
 			intent = Intent.createChooser(intent, "CHOOSE_FILE");
 			startActivityForResult(intent, PICKFILE_RESULT_CODE);
-		} else if (string.equals("photo")) {
-			PackageManager packageManager = getPackageManager();
-			boolean isCamera = packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
-			if (!isCamera)
-				Toast.makeText(this, "Your device hasn't camera! Try to choose other position.", Toast.LENGTH_LONG)
-						.show();
-			else {
-				saveFullImage();
-			}
-		} else if (string.equals("voice")) {
-
-		} else {
-			Toast.makeText(getApplicationContext(), "was choosen something unexpectable!", Toast.LENGTH_SHORT).show();
-		}
+//		} else if (string.equals("photo")) {
+//			PackageManager packageManager = getPackageManager();
+//			boolean isCamera = packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
+//			if (!isCamera)
+//				Toast.makeText(this, "Your device hasn't camera! Try to choose other position.", Toast.LENGTH_LONG)
+//						.show();
+//			else {
+//				saveFullImage();
+//			}
+//		} else if (string.equals("voice")) {
+//
+//		} else {
+//			Toast.makeText(getApplicationContext(), "was choosen something unexpectable!", Toast.LENGTH_SHORT).show();
+//		}
 	}
 
 	private void saveFullImage() {
