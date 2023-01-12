@@ -145,7 +145,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 				super.onBackPressed();
 			}
 		} else {
-			super.onBackPressed();
+			enterToDrawerMenuPointBy(0);
 		}
 
 	}
