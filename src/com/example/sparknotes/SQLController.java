@@ -208,7 +208,7 @@ public class SQLController {
 
 	public void updateNote(long position, String title, String content, String date, ArrayList<AttachItem> attaches) {
 		this.open();
-		database = db.getWritableDatabase();
+
 		database.beginTransaction();
 //		String[] selectionArgs = new String[] { title, content, date, String.valueOf(position) };
 //		String sql = "UPDATE spark_notes SET title = ?, content = ?, init_date = ? WHERE _id = ?";
@@ -217,10 +217,11 @@ public class SQLController {
 		values.put("content", content);
 		int update = database.update(DBHelper.TABLE_SPARK_NOTES, values, "_id = ?",
 				new String[] { String.valueOf(position) });
+		updateNoteAttaches(position, attaches);
+
 		database.setTransactionSuccessful();
 		database.endTransaction();
 
-		updateNoteAttaches(position, attaches);
 		close();
 	}
 
@@ -264,9 +265,9 @@ public class SQLController {
 	}
 
 	private void updateNoteAttaches(long position, ArrayList<AttachItem> attaches) {
-		this.open();
-		database = db.getWritableDatabase();
-		database.beginTransaction();
+//		this.open();
+//		database = db.getWritableDatabase();
+//		database.beginTransaction();
 
 		for (int i = 0; i < attaches.size(); i++) {
 			AttachItem attachItem = attaches.get(i);
@@ -285,15 +286,13 @@ public class SQLController {
 			}
 		}
 
-		database.setTransactionSuccessful();
-		database.endTransaction();
-		database.close();
+//		database.setTransactionSuccessful();
+//		database.endTransaction();
+//		database.close();
 		return;
 	}
 
 	private void saveExtraAttach(AttachItem attachItem) {
-		open();
-		database.beginTransaction();
 
 		ContentValues values = new ContentValues();
 		values.put("path", attachItem.getPath());
@@ -302,9 +301,6 @@ public class SQLController {
 
 		database.insert(DBHelper.TABLE_ATTACHES, null, values);
 
-		database.setTransactionSuccessful();
-		database.endTransaction();
-		close();
 		return;
 	}
 
