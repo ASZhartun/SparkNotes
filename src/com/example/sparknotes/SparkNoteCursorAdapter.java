@@ -19,11 +19,13 @@ public class SparkNoteCursorAdapter extends CursorAdapter {
 	Context ctx;
 	SimpleDateFormat sdf = MainActivity.sdf;
 	long currentID = 0;
+	Cursor c;
 
 	@SuppressWarnings("deprecation")
 	public SparkNoteCursorAdapter(Context context, Cursor c) {
 		super(context, c);
 		ctx = context;
+		this.c = c;
 	}
 
 	@Override
@@ -79,6 +81,11 @@ public class SparkNoteCursorAdapter extends CursorAdapter {
 
 	public void clearSelection() {
 		mSelection = new HashMap<Integer, Boolean>();
+		notifyDataSetChanged();
+	}
+	
+	public void setSparkNotes(Cursor cursor) {
+		c = cursor;
 		notifyDataSetChanged();
 	}
 

@@ -17,6 +17,8 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
@@ -28,7 +30,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
-public class MainActivity extends FragmentActivity implements ActionNoteItemListener, ExportOptionsDialogListener, RecycleItemDialogListener {
+public class MainActivity extends FragmentActivity implements ActionNoteItemListener, ExportOptionsDialogListener,
+		RecycleItemDialogListener, LoaderManager.LoaderCallbacks<Cursor> {
 
 	SQLController dbController;
 
@@ -50,12 +53,10 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	public final static int GET_IMPORT_FILE = 102;
 	public final static int GET_SEARCH_RESULT = 103;
 
-	
-	
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
+
 	}
 
 	@Override
@@ -292,10 +293,6 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	@Override
 	public void clearSearchResult() {
 		searchResults = null;
-//		if (current instanceof NoteListFragment) {
-//			NoteListFragment frag = (NoteListFragment) current;
-//			frag.adapter = new SparkNoteCursorAdapter(this, dbController.getSparkNotes());
-//		}
 		enterToDrawerMenuPointBy(0);
 	}
 
@@ -363,7 +360,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	public void shareSelectedNotesByApps(ArrayList<Long> positions) {
 		ArrayList<SparkNote> list = getSparkNotesByPostions(positions);
 		String result = packContent(list);
-		
+
 		Intent intent = new Intent(android.content.Intent.ACTION_SEND);
 		intent.setType("text/plain");
 		intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject/Title");
@@ -380,10 +377,10 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		}
 		return sb.toString();
 	}
-	
+
 	public void showExportDialog() {
 		DialogFragment dialog = new ExportOptionsDialog();
-        dialog.show(getSupportFragmentManager(), "ExportOptionsDialogFragment");
+		dialog.show(getSupportFragmentManager(), "ExportOptionsDialogFragment");
 	}
 
 	@Override
@@ -401,9 +398,9 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	@Override
 	public void showRecycleDialog(long id) {
 		DialogFragment dialog = new RecycleItemDialog(id);
-        dialog.show(getSupportFragmentManager(), "RecycleItemDialogFragment");
+		dialog.show(getSupportFragmentManager(), "RecycleItemDialogFragment");
 	}
-	
+
 	@Override
 	public void onRecycleDialogPositiveClick(DialogFragment dialog, long id) {
 		dbController.restoreNote(id);
@@ -422,7 +419,22 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	public void onRecycleDialogNeutralClick(DialogFragment dialog) {
 		Toast.makeText(this, "Operation was canceled", Toast.LENGTH_SHORT).show();
 		Log.d("Dialog RECYCLE", "Destroy note");
-		
+
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+		return new SparkNotesLoader(MainActivity.this, dbController);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
+		noteListAdapter.setSparkNotes(arg1);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> arg0) {
+		// TODO Auto-generated method stub
 	}
 
 }
