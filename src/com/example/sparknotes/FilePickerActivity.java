@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -65,7 +66,12 @@ public class FilePickerActivity extends ListActivity {
 	 * The initial directory which will be used if no directory has been sent with
 	 * the intent
 	 */
-	private final static String DEFAULT_INITIAL_DIRECTORY = "/mnt/sdcard/";
+	private final static String DEFAULT_INITIAL_DIRECTORY = Environment.getExternalStorageDirectory().getAbsolutePath();
+	
+	/**
+	 * The parent directory of initial directory which will be used for onBackPressed as edge condition of exit
+	 */
+	private final static String DEFAULT_INITIAL_PARENT_DIRECTORY = Environment.getExternalStorageDirectory().getParentFile().getAbsolutePath();
 
 	protected File mDirectory;
 	protected ArrayList<File> mFiles;
@@ -169,7 +175,6 @@ public class FilePickerActivity extends ListActivity {
 		Intent extra = new Intent();
 		extra.putExtra(EXTRA_FILE_PATH, mAdapter.getFiles()); // put list of all files in the current root directory
 		extra.putExtra(EXTRA_CURRENT_ROOT_DIRECTORY, mDirectory.getAbsolutePath()); // put path of current root
-		Object obj = getIntent().getExtras().get("import");
 		setResult(MainActivity.GET_EXPORT_DIRECTORY, extra); // set specific key of result
 
 		Toast.makeText(this, "Path of chosen folder:\n" + mDirectory.getAbsolutePath(), Toast.LENGTH_SHORT).show();
@@ -217,9 +222,8 @@ public class FilePickerActivity extends ListActivity {
 
 	@Override
 	public void onBackPressed() {
-		if (!mDirectory.getParentFile().getAbsolutePath().equals("/mnt") ) {
+		if (!mDirectory.getParentFile().getAbsolutePath().equals(DEFAULT_INITIAL_PARENT_DIRECTORY) ) {
 			// Go to parent directory
-			Toast.makeText(this, mDirectory.getParentFile().getAbsolutePath(), Toast.LENGTH_LONG).show();
 			mDirectory = mDirectory.getParentFile();
 			refreshFilesList();
 			return;
@@ -366,6 +370,7 @@ public class FilePickerActivity extends ListActivity {
 		}
 	}
 
+	@SuppressLint("DefaultLocale")
 	private class ExtensionFilenameFilter implements FilenameFilter {
 		private String[] mExtensions;
 
@@ -374,6 +379,7 @@ public class FilePickerActivity extends ListActivity {
 			mExtensions = extensions;
 		}
 
+		@SuppressLint("DefaultLocale")
 		public boolean accept(File dir, String filename) {
 			if (new File(dir, filename).isDirectory()) {
 				// Accept all directory names
