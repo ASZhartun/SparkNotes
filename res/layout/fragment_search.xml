@@ -41,7 +41,7 @@
         android:id="@+id/checkbox_notice_dates"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="true"
+        android:checked="false"
         android:text="@string/search_date_gap_noticer"
         android:textSize="@dimen/font_size_title" />
 
@@ -55,7 +55,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/search_date_begin"
-            android:textSize="@dimen/font_size_content" />
+            android:textSize="@dimen/font_size_content"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,7 +69,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="10"
                 android:inputType="date"
-                android:textSize="@dimen/font_size_title" />
+                android:textSize="@dimen/font_size_title"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/pointer_begin_date_search"
@@ -77,7 +79,8 @@
                 android:layout_weight="1"
                 android:background="@android:color/white"
                 android:scaleType="centerInside"
-                android:src="@drawable/search_calendar_item" />
+                android:src="@drawable/search_calendar_item"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -86,7 +89,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/search_date_end"
-            android:textSize="@dimen/font_size_content" />
+            android:textSize="@dimen/font_size_content"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,7 +104,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="10"
                 android:inputType="date"
-                android:textSize="@dimen/font_size_title" />
+                android:textSize="@dimen/font_size_title"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/pointer_finish_date_search"
@@ -109,7 +114,8 @@
                 android:layout_weight="1"
                 android:background="@android:color/white"
                 android:scaleType="centerInside"
-                android:src="@drawable/search_calendar_item" />
+                android:src="@drawable/search_calendar_item"
+                android:visibility="gone" />
 
         </LinearLayout>
     </LinearLayout>
