@@ -2,9 +2,9 @@
 <resources>
         
     <string-array name="attach_file_type_points">
-        <item name="file">Существующий файл в системе</item>
-        <item name="photo">Сделать фотографию</item>
-        <item name="voice">Записать голос</item>
+        <item name="file">Existing file</item>
+        <item name="photo">Make photo</item>
+        <item name="voice">Record voice</item>
     </string-array>
     
     <string-array name="values_attach_file_type_points">

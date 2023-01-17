@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">SparkNotes</string>
+    <string name="app_name">Sparks</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
     <string-array name="main_menu_points">
-        <item>Главная</item>
-        <item>Экспорт</item>
-        <item>Импорт</item>
-        <item>Корзина</item>
-        <item>Расширенный поиск</item>
-        <item>Внешний вид</item>
-        <item>ЧаВо</item>
-        <item>Создать</item>
+        <item>Main</item>
+        <item>Export</item>
+        <item>Import</item>
+        <item>Recycle bin</item>
+        <item>Search</item>
+        <item>Appearance</item>
+        <item>FAQ</item>
+        <item>Create</item>
     </string-array>
     <string-array name="recycle_alert_dialog_points">
-        <item>Восстановить</item>
-        <item>Удалить</item>
-        <item>Посмотреть</item>
+        <item>Restore</item>
+        <item>Delete</item>
+        <item>Inspect</item>
     </string-array>
     <string-array name="faq_title_points">
-        <item>Кнопка `Экспорт`</item>
-        <item>Кнопка `Импорт`</item>
-        <item>Кнопка `Корзина`</item>
-        <item>Кнопка `Расширенный поиск`</item>
-        <item>Кнопка `Внешний вид`</item>
-        <item>Кнопка `ЧаВо`</item>
-        <item>Кнопка `Поделиться`</item>
-        <item>Кнопка `Поиск`</item>
-        <item>Кнопка `Меню`</item>
-        <item>Кнопка `Создать`</item>
+        <item>Button `Export`</item>
+        <item>Button `Import`</item>
+        <item>Button `Recycle bin`</item>
+        <item>Button `Search`</item>
+        <item>Button `Appearance`</item>
+        <item>Button `FAQ`</item>
+        <item>Button `Share`</item>
+        <item>Button `Search`</item>
+        <item>Button `Menu`</item>
+        <item>Button `Create`</item>
     </string-array>
     <string-array name="faq_description_points">
-        <item>Служит для формирование архив-файла для последующей передачи куда-либо. Выбор директории осуществляется долгим нажатием по целевой папке.</item>
-        <item>Позволяет создать заметку на базе выбранного каталога или архива. Выбор директории осуществляется долгим нажатием по целевой папке.</item>
-        <item>Отображает ранее удаленные заметки. Можно восстановить заметки (поместить в основной список), либо окончательно удалить из памяти телефона.</item>
-        <item>Открывает окно поиска. \nМожно искать заметку по заголовку или по содержимому. Также можно указать интервал создания заметки.</item>
-        <item>Открывает окно настройки внешнего вида.\nМожно выбрать шрифт, его размер. \nМожно указать желаемый цвет приложения из предложенных.</item>
-        <item>Открывает окно с часто задаваемыми вопросами. Описывает разделы главного меню приложения.</item>
-        <item>Поделиться.\nПозволяет передать выделенную заметку в виде текста в выбранное приложение.</item>
-        <item>Искать.\nВызывает поле ввода в хэдере. \nИщет ввод пользователя в заголовке заметок. Выводит результаты списком. </item>
-        <item>Меню экрана.\nОтображает дополнительные действия для контента экрана приложения.</item>
-        <item>Создать.\nОткрывает экран создания новой заметки.</item>
+        <item>Serves to form an archive file for subsequent transfer somewhere. Selecting a directory is done by long pressing on the target folder.</item>
+        <item>Allows you to create a note based on the selected directory or archive. Selecting a directory is done by long pressing on the target folder.</item>
+        <item>Displays previously deleted notes. You can restore notes (place them in the main list), or permanently delete them from the phone\'s memory.</item>
+        <item>Opens a search window. \nYou can search for a note by title or by content. You can also specify the interval for creating a note.</item>
+        <item>Opens the appearance settings window.\nYou can select the font and its size. \nYou can specify the desired application color from the suggested ones.</item>
+        <item>Opens a window with frequently asked questions. Describes sections of the application\'s main menu.</item>
+        <item>Share.\nAllows you to send the selected note as text to the selected application.</item>
+        <item>Search.\nSummons an input field in the header. \nLooks for user input in the note header. Displays the results in a list.</item>
+        <item>Screen menu.\nDisplays additional actions for application screen content.</item>
+        <item>New.\nOpens the screen for creating a new note.</item>
     </string-array>
 
-    <string name="main_menu_open">Меню</string>
-    <string name="main_menu_close">Заметки</string>
-    <string name="actionbar_search_button">Найти</string>
-    <string name="actionbar_share_button">Поделиться</string>
-    <string name="actionbar_attach_button">Прикрепить</string>
-    <string name="actionbar_confirm_button">Подтвердить</string>
-    <string name="actionbar_create_button">Создать</string>
-    <string name="actionbar_export_button">Экспорт</string>
-    <string name="actionbar_import_button">Импорт</string>
-    <string name="actionbar_delete_button">Удалить</string>
-    <string name="actionbar_back_button">Назад</string>
-    <string name="actionbar_decline_button">Отменить</string>
-    <string name="actionbar_restore_button">Восстановить</string>
+    <string name="main_menu_open">Menu</string>
+    <string name="main_menu_close">Notes</string>
+    <string name="actionbar_search_button">Find</string>
+    <string name="actionbar_share_button">Share</string>
+    <string name="actionbar_attach_button">Attach</string>
+    <string name="actionbar_confirm_button">Confirm</string>
+    <string name="actionbar_create_button">Create</string>
+    <string name="actionbar_export_button">Export</string>
+    <string name="actionbar_import_button">Import</string>
+    <string name="actionbar_delete_button">Delete</string>
+    <string name="actionbar_back_button">Back</string>
+    <string name="actionbar_decline_button">Decline</string>
+    <string name="actionbar_restore_button">Restore</string>
     <string name="empty">empty place</string>
-    <string name="search_place_holder">Часть строки</string>
-    <string name="search_category_by_title">по заголовку</string>
-    <string name="search_category_by_content">по тексту</string>
-    <string name="search_date_gap_noticer">указать интервал</string>
-    <string name="search_date_begin">Начало</string>
-    <string name="search_date_end">Окончание</string>
-    <string name="import_zip_location_title">Местоположение</string>
+    <string name="search_place_holder">Line part</string>
+    <string name="search_category_by_title">by title</string>
+    <string name="search_category_by_content">by content</string>
+    <string name="search_date_gap_noticer">Specify interval</string>
+    <string name="search_date_begin">Begin</string>
+    <string name="search_date_end">End</string>
+    <string name="import_zip_location_title">Location</string>
     <string name="import_path_sample">/mnt/sdcard/Download</string>
-    <string name="export_zip_location_title">Местоположение</string>
-    <string name="export_zip_name_title">Имя zip-архива</string>
-    <string name="export_zip_name_placeholder">archive</string>
+    <string name="export_zip_location_title">Location</string>
+    <string name="export_zip_name_title">Zip-name</string>
+    <string name="export_zip_name_placeholder">Archive</string>
     <string name="export_path_sample">/mnt/sdcard/</string>
     <string name="create_content_placeholder">Some points</string>
     <string name="create_title_placeholder">Some title</string>
