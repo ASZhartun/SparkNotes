@@ -75,7 +75,6 @@ public class SQLController {
 	}
 
 	public Cursor getNoteById(long position) {
-		open();
 
 		String pos = String.valueOf(position);
 		String[] selectionArgs = new String[] { pos };
@@ -86,7 +85,6 @@ public class SQLController {
 			cursor.moveToFirst();
 		}
 
-		close();
 		return cursor;
 	}
 

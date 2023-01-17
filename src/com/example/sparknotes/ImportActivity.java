@@ -9,8 +9,6 @@ import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -130,7 +128,6 @@ public class ImportActivity extends FragmentActivity {
 			currentNote.setContent(sb.toString());
 			reader.close();
 		} catch (IOException | ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -141,13 +138,13 @@ public class ImportActivity extends FragmentActivity {
 		getMenuInflater().inflate(R.menu.cancel_single, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_bar_decline_item) {
 			Toast.makeText(this, "nazhal na decline", Toast.LENGTH_LONG).show();
 			finish();
-		} 
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
