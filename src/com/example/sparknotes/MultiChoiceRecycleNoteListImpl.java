@@ -11,9 +11,7 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.AbsListView;
-import android.widget.CheckBox;
 import android.widget.Toast;
 
 public class MultiChoiceRecycleNoteListImpl implements AbsListView.MultiChoiceModeListener {
@@ -44,7 +42,6 @@ public class MultiChoiceRecycleNoteListImpl implements AbsListView.MultiChoiceMo
 
 	@Override
 	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -68,7 +65,6 @@ public class MultiChoiceRecycleNoteListImpl implements AbsListView.MultiChoiceMo
 	@Override
 	public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
 		int selectedCount = listView.getCheckedItemCount();
-		// Добавим количество выделенных рядов в Context Action Bar
 		setSubtitle(mode, selectedCount);
 		if (!selectingItemIDs.contains(id)) {
 			selectingItemIDs.add(id);

@@ -1,9 +1,8 @@
 package com.example.sparknotes;
 
 import java.util.ArrayList;
-
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,8 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,15 +24,17 @@ public class RecycleBinFragment extends ListFragment {
 
 	public static ArrayList<Long> selectingItemIDs = new ArrayList<Long>();
 
+	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		setHasOptionsMenu(true);
 		ctx = (ActionNoteItemListener) getActivity();
 		setListAdapter(adapter);
+		
 		lv = (ListView) inflater.inflate(R.layout.fragment_main_list, null);
-
 		lv.setMultiChoiceModeListener(new MultiChoiceRecycleNoteListImpl(ctx, lv, getActivity() ,adapter));
 		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		
 		return lv;
 	}
 

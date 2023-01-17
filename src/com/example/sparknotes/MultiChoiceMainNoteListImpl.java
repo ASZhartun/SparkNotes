@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -45,7 +43,6 @@ public class MultiChoiceMainNoteListImpl implements AbsListView.MultiChoiceModeL
 
 	@Override
 	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -79,7 +76,6 @@ public class MultiChoiceMainNoteListImpl implements AbsListView.MultiChoiceModeL
 	@Override
 	public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
 		int selectedCount = listView.getCheckedItemCount();
-		// Добавим количество выделенных рядов в Context Action Bar
 		setSubtitle(mode, selectedCount);
 		if (!selectingItemIDs.contains(id)) {
 			selectingItemIDs.add(id);

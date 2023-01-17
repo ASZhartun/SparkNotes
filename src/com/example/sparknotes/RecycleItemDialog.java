@@ -1,7 +1,5 @@
 package com.example.sparknotes;
 
-import com.example.sparknotes.ExportOptionsDialog.ExportOptionsDialogListener;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -25,14 +23,11 @@ public class RecycleItemDialog extends DialogFragment {
 
 	@Override
 	public void onAttach(Context context) {
-		// TODO Auto-generated method stub
 		super.onAttach(context);
 
 		try {
-			// Instantiate the NoticeDialogListener so we can send events to the host
 			listener = (RecycleItemDialogListener) context;
 		} catch (ClassCastException e) {
-			// The activity doesn't implement the interface, throw exception
 			throw new ClassCastException(context.toString() + " must implement ExportOptionsDialogListener");
 		}
 	}

@@ -25,8 +25,8 @@ public class NoteListFragment extends ListFragment {
 		ctx = (ActionNoteItemListener) getActivity();
 		setHasOptionsMenu(true);
 		setListAdapter(adapter);
+		
 		lv = (ListView) inflater.inflate(R.layout.fragment_main_list, null);
-
 		lv.setMultiChoiceModeListener(new MultiChoiceMainNoteListImpl(ctx, lv, getActivity(), adapter));
 		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		return lv;
