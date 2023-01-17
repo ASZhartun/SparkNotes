@@ -24,7 +24,6 @@ import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class CreateActivity extends FragmentActivity implements AttachActionListener {
 
@@ -94,7 +93,6 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 			String type = getTypeFrom(data);
 			File newFile = copy(data);
 			attaches.add(new AttachItem(0, newFile.getPath(), newFile, type, currentID));
-			Toast.makeText(this, String.valueOf(newFile.exists()), Toast.LENGTH_SHORT).show();
 			attachAdapter.notifyDataSetChanged();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -137,15 +135,11 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 	}
 
 	public void save(String title, String content, String date, ArrayList<AttachItem> attaches) {
-		Toast.makeText(this, "Doletelo v save activity", Toast.LENGTH_SHORT).show();
 		dbController.saveNote(title, content, date, attaches);
-		dbController.close();
 	}
 
 	public void update(long position, String title, String content, String date, ArrayList<AttachItem> attaches) {
-		Toast.makeText(this, "Doletelo v save activity", Toast.LENGTH_SHORT).show();
 		dbController.updateNote(currentID, title, content, date, attaches);
-		dbController.close();
 	}
 
 	public void chooseTypeOfAttachingFile() {
