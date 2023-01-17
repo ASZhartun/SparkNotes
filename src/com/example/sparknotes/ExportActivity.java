@@ -58,22 +58,20 @@ public class ExportActivity extends FragmentActivity {
 					}
 					ArrayList<AttachItem> attaches = getAttaches(notes);
 					merge(notes, attaches);
-					File file;
 					try {
-						file = createResultFolderFrom(notes);
-
-						Toast.makeText(v.getContext(), "Directory was created at\n" + file.getAbsolutePath(),
-								Toast.LENGTH_LONG).show();
+						createResultFolderFrom(notes);
 					} catch (IOException e) {
 						e.printStackTrace();
+						Toast.makeText(v.getContext(), "Can't create result folder with notes, try again...",
+								Toast.LENGTH_LONG).show();
 					}
-
+					shareNotes = null;
+					ctx.finish();
 				} else {
 					Toast.makeText(v.getContext(), "Invalidate name! Please, choose another...", Toast.LENGTH_LONG)
 							.show();
 				}
-				shareNotes = null;
-				ctx.finish();
+
 			}
 		});
 		location.setText(Environment.getExternalStorageDirectory().toString());
@@ -107,7 +105,7 @@ public class ExportActivity extends FragmentActivity {
 			}
 		}
 
-		Toast.makeText(this, "Archive was created", Toast.LENGTH_LONG).show();
+		Toast.makeText(this, "Result folder was created!", Toast.LENGTH_LONG).show();
 		return resultFolder;
 	}
 
@@ -155,7 +153,7 @@ public class ExportActivity extends FragmentActivity {
 			try {
 				created = file.createNewFile();
 			} catch (IOException e) {
-				Toast.makeText(this, "Cant create some reason", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "Wrong name for result folder!", Toast.LENGTH_LONG).show();
 				e.printStackTrace();
 			}
 			return created;
