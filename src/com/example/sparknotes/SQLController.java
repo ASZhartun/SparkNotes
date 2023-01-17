@@ -11,6 +11,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class SQLController {
 	private DBHelper db;
@@ -203,13 +204,26 @@ public class SQLController {
 	}
 
 	public void saveNote(String title, String content, String date, ArrayList<AttachItem> attaches) {
-		ContentValues values = new ContentValues();
-		values.put("title", title);
-		values.put("content", content);
-		values.put("init_date", sdf.format(new Date()));
+		open();
 
-		long insert = database.insert(DBHelper.TABLE_SPARK_NOTES, null, values);
-		saveNoteAttaches(insert, attaches);
+		try {
+			database.beginTransaction();
+			ContentValues values = new ContentValues();
+			values.put("title", title);
+			values.put("content", content);
+			values.put("init_date", sdf.format(new Date()));
+
+			long insert = database.insert(DBHelper.TABLE_SPARK_NOTES, null, values);
+			saveNoteAttaches(insert, attaches);
+			database.setTransactionSuccessful();
+		} catch (Exception e) {
+			Log.d("shit", "trouble with save no attaches");
+		} 
+		finally {
+			database.endTransaction();
+		}
+
+		close();
 	}
 
 	private void saveNoteAttaches(long insert, ArrayList<AttachItem> attaches) {
