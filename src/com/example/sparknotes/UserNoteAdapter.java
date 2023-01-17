@@ -60,8 +60,6 @@ public class UserNoteAdapter extends ArrayAdapter<SparkNote> {
 			}
 		});
 
-//		convertView.setOnLongClickListener(new ListNoteItemListenerKeeper()); �� ���� �������� �������� ���� �� ��������; �������� �������� ����������� ����� ����
-
 		return convertView;
 	}
 
@@ -74,7 +72,6 @@ public class UserNoteAdapter extends ArrayAdapter<SparkNote> {
 			checkNote.setChecked(true);
 			return false;
 		}
-
 
 	}
 }
