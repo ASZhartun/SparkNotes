@@ -65,7 +65,7 @@ public class FilePickerActivity extends ListActivity {
 	 * The initial directory which will be used if no directory has been sent with
 	 * the intent
 	 */
-	private final static String DEFAULT_INITIAL_DIRECTORY = "/";
+	private final static String DEFAULT_INITIAL_DIRECTORY = "/mnt/sdcard/";
 
 	protected File mDirectory;
 	protected ArrayList<File> mFiles;
@@ -217,8 +217,9 @@ public class FilePickerActivity extends ListActivity {
 
 	@Override
 	public void onBackPressed() {
-		if (mDirectory.getParentFile() != null) {
+		if (!mDirectory.getParentFile().getAbsolutePath().equals("/mnt") ) {
 			// Go to parent directory
+			Toast.makeText(this, mDirectory.getParentFile().getAbsolutePath(), Toast.LENGTH_LONG).show();
 			mDirectory = mDirectory.getParentFile();
 			refreshFilesList();
 			return;

@@ -188,7 +188,6 @@ public class ExportActivity extends FragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_bar_decline_item) {
-			Toast.makeText(this, "nazhal na decline", Toast.LENGTH_LONG).show();
 			finish();
 		}
 		return super.onOptionsItemSelected(item);
