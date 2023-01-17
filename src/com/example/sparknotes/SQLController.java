@@ -167,13 +167,16 @@ public class SQLController {
 
 	public ArrayList<AttachItem> getAttaches(ArrayList<Long> indices) {
 		ArrayList<AttachItem> attaches = new ArrayList<AttachItem>();
-		database.beginTransaction();
-		for (int i = 0; i < indices.size(); i++) {
-			ArrayList<AttachItem> attachesByNoteId = getAttachesByNoteId(indices.get(i));
-			attaches.addAll(attachesByNoteId);
+		try {
+			database.beginTransaction();
+			for (int i = 0; i < indices.size(); i++) {
+				ArrayList<AttachItem> attachesByNoteId = getAttachesByNoteId(indices.get(i));
+				attaches.addAll(attachesByNoteId);
+			}
+			database.setTransactionSuccessful();
+		} finally {
+			database.endTransaction();
 		}
-		database.setTransactionSuccessful();
-		database.endTransaction();
 		return attaches;
 
 	}
@@ -185,13 +188,16 @@ public class SQLController {
 		values.put("title", title);
 		values.put("content", content);
 
-		database.beginTransaction();
+		try {
+			database.beginTransaction();
 
-		database.update(DBHelper.TABLE_SPARK_NOTES, values, "_id = ?", new String[] { String.valueOf(position) });
-		updateNoteAttaches(position, attaches);
+			database.update(DBHelper.TABLE_SPARK_NOTES, values, "_id = ?", new String[] { String.valueOf(position) });
+			updateNoteAttaches(position, attaches);
 
-		database.setTransactionSuccessful();
-		database.endTransaction();
+			database.setTransactionSuccessful();
+		} finally {
+			database.endTransaction();
+		}
 
 		close();
 	}
@@ -250,13 +256,16 @@ public class SQLController {
 	}
 
 	public void deleteNote(Long id) {
-		database.beginTransaction();
+		try {
+			database.beginTransaction();
 
-		saveDeletedNote(getNoteById(id));
-		database.delete(DBHelper.TABLE_SPARK_NOTES, "_id=?", new String[] { String.valueOf(id) });
+			saveDeletedNote(getNoteById(id));
+			database.delete(DBHelper.TABLE_SPARK_NOTES, "_id=?", new String[] { String.valueOf(id) });
 
-		database.setTransactionSuccessful();
-		database.endTransaction();
+			database.setTransactionSuccessful();
+		} finally {
+			database.endTransaction();
+		}
 	}
 
 	public void deleteAttach(Long id) {
@@ -267,9 +276,9 @@ public class SQLController {
 
 	public Cursor getDeletedSparkNotes() {
 		this.open();
-		String[] allColumns = new String[] { DBHelper.TABLE_DELETED_SPARK_NOTES_ID, DBHelper.TABLE_DELETED_SPARK_NOTES_TITLE,
-				DBHelper.TABLE_DELETED_SPARK_NOTES_CONTENT, DBHelper.TABLE_DELETED_SPARK_NOTES_INIT_DATE,
-				DBHelper.TABLE_DELETED_SPARK_NOTES_PREV_ID };
+		String[] allColumns = new String[] { DBHelper.TABLE_DELETED_SPARK_NOTES_ID,
+				DBHelper.TABLE_DELETED_SPARK_NOTES_TITLE, DBHelper.TABLE_DELETED_SPARK_NOTES_CONTENT,
+				DBHelper.TABLE_DELETED_SPARK_NOTES_INIT_DATE, DBHelper.TABLE_DELETED_SPARK_NOTES_PREV_ID };
 		Cursor c = database.query(DBHelper.TABLE_DELETED_SPARK_NOTES, allColumns, null, null, null, null, "_id DESC");
 		if (c != null) {
 			c.moveToFirst();
@@ -307,22 +316,25 @@ public class SQLController {
 	public void restoreNote(Long id) {
 		open();
 
-		database.beginTransaction();
+		try {
+			database.beginTransaction();
 
-		Cursor deletedNoteById = getDeletedNoteById(id);
-		String title = deletedNoteById.getString(1);
-		String content = deletedNoteById.getString(2);
-		String date = deletedNoteById.getString(3);
-		Long prevID = deletedNoteById.getLong(4);
+			Cursor deletedNoteById = getDeletedNoteById(id);
+			String title = deletedNoteById.getString(1);
+			String content = deletedNoteById.getString(2);
+			String date = deletedNoteById.getString(3);
+			Long prevID = deletedNoteById.getLong(4);
 
-		ArrayList<AttachItem> attachesByNoteId = getAttachesByNoteId(prevID);
-		saveNote(title, content, date, attachesByNoteId);
+			ArrayList<AttachItem> attachesByNoteId = getAttachesByNoteId(prevID);
+			saveNote(title, content, date, attachesByNoteId);
 
-		String[] whereArgs = new String[] { String.valueOf(id) };
-		database.delete(DBHelper.TABLE_DELETED_SPARK_NOTES, "_id=?", whereArgs);
+			String[] whereArgs = new String[] { String.valueOf(id) };
+			database.delete(DBHelper.TABLE_DELETED_SPARK_NOTES, "_id=?", whereArgs);
 
-		database.setTransactionSuccessful();
-		database.endTransaction();
+			database.setTransactionSuccessful();
+		} finally {
+			database.endTransaction();
+		}
 
 		close();
 	}
