@@ -74,5 +74,6 @@
     <string name="create_content_placeholder">Some points</string>
     <string name="create_title_placeholder">Some title</string>
     <string name="create_date_sample">2022-01-01 07:59</string>
+    <string name="search_results">Search results</string>
 
 </resources>

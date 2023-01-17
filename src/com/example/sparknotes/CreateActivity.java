@@ -84,7 +84,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 		lv = (ListView) findViewById(R.id.create_note_attaches);
 		attachAdapter = new CreateNoteAttachAdapter(this, attaches);
 		lv.setAdapter(attachAdapter);
-
+		setTitle(getResources().getString(R.string.actionbar_create_button));
 	}
 
 	@Override

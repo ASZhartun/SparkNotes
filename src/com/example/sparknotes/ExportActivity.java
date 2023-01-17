@@ -75,6 +75,7 @@ public class ExportActivity extends FragmentActivity {
 			}
 		});
 		location.setText(Environment.getExternalStorageDirectory().toString());
+		setTitle(getResources().getStringArray(R.array.main_menu_points)[1]);
 		super.onCreate(bundle);
 	}
 

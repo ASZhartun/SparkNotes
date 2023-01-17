@@ -55,6 +55,7 @@ public class ImportActivity extends FragmentActivity {
 				finish();
 			}
 		});
+		setTitle(getResources().getStringArray(R.array.main_menu_points)[2]);
 		super.onCreate(bundle);
 	}
 

@@ -100,8 +100,6 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			String end = data.getStringExtra(SearchActivity.END_DATE_KEY);
 			searchResults = dbController.getNotesByDatesAndText(start, end, sample, criteria);
 		}
-
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
@@ -221,7 +219,12 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 		getSupportFragmentManager().beginTransaction().replace(R.id.work_frame, fragment).commit();
 		current = fragment;
 		mainMenu.setItemChecked(position, true);
-		setTitle(getResources().getStringArray(R.array.main_menu_points)[position]);
+		if (SEARCH_FLAG) {
+			setTitle(getResources().getString(R.string.search_results));
+		} else {
+			setTitle(getResources().getStringArray(R.array.main_menu_points)[position]);
+		}
+
 		drawer.closeDrawer(mainMenu);
 	}
 

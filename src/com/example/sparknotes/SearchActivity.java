@@ -124,6 +124,7 @@ public class SearchActivity extends FragmentActivity {
 				newFragment.show(getFragmentManager(), "dtPicker");
 			}
 		});
+		setTitle(getResources().getStringArray(R.array.main_menu_points)[3]);
 		super.onCreate(arg0);
 	}
 
