@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -66,7 +65,6 @@ public class ExportActivity extends FragmentActivity {
 						Toast.makeText(v.getContext(), "Directory was created at\n" + file.getAbsolutePath(),
 								Toast.LENGTH_LONG).show();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
@@ -108,12 +106,6 @@ public class ExportActivity extends FragmentActivity {
 				}
 			}
 		}
-
-//		This code produce corrupted zip file for any reasons
-//		File zip = new File(resultFolder.getAbsoluteFile() + ".zip");
-//		boolean zipWasCreated = zip.createNewFile();
-//		ZipOutputStream zos = ZipDoer.getZipOutputStream(zip);
-//		ZipDoer.pack(resultFolder, zos, null);
 
 		Toast.makeText(this, "Archive was created", Toast.LENGTH_LONG).show();
 		return resultFolder;

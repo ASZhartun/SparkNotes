@@ -59,7 +59,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	private DBHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

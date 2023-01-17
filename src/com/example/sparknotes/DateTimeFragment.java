@@ -38,6 +38,7 @@ public class DateTimeFragment extends DialogFragment {
 		setRetainInstance(true);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public Dialog onCreateDialog(Bundle saved) {
 		Calendar c = Calendar.getInstance();

@@ -47,7 +47,7 @@ public class CreateNoteAttachAdapter extends ArrayAdapter<AttachItem> {
 				ctx.deleteAttach(position);
 			}
 		});
-		
+
 		browse.setOnClickListener(new View.OnClickListener() {
 
 			@Override

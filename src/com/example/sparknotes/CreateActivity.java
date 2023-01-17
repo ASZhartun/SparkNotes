@@ -3,36 +3,23 @@ package com.example.sparknotes;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.os.EnvironmentCompat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -42,8 +29,6 @@ import android.widget.Toast;
 public class CreateActivity extends FragmentActivity implements AttachActionListener {
 
 	private static final int PICKFILE_RESULT_CODE = 0;
-	private static final int TAKE_PICTURE_REQUEST = 1;
-
 	Context ctx;
 	long currentID;
 
@@ -105,32 +90,17 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//		if (requestCode == TAKE_PICTURE_REQUEST && resultCode == RESULT_OK) {
-//			File file = new File(takePhotoURI);
-//			if (file.exists())
-//				try {
-//					file.createNewFile();
-//				} catch (IOException e) {
-//					Toast.makeText(this, "Cant create file by photo URI", Toast.LENGTH_LONG).show();
-//					e.printStackTrace();
-//				}
-//			attaches.add(new AttachItem(0, takePhotoURI, file, "image", currentID));
-//			attachAdapter.notifyDataSetChanged();
-//
-//		} else {
-			try {
-				String type = getTypeFrom(data);
-				File newFile = copy(data);
-				attaches.add(new AttachItem(0, newFile.getPath(), newFile, type, currentID));
-				Toast.makeText(this, String.valueOf(newFile.exists()), Toast.LENGTH_SHORT).show();
-				attachAdapter.notifyDataSetChanged();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-//		}
+		try {
+			String type = getTypeFrom(data);
+			File newFile = copy(data);
+			attaches.add(new AttachItem(0, newFile.getPath(), newFile, type, currentID));
+			Toast.makeText(this, String.valueOf(newFile.exists()), Toast.LENGTH_SHORT).show();
+			attachAdapter.notifyDataSetChanged();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -179,68 +149,15 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 	}
 
 	public void chooseTypeOfAttachingFile() {
-
-//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//		final String[] points = getResources().getStringArray(R.array.attach_file_type_points);
-//		final String[] values = getResources().getStringArray(R.array.values_attach_file_type_points);
-//		builder.setTitle("Выберите тип файла, который хотите прикрепить к заметке:")
-//				.setItems(points, new DialogInterface.OnClickListener() {
-//
-//					@Override
-//					public void onClick(DialogInterface dialog, int which) {
-//						// TODO Auto-generated method stub
-//						Toast.makeText(getApplicationContext(), "position is " + values[which], Toast.LENGTH_SHORT)
-//								.show();
-//						dialog.cancel();
-//						((CreateActivity) ctx).createAttachingFile(values[which]);
-//					}
-//				}).setNegativeButton("Decline", new DialogInterface.OnClickListener() {
-//
-//					@Override
-//					public void onClick(DialogInterface dialog, int which) {
-//						Toast.makeText(getApplicationContext(), "Action was declined", Toast.LENGTH_SHORT).show();
-//						dialog.cancel();
-//					}
-//				}).setCancelable(false).show();
 		((CreateActivity) ctx).createAttachingFile("file");
 	}
 
 	protected void createAttachingFile(String string) {
 		Intent intent = null;
-//		if (string.equals("file")) {
-			intent = new Intent(Intent.ACTION_GET_CONTENT);
-			intent.setType("*/*");
-			intent = Intent.createChooser(intent, "CHOOSE_FILE");
-			startActivityForResult(intent, PICKFILE_RESULT_CODE);
-//		} else if (string.equals("photo")) {
-//			PackageManager packageManager = getPackageManager();
-//			boolean isCamera = packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
-//			if (!isCamera)
-//				Toast.makeText(this, "Your device hasn't camera! Try to choose other position.", Toast.LENGTH_LONG)
-//						.show();
-//			else {
-//				saveFullImage();
-//			}
-//		} else if (string.equals("voice")) {
-//
-//		} else {
-//			Toast.makeText(getApplicationContext(), "was choosen something unexpectable!", Toast.LENGTH_SHORT).show();
-//		}
-	}
-
-	private void saveFullImage() {
-		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		File file = null;
-		try {
-			file = createFile(".jpeg");
-		} catch (IOException e) {
-			Log.i("PHOTKA_bl", "Zalupa s sozdaniem faila dlya fotki!");
-			e.printStackTrace();
-		}
-		if (file != null) {
-			intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-			startActivityForResult(intent, TAKE_PICTURE_REQUEST);
-		}
+		intent = new Intent(Intent.ACTION_GET_CONTENT);
+		intent.setType("*/*");
+		intent = Intent.createChooser(intent, "CHOOSE_FILE");
+		startActivityForResult(intent, PICKFILE_RESULT_CODE);
 	}
 
 	private File copy(Intent data) throws FileNotFoundException, IOException {
@@ -256,8 +173,7 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(fis, 8192);
 		BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(out, 8192);
 		byte[] bys = new byte[8192];
-		int len;
-		while ((len = bufferedInputStream.read(bys)) != -1) {
+		while ((bufferedInputStream.read(bys)) != -1) {
 			bufferedOutputStream.write(bys);
 			bufferedOutputStream.flush();
 		}
@@ -284,15 +200,6 @@ public class CreateActivity extends FragmentActivity implements AttachActionList
 		File image = File.createTempFile(filename, suffix, storage);
 		takePhotoURI = "file:" + image.getAbsolutePath();
 		return image;
-//		if (!newAttach.exists()) {
-//			try {
-//				newAttach.createNewFile();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//		return newAttach;
 	}
 
 	@Override

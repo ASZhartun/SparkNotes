@@ -3,7 +3,6 @@ package com.example.sparknotes;
 import java.util.ArrayList;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,7 +29,6 @@ public class FAQFragment extends ListFragment {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		menu.clear();
 		inflater.inflate(R.menu.cancel_single, menu);
-		// TODO Auto-generated method stub
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 

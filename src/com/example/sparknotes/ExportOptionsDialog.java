@@ -19,14 +19,10 @@ public class ExportOptionsDialog extends DialogFragment {
 
 	@Override
 	public void onAttach(Context context) {
-		// TODO Auto-generated method stub
 		super.onAttach(context);
-
 		try {
-			// Instantiate the NoticeDialogListener so we can send events to the host
 			listener = (ExportOptionsDialogListener) context;
 		} catch (ClassCastException e) {
-			// The activity doesn't implement the interface, throw exception
 			throw new ClassCastException(context.toString() + " must implement ExportOptionsDialogListener");
 		}
 	}
