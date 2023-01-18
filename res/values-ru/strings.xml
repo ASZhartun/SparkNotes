@@ -76,4 +76,9 @@
     <string name="create_date_sample">2022-01-01 07:59</string>
     <string name="search_results">Результаты поиска</string>
 
+    <!-- Shared prefs section -->
+
+    <string name="interface_settings">Общие настройки</string>
+    <string name="test_preference_node_description">Место для сохранения/получения хранения заметок</string>
+    <string name="test_preference_node_title">Импорт/экспорт по пути по умолчанию</string>
 </resources>

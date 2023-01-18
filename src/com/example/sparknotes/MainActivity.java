@@ -52,6 +52,7 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 	public final static int GET_EXPORT_DIRECTORY = 101;
 	public final static int GET_IMPORT_FILE = 102;
 	public final static int GET_SEARCH_RESULT = 103;
+	public final static int GET_APPEARANCE_RESULT = 104;
 
 	@Override
 	protected void onStart() {
@@ -194,13 +195,15 @@ public class MainActivity extends FragmentActivity implements ActionNoteItemList
 			startActivityForResult(intent, GET_SEARCH_RESULT);
 			break;
 		case 5:
-			Toast.makeText(this, "Settings will delivery later", Toast.LENGTH_SHORT).show();
-			NoteListFragment refreshNoteList = refreshNoteListAdapter();
-			refreshNoteList.adapter.notifyDataSetChanged();
-			fragment = refreshNoteList;
-			position = 0;
+//			Toast.makeText(this, "Settings will delivery later", Toast.LENGTH_SHORT).show();
+//			NoteListFragment refreshNoteList = refreshNoteListAdapter();
+//			refreshNoteList.adapter.notifyDataSetChanged();
+//			fragment = refreshNoteList;
+//			position = 0;
 //			intent = new Intent(this, SettingsActivity.class);
 //			startActivity(intent);
+			intent = new Intent(this, AppearanceActivity.class);
+			startActivityForResult(intent, GET_SEARCH_RESULT);
 			break;
 		case 6:
 			fragment = new FAQFragment();

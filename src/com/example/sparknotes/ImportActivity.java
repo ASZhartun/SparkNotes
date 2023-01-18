@@ -34,7 +34,7 @@ public class ImportActivity extends FragmentActivity {
 		ctx = this;
 		setContentView(R.layout.fragment_import);
 		locationButton = (Button) findViewById(R.id.button_locate_import);
-		locationButton.setText(Environment.getExternalStorageDirectory().toString());
+		locationButton.setText(getSharedPreferences(AppearanceActivity.MY_PREF, 0).getString(AppearanceActivity.ACTION_PATH_KEY, Environment.getExternalStorageDirectory().toString()));
 		locationButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/interface_settings" >
+        
+        <Preference
+            android:key="pref_test"
+            android:summary="@string/test_preference_node_description"
+            android:title="@string/test_preference_node_title" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

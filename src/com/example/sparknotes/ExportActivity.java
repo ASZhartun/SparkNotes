@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
@@ -74,7 +75,7 @@ public class ExportActivity extends FragmentActivity {
 
 			}
 		});
-		location.setText(Environment.getExternalStorageDirectory().toString());
+		location.setText(getSharedPreferences(AppearanceActivity.MY_PREF, 0).getString(AppearanceActivity.ACTION_PATH_KEY, Environment.getExternalStorageDirectory().toString()));
 		setTitle(getResources().getStringArray(R.array.main_menu_points)[1]);
 		super.onCreate(bundle);
 	}
